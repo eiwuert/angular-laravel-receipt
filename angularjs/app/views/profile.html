@@ -1,0 +1,162 @@
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<div class="wrapper" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+     xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    <div class="content" ng-controller="HomeCtrl">
+        <div class="section1">
+            <div class="header" id="home_header" style="position: fixed">
+                <div class="logo"><div class="page-logo"></div></div>
+                <div class="slogan"><img src="styles/img/new-layout/slogan.png"/></div>
+                <div class="menu-top">
+                    <ul class="button-top">
+                        <li id="btn-sign-in"><a href="" ng-show="!loggedInUser.UserID" show-login-form="">Sign In</a></li>
+                        <li><a id="btn-sign-up" href="" show-register-form="" ng-hide="loggedInUser.UserID">Sign Up</a></li>
+                        <li><a href="#!/logout" ng-show="loggedInUser.UserID">Sign Out</a></li>
+                        <li class="back-to-app"  ng-show="loggedInUser.UserID"><a href="" show-page="receiptbox-wrapper" layout="default" id="enter_head_home">Back to App</a></li>
+                    </ul>
+                </div>
+            </div>             
+            <div id="home-container" style="height: 100%;">
+                <div id="user-activated-success-modal" ng-show="(action == 'activate' && responseStatus == '301') || (action == 'activate' && responseStatus == '404')">
+                    <form class="form-horizontal activateForm" name="activateForm" ng-submit="alreadyActivated()">
+                        <div class="control-group">
+                            <h2 class="form-h2" ng-show="(action == 'activate' && responseStatus == '301')">ACCOUNT ACTIVATED</h2>
+                            <h2 class="form-h2" ng-show="(action == 'activate' && responseStatus == '404')">INVALID ACTIVATION LINK</h2>
+                            <hr>
+                            <p class="text-center2" ng-show="(action == 'activate' && responseStatus == '301')">This account is activated already!</p>
+                            <p class="text-center2" ng-show="(action == 'activate' && responseStatus == '404')">Your activation link is invalid!<br>Please activate your account by following the link in our confirmation email that was sent to the email address you used to register.</p>
+                            <div class="text-center">
+                                <input type="submit" id="btn-activated" name="OK" value="OK"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="user-activate-success-modal" ng-show="action == 'activate' && responseStatus == '500'">
+                    <form class="form-horizontal activateForm" name="activateForm" ng-submit="resendActivation()">
+                        <div class="control-group">
+                            <h2 class="form-h2">ACTIVATION ERROR</h2>
+                            <hr>
+                            <p class="text-center">Your activation has expired.<br>Resend activation to email?</p>
+                            <div class="control-group-alert" ng-show="isSuccessMail == true">
+                                <div class="alert alert-success">{{responseMessage}}</div>
+                            </div>
+                            <div class="text-center">
+                                <input type="submit" id="btn-activated-sendmail" name="Send" value="Send"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="user-activate-fail-modal" ng-show="action == 'activate' && responseStatus == '204'"  style="display: none;">
+                    <form class="form-horizontal activateForm" name="activateForm" ng-submit="successActivated()">
+                        <div class="control-group">
+                            <h2 class="form-h2">CONGRATULATIONS!</h2>
+                            <hr>
+                            <p>Your account has been successfully activated.</p>
+                            <p class="text-center">
+                                <input type="submit" id="go-to-app" name="Go to Application" value="Go to Application"/>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+                <div id="user-activate-fail-modal" ng-show="action == 'delete-account'">
+                    <form class="form-horizontal activateForm" name="activateForm" ng-submit="successDeleteAccount()">
+                        <div class="control-group">
+                            <h2 class="form-h2">DELETE ACCOUNT</h2>
+                            <hr>
+                            <p>You have successfully deleted your account.</p>
+                            <p class="text-center">
+                                <input type="submit" id="go-to-app" name="Go to Application" value="OK"/>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+                <div id="user-activate-fail-modal2" ng-show="action == 'activate' && responseStatus == '204'" style="display: block;">
+                    <form class="form-horizontal activateForm" name="activateForm" ng-submit="updateCurrency(CurrencyCode)">
+                        <div class="control-group">
+                            <h2 class="form-h2">CHOOSE YOUR HOME CURRENCY</h2>
+                            <hr>
+                            <p>Please select your Home Currency to activate your account. This is the currency that you use in the country in which you live or the currency you use for reporting purposes. For example, if you live in United States, you would choose USD.  Once selected, this setting cannot be changed.</p>
+                            <div class="control-group-alert" ng-show="isError == true">
+                                <div class="alert alert-error">{{responseMessage}}</div>
+                            </div>
+                            <div class="control-group-alert" ng-show="isSuccess == true">
+                                <div class="alert alert-success">{{responseMessage}}</div>
+                            </div>
+                            <p class="text-center2">
+                                Home Currency<span style="color: red">*</span> 
+                                <select name="CurrencyCode" id="list-currencies" ng-model="CurrencyCode"
+                                        ng-options="currencyCode as currencyName for (currencyCode, currencyName) in currencies">
+                                </select>
+                            </p>
+                            <p class="text-center">
+                                <input type="submit" id="submit-currency" name="Save" value="Save and activate"/>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+                <div id="user-forgot-fail-modal2" ng-show="(action == 'reset-password' && responseStatus == '404') || (action == 'reset-password' && responseStatus == '500')">
+                    <form class="form-horizontal activateForm" name="activateForm" ng-submit="backHomePage()">
+                        <div class="control-group">
+                            <h2 class="form-h2" ng-show="(action == 'reset-password' && responseStatus == '500')">ERROR RESET PASSWORD</h2>
+                            <h2 class="form-h2" ng-show="(action == 'reset-password' && responseStatus == '404')">INVALID RESET PASSWORD LINK</h2>
+                            <hr>
+                            <p class="text-center2" ng-show="(action == 'reset-password' && responseStatus == '500')">Your token has expired. Please try again by go to Home page and using Forgot Password function.</p>
+                            <p class="text-center2" ng-show="(action == 'reset-password' && responseStatus == '404')">Your link is invalid. Please try again by go to Home page and using Forgot Password function.</p>
+                            <div class="text-center">
+                                <input type="submit" id="btn-activated" name="OK" value="OK"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="user-forgot-success-modal" ng-show="(action == 'reset-password' && responseStatus == '204')">
+                    <form class="form-horizontal activateForm" name="activateForm" ng-submit="setNewPass(NewPassword, NewPasswordConfirm)">
+                        <div class="control-group">
+                            <h2 class="form-h2">RESET YOUR PASSWORD</h2>
+                            <hr>
+                            <p class="text-center">Please enter your new password.</p>
+                            <div class="control-group-alert" ng-show="isError == true">
+                                <div class="alert alert-error">{{responseMessage}}</div>
+                            </div>
+                            <div class="control-group-alert" ng-show="isSuccess == true">
+                                <div class="alert alert-success">{{responseMessage}}</div>
+                            </div>
+                            <div class="text-center">
+                                <input id="enter-password-reset" type="password" name="NewPassword" ng-model="NewPassword" placeholder="NEW PASSWORD" required autocomplete="off">
+                            </div>
+                            <div class="text-center">
+                                <input id="enter-password-confirm-reset" type="password" name="NewPasswordConfirm" ng-model="NewPasswordConfirm" placeholder="CONFIRM NEW PASSWORD" required autocomplete="off">
+                            </div>
+                            <div class="text-center">
+                                <input id="submit-password-reset" type="submit" name="Send" value="Send"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="user-activate-email-expired-modal">
+                    <form class="activateForm" ng-show="action == 'change-email' && responseStatus == '500'">
+                        <div class="control-group" ng-show="responseStatus == '500'">
+                            <h2 class="form-h2">Error</h2>
+                            <p class="text-center">Your token for Changing Email is invalid or has expired.</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="full-screen-opacity" style="display: none;"></div>
+        <div id="loading-signup" style="display: none;"></div>
+        <div class="footer">
+            <div class="text-footer">
+                <div class="copyright">© ReceiptClub, Inc. 2014. All Rights Reserved</div>
+                <div class="share">
+                    <a class="twitter" target="_blank" href="http://twitter.com"></a>
+                    <a class="facebook" target="_blank" href="http://facebook.com"></a>
+                    <a class="pinterest" target="_blank" href="http://pinterest.com"></a>
+                    <a class="google" target="_blank" href="http://plus.google.com"></a>
+                </div>
+                <div class="condition">About Us | Contact Us | Terms & Conditions | Privacy Policy</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    

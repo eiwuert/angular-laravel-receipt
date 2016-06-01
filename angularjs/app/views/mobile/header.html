@@ -1,0 +1,28 @@
+<div id="header">
+    <div id="logo-mobile">
+        <a href="#!" title="ReceiptClub" class="app-icon icon-logo-mobile"></a>
+    </div>
+    <div id="logo">
+        <a href="#!" title="ReceiptClub"></a>
+    </div>
+
+    <div id="user-area" ng-controller="HomeCtrl">
+        <ul ng-if="loggedInUser.UserID > 0">
+            <li>
+                <a href="#">{{loggedInUser.FirstName}} {{loggedInUser.LastName}}</a>
+            </li>
+            <li>
+                <a href="#!/logout">Log Out</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="menu" responsive-menu>
+    <div id="nav-container">
+        <ul id="nav-payments" class="nav">
+            <li><a href="" id="menu-receiptbox" show-page="receiptbox-wrapper" class="utmaltergothic app-icon icon-app-nav-green">ReceiptBox</a></li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+</div>

@@ -1,0 +1,244 @@
+<div class="app-wrapper" ng-controller="ReportListCtrl">
+    <div class="app-box app-te rl">
+        <div class="app-headmenu">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span5">
+                        <ul class="unstyled inline block-top-left">
+                            <li>
+                                <div class="message-upload-custom app-travel-message">
+                                    <span id="notify-report" class="notify-message">Nhung Kiều has submitter a report SHOW</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <!--Removes directive "out-reset-filter" due to dropdown menu is hidden forcibly-->
+                        <div class="filter">
+                            <div class="btn-group filter-type">
+                                <button class="btn" ng-bind="filters.name"></button>
+                                <button class="btn dropdown-toggle" data-toggle="dropdown" ng-click="getReportTotal()">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu ul-filter-report-list">
+                                    <li ng-repeat="ftype in filterTypeList">
+                                        <p><a href="" ng-click="selectFilterType(ftype);" ng-bind="ftype.name"></a><p ng-bind="ftype.totalReport"></p></p>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div id="report-filter">
+                                <div class="date-range-box">
+                                    <input class="temp-item-from" type="hidden">
+                                    <input class="temp-item-to" type="hidden">
+                                    <div class="date-from"></div>
+                                    <div class="date-between">To</div>
+                                    <div class="date-to"></div>
+                                    <div class="clearfix"></div>
+                                    <div class="button-wrapper">
+                                        <input class="box-range-cancel btn" type="button" value="Cancel" />
+                                        <input class="box-range-ok btn" type="button" value="OK" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group filter-date date-wrapper" >
+                                <button class="btn">
+                                    <span ng-show="!filters.allDate" ng-bind-template="{{dateFromDisplay | onlyDateWithSpace}} - {{dateToDisplay | onlyDateWithSpace}}"></span>
+                                    <span ng-show="filters.allDate">All Dates</span>
+                                </button>
+                                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu limit-width">
+                                    <li><a tabindex="-1" href="" element-id="report-filter" rb-datepicker quick-filter="true">Select Date Range</a></li>
+                                    <li><a tabindex="-1" href="" class="all-dates" ng-click="applyAllDate()">All Dates</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span2 text-center relative-pos">
+                        <h2 class="utmaltergothic">TravelExpense</h2>
+                        <h4 class="utmaltergothic">Report List</h4>
+                        <a class="btn add-items create-report-btn" href="" ng-click="openCreateReportForm()" id="new-report-button">
+                            Create New Report
+                        </a>
+                        <a class="btn add-items show-triplist-btn" ng-click="$parent.changeRoute('/travel-expense/trip-list');" href="" onclick="resetShiftClick();" show-page="trip-list-wrapper" ng-class="{'aqua': activePath == '/travel-expense'}" active-class="aqua" selected-item="#menu-travel-expense">
+                          Show Trip List
+                        </a>
+                    </div>
+                    <div class="span5 text-right">
+                        <ul class="start-tour">
+                            <li class="bt-start-tour" ng-click="">
+                                <button href="javascript:;" class="home-start-tour add-items">
+                                    Take a Tour
+                                </button>
+                            </li>
+                            <!--
+                            <li>
+                                <h3 class="lightning-deals-text block-top-right"><span><i class="app-icon icon-treasure" style="float: none"></i>Today's Deals</span></h3>
+                            </li>
+                            -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="app-table report-list tb-rl" fluid-table id="report-list-table">
+            <tr>
+                <th class="col-chk">
+                    <div class="th firstth">
+                        <!--<i class="app-icon icon-checkbox-sqr" ng-click="checkAll(reportList);" ng-class="{'icon-checkbox-sqr': !isCheckAll, 'icon-checkedbox-sqr': isCheckAll}"></i>-->
+                    </div>
+                </th>
+                <th class="col-name"><div class="th">TRAVEL REPORT</div></th>
+                <th class="col-amo"><div class="th">AMOUNT</div></th>
+                <th class="col-dat"><div class="th">DATE</div></th>
+                <th class="col-sub"><div class="th">SUBMITTER</div></th>
+                <th class="col-apr"><div class="th">APPROVER</div></th>
+                <th class="col-stt"><div class="th">STATUS</div></th>
+                <th class="col-ref"><div class="th">REPORT#</div></th>
+                <th class="col-clm"><div class="th">CLAIMED</div></th>
+                <th class="col-apv"><div class="th">APPROVED</div></th>
+                <th class="col-non"><div class="th lastth">&nbsp;</div></th>
+            </tr>
+            <tr>
+                <td colspan="11" style="padding: 0">
+                    <div class="custom-scrollbar">
+                        <div class="app-table-child-wrapper" app-resize-height id="te-report-list">
+                            <table class="app-table-child" fluid-table>
+                                <!--<tr>-->
+                                    <!--<td class="col-chk"></td>-->
+                                    <!--<td class="col-name">a</td>-->
+                                    <!--<td colspan="2"></td>-->
+                                    <!--<td class="col-sub">&nbsp;&nbsp;</td>-->
+                                    <!--<td class="col-apr">&nbsp;&nbsp;</td>-->
+                                    <!--<td colspan="4"></td>-->
+                                <!--</tr>-->
+                                <tbody bindonce ng-repeat="report in reportList">
+                                    <tr>
+                                        <td class="col-chk">
+                                            <!--<i onclick="checkboxOnClick(this);" class="app-icon checkboxshift icon-checkbox-sqr" ng-click="toggleCheckboxStatus(report)" ng-class="{'icon-checkbox-sqr': !report.IsChecked, 'icon-checkedbox-sqr': report.IsChecked}"></i>-->
+                                        </td>
+
+                                        <td class="align-left col-name">
+                                            <a class="trip-name bold text-ellipsis" href="" data-report="{{report}}" ng-click="loadReportDetail(report.ReportID)" tooltip="{{report.Title}}" bo-text="report.Title"></a>
+                                        </td>
+
+                                        <td class="align-right col-amo bold">
+                                            <div class="wrap-indent-right" bo-text="report.Amount | number:2"></div>
+                                        </td>
+
+                                        <td class="col-dat">
+                                            <div class="item-expend-period-wrapper">
+                                                <span ng-bind="report.Date | formatDate:'dd-MMM-yyyy'"></span>
+                                                <input type="text" class="item-expend-period" rci-calendar ng-model="report.Date" oid="report.ReportID" field="Date" ng-if="! report.IsSubmitted || (report.IsSubmitted && report.IsApproved == 2)">
+                                            </div>
+                                        </td>
+
+                                        <td class="col-sub align-left" ng-click="trip.IsChecked = true;">
+                                            <span class="text-ellipsis" tooltip="{{report.SubmitterEmail}}" ng-bind="report.SubmitterEmail"></span>
+                                        </td>
+
+                                        <td class="col-apr align-left">
+                                            <inline-edit value="report.ApproverEmail" addition-class="text-ellipsis" quick-save edit-status="editStatus" oid="report.ReportID" field="ApproverEmail" ng-if="! report.IsSubmitted || (report.IsSubmitted && report.IsApproved == 2)"></inline-edit>
+                                            <span ng-if="report.IsSubmitted && report.IsApproved < 2" class="text-ellipsis" tooltip="{{report.ApproverEmail}}" ng-bind="report.ApproverEmail"></span>
+                                        </td>
+
+                                        <td class="col-stt">
+                                          <span class="text-ellipsis" bo-text="report.Status | reportStatus"></span>
+                                        </td>
+
+                                        <td class="col-ref align-left">
+                                            <inline-edit value="report.Reference" maxlength="10" quick-save edit-status="editStatus" oid="report.ReportID" field="Reference" ng-if="! report.IsSubmitted || (report.IsSubmitted && report.IsApproved == 2)"></inline-edit>
+                                            <span ng-if="report.IsSubmitted && report.IsApproved < 2" ng-bind="report.Reference"></span>
+                                        </td>
+
+                                        <td class="col-clm align-right red">
+                                            <span class="text-ellipsis" bo-text="report.Claimed | number:2"></span>
+                                        </td>
+
+                                        <td class="col-apv align-right green">
+                                            <span class="text-ellipsis" bo-text="report.Approved | number:2"></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="pagination pagination-right" style="display: block; padding: 4px 0 5px 0; margin: 0; border-top: 1px solid #ddd; position: relative;">
+                            <div class="link-icons">
+                                <!--<a href="" ng-click="deleteReports()" class="delete-link" ng-show="['draft', 'archived'].indexOf(filters.type)>-1">
+                                    <div class="app-icon delete-red"></div>DELETE</a>-->
+                                <!--
+                                <a href=""><div class="app-icon export"></div>EXPORT</a>
+                                <a href=""><div class="app-icon email"></div>EMAIL</a>
+                                -->
+                                <!--<a href="" ng-click="printReport();"><div class="app-icon print"></div>PRINT</a>-->
+                                <!--<a href="" ng-show="['draft', 'rejected'].indexOf(filters.type)>-1" ng-click="submitReports()"><div class="app-icon submit"></div>SUBMIT</a>
+                                <a href="" ng-show="filters.type == 'pending'" ng-click="approveReports()"><div class="app-icon approve"></div>APPROVE</a>
+                                <a href="" ng-show="filters.type == 'pending'" ng-click="rejectReports()"><div class="app-icon reject"></div>REJECT</a>-->
+                            </div>
+                            <div ng-show="page.isWorking" class="bold loadingReport">Loading...</div>
+                            <div style="position: absolute; top: 10px; right: 162px;">
+                                <a href="" id="report-receive-button" ng-click="receiveReports()"><div class="app-icon receive"></div><span class="receive-text">RECEIVE<span></a>
+                                <span ng-bind-template="{{filters.type | reportTypeFilterFullFormat}}: "></span>
+                                <span ng-show="reportList.length"
+                                      ng-bind-template="{{page.indexFrom}}-{{page.indexTo}} of {{page.totalByType}}"></span>
+                                <span ng-show="!reportList.length">0-0 of 0</span>
+                            </div>
+
+                            <ul>
+                                <li><a href="" ng-click="paginateFirst()" title="Go to First page"><i class="icon-fast-backward"></i></a></li>
+                                <li><a href="" ng-click="paginatePrevious()" title="Go to Previous page"><i class="icon-backward"></i></a></li>
+                                <li><a href="" ng-click="paginateNext()" title="Go to Next page"><i class="icon-forward"></i></a></li>
+                                <li><a href="" ng-click="paginateLast()" title="Go to Last page"><i class="icon-fast-forward"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="reportFromTripTrigger" class="hide" ng-click="reportFromTrip()"></div>
+
+    <div ng-include src="'views/create-report.html'"></div>
+    <div class="print-report-wrap">
+        <div class="print-report clearfix">
+            <span class="title-box-alert">
+                <i class="icon-logo"></i>
+                <b class="title-box-download">Print report</b>
+                <button class="app-icon pop-up-close-window" data-dismiss="modal" aria-hidden="true"></button>
+            </span>
+            <div id="trip-print-pdf" class="box-select-reporttype">
+                <h3>Select Report Type:</h3>
+                <p class="box-select-p">
+                    <label class="radio">
+                        <input type="radio" id="all" checked="true" ng-click="selectPrintAction('all');" name="printAction" value="all">Print report with all items
+                    </label>
+                </p>
+                <p>
+                    <label class="radio">
+                        <input type="radio" id="claimed" ng-click="selectPrintAction('claimed');" name="printAction" value="claimed">Print report with claimed items only
+                    </label>
+                </p>
+                <p>
+                    <label class="radio">
+                        <input type="radio" id="approved" name="printAction" ng-click="selectPrintAction('approved');" value="approved">Print report with approved items only
+                    </label>
+                </p>
+                <p ng-if="isGeneratingReport"><input type="button" class="btn" ng-click="exportPDF();" id="print-report-btn" value="Download"/><input onclick="hideReportWrap();" type="button" class="btn cancel-report-btn" value="Cancel"/></p>
+                <p class="lbl_loadingtext" ng-if="!isGeneratingReport">Generating PDF report... </p>
+                <div class="downloading-report print-download">&nbsp;</div>
+                <p class="downloadint print-download">Downloading...</p>
+            </div>
+            <div class="box-pdf-viewer">
+                <div class="loadding-pdf">&nbsp;</div>
+                <iframe src="{{urlReport}}" width="100%" height="100%"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function hideReportWrap(){
+            $('.print-report-wrap').hide();
+    }
+</script>

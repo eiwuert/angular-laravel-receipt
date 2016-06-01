@@ -1,0 +1,76 @@
+<div id="createTripBox" class="modal modal-rc hide form-modal" tabindex="-1" role="dialog" aria-hidden="true" ng-init="$parent.trip = {}">
+    <div class="modal-header">
+        <div class="modal-header">
+            <i class="icon-logo pull-left"></i>
+            <h3>create new trip</h3>
+            <button class="app-icon pop-up-close-window" data-dismiss="modal" aria-hidden="true"></button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <ul class="unstyled alert alert-danger text-left" ng-show="$parent.responseMessage">
+                <li ng-repeat="message in $parent.responseMessage">- {{ message }}</li>
+            </ul>
+            <div class="control-group">
+                <label class="control-label">Trip Name:</label>
+                <div class="controls text-left">
+                    <input type="text" ng-model="trip.Name" class="trip-name" tabindex="1">
+                    <label class="control-label trip-part">Leg</label> <input type="text" ng-model="trip.Leg" class="trip-part" tabindex="2">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="col">
+                    <label class="control-label">From:</label>
+                    <div class="controls">
+                        <input type="text" ng-model="trip.Departure" class="input-medium" tabindex="3">
+                    </div>
+                </div>
+                <div class="col right">
+                    <label class="control-label">To:</label>
+                    <div class="controls">
+                        <input type="text" ng-model="trip.Arrival" class="input-medium" tabindex="4">
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="col">
+                    <label class="control-label">Start Date:</label>
+                    <div class="controls">
+                        <input type="text" ng-model="trip.StartDate" rci-calendar class="input-medium" tabindex="5">
+                    </div>
+                </div>
+                <div class="col right">
+                    <label class="control-label">End Date:</label>
+                    <div class="controls">
+                        <input type="text" ng-model="trip.EndDate" rci-calendar class="input-medium" tabindex="6">
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="col">
+                    <label class="control-label">Trip#:</label>
+                    <div class="controls">
+                        <input type="text" ng-model="trip.Reference" class="input-medium" tabindex="7" maxlength="10">
+                    </div>
+                </div>
+                <div class="col right">
+                    <label class="control-label">Tag:</label>
+                    <div class="controls">
+                        <input type="text" ng-model="trip.Tags" class="input-medium" tabindex="8">
+                    </div>
+                </div>
+            </div>
+            <div class="control-group hide">
+                <label class="control-label">Memo:</label>
+                <div class="controls">
+                    <textarea class="input-block-level memo-create-trip" ng-model="trip.Memo" tabindex="9"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="$parent.responseMessage = []; $parent.trip = {}" tabindex="10">Reset</button>
+        <button ng-click="$parent.save(trip)" tabindex="11">Done</button>
+        <button ng-click="$parent.responseMessage = []; $parent.trip = {}" data-dismiss="modal" aria-hidden="true" tabindex="12">Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,864 @@
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<div class="wrapper" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+     xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    <div class="content" ng-controller="HomeCtrl">
+        <div class="section1">
+            <div class="header" id="home_header" style="position: fixed">
+                <div class="logo"><div class="page-logo"></div></div>
+                <div class="slogan"><img src="styles/img/new-layout/slogan.png"/></div>
+                <div class="menu-top">
+                    <ul class="button-top">
+                        <li id="btn-sign-in"><a href="" ng-show="!loggedInUser.UserID" show-login-form="">Sign In</a></li>
+                        <li><a id="btn-sign-up" href="" show-register-form="" ng-hide="loggedInUser.UserID">Sign Up</a></li>
+                        <li><a href="#!/logout" ng-show="loggedInUser.UserID">Sign Out</a></li>
+                        <li class="back-to-app" ng-click="backtoDashboard()"  ng-show="loggedInUser.UserID"><a href="" show-page="dashboard-wrapper" layout="default" id="enter_head_home">Back to App</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-section1">
+                <div class="line-group1">
+                    <h2 class="line1">convert all your receipts to</h2>
+                    <h2 class="line2">digital receipts</h2>
+                    <h2 class="line3">and store them in our secure cloud</h2>
+                </div>
+                <div class="line-group2">
+                    <h2 class="line5">then it’s smooth sailing on our easy</h2>
+                    <h2 class="line6">expense management platform</h2>
+                    <h2 class="line-7">report your expenses effortlessly</h2>
+                </div>
+                <!--<div class="btn-or-other"><a href="#!/#section14" class="or-more">for any type of expense</a></div>-->
+                <div class="line-group3">
+                       <span class="line9"><p>
+                           with paperless & clutter-free
+                       </p></span>
+                        <span class="line10"><p>
+                            repository for receipts & invoices
+                        </p></span>
+                        <span class="line11"><p>
+                            export expenses even to other accounting systems
+                        </p></span>
+                </div>
+            </div>
+        </div>
+        <!--<div id="full-screen" style="display: none;"></div>-->
+        <div id="full-screen-opacity" style="display: none;"></div>
+        <div id="loading-signup" style="display: none;"></div>
+        <div id="wrap-media" ng-class="{'enabled': loggedInUser.UserID}">
+            <div id="user-login-modal">
+                <form class="form-horizontal" ng-submit="authenticate()">
+                    <!--<div class="title">
+                        <i id="btn-close-login-form" class="app-icon icon-box-close-window pull-right"></i>
+                    </div>-->
+
+                    <div id="btn-close-sign-in"><a href="">&nbsp;</a></div>
+                    <!--<div class="sign-in-title">SIGN IN RECEIPTCLUB</div>-->
+                    <div class="control-group-alert">
+                        <div class="alert alert-error hide"></div>
+                    </div>
+                    <div class="clear"></div>
+                    <!--<hr>-->
+                    <div class="control-group first-group">
+                        <!--<label class="control-label" for="inputLoginEmail">E-mail: <span class="required">*</span></label>-->
+                        <div class="controls">
+                            <input type="email" name="username" id="inputLoginEmail" ng-model="auth.Email" placeholder="Email" required autocomplete="on"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <!--<label class="control-label" for="inputLoginPassword">Password: <span class="required">*</span></label>-->
+                        <div class="controls">
+                            <input type="password" name="password" id="inputLoginPassword" ng-model="auth.Password" placeholder="Password" required autocomplete="on"/>
+                        </div>
+                    </div>
+                    <div class="remember-me">
+                        <input id="remember-me" type="checkbox" ng-model="auth.KeepMeLogin">
+                        <label for="remember-me"></label><div>Keep me signed in</div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <input id="pop-up-login" type="submit" value="Sign in"/>
+                        </div>
+                    </div>
+                    
+                    <div class="forgot-password"><a show-forgot-password-form ng-click="responseStatus = null">Forgot your password?</a></div>
+                    <div class="donot-have-account">Don't have an account? <a id="signup-btn3">Sign Up</a> here</div>
+                </form>
+            </div>
+            <div id="user-forgot-password-modal">
+                <form class="form-inline" ng-submit="resetPassword(inputResetEmail)">
+                    <!--<div class="title">
+                        <i id="btn-close-forgot-form" class="app-icon icon-box-close-window pull-right"></i>
+                    </div>-->
+                    <div id="btn-close-reset-password"><a href="">&nbsp;</a></div>
+                    <div class="sign-in-title">RESET YOUR PASSWORD</div>
+                    <hr>
+                    <div id="response-mes" ng-show="responseStatus == 500" class="alert alert-error">
+                        {{responseMessage}}
+                    </div>
+                    <p class="done-reset" ng-show="responseStatus == 204">We have sent you an email that contains instructions on resetting your password, please follow the steps carefully to reset your password.</p>
+                    <p class="done-reset text-center" ng-show="responseStatus == 204">Thank you!</p>
+                    <p ng-show="responseStatus != 204" >Please fill in your email address, we'll send instructions on how to create new password.</p>
+                    <!--<p ng-show="responseStatus == 204">&nbsp;</p>-->
+                    <div class="control-group" ng-show="responseStatus != 204">
+                        <div class="controls">
+                            <input type="email" id="inputResetEmail" ng-model="inputResetEmail" class="input-xlarge" placeholder="Email Address" required>
+                        </div>
+                    </div>
+                    <div class="control-group" ng-show="responseStatus != 204">
+                        <div class="controls pass-btn">
+                            <img id="loading" src="styles/img/new-layout/loading-icon.png"/>
+                            <input type="submit" id="popup-reset-password" value="Reset password"/>
+                        </div>
+                    </div>
+                    <div class="control-group" ng-show="responseStatus == 204">
+                        <div class="controls">
+                            <div id="btn-close-reset-pass">OK</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="user-register-success-form">
+                <h2 class="success-title">WELCOME TO RECEIPTCLUB</h2>
+                <hr>
+                <form class="form-horizontal">
+                    <div class="control-group">
+                        <p>Congratulations! Your account has been registered with ReceiptClub,<br>
+                            Please activate your account by following the link in our confirmation email that<br>
+                            was sent to the email address you used to register.<br>
+                            Thank you for joining us!
+                        </p>
+                        <p class="bottom">The ReceiptClub Team</p>
+                        <div class="text-center">
+                            <a href="" class="btn-ok-success">OK</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="section3">
+            <div class="type-receipt-info">
+                <div class="type-receipt-info-detail">
+                    <p class="title">manage any type of receipt or inbound invoice<br>in any form - paper, email, electronic, digital</p>
+                    <p class="content">for purchases of any type, from anywhere<br>retail stores, restaurants, hotels, airlines, online sellers, service providers, wholesalers, manufacturers…</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section4" id="section4-new-layout">
+            <div class="section4-title-block">
+                <p class="title">ReceiptClub Expense Management Platform</p>
+                <p class="subtitle">Whether you use ReceiptClub for yourself, your home, your professional practice, your business or a corporation,<br>
+                        gain visibility and control spend with our suite of expense management applications.<br>
+                        Get started instantly using one of our convenient application bundles, Personal or Business,<br>
+                        or create your own Custom bundle from any of our applications.<br>
+                </p>
+            </div>
+            <div class="expense-items">
+                <div class="personal-expense">
+                    <div class="personal-expense-head">
+                        <div class="icon-personal-expense"><img width="77" height="84" src="styles/img/new-layout/payment.png"/></div>
+                        <p class="personal-expense-title">Payment</p>
+                        <p class="personal-expense-subtitle">Transactions</p>
+                    </div>
+                    <div class="clear"></div>
+                    <ul>
+                        <li onclick="openReceiptBox();" class="active">ReceiptBox<i class="exclamation-icon"></i></li>
+                        <li>BankAccounts<i class="exclamation-grey-icon"></i><span>Coming soon</span></li>
+                        <li>CreditCards<i class="exclamation-grey-icon"></i><span>Coming soon</span></li>
+                    </ul>
+                </div>
+                <div class="professional-expense">
+                    <div class="personal-expense-head">
+                        <div class="icon-professional-expense"><img width="80" height="79" src="styles/img/new-layout/personal.png"/></div>
+                        <p class="personal-expense-title">Personal</p>
+                        <p class="personal-expense-subtitle">Applications</p>
+                    </div>
+                    <div class="clear"></div>
+                    <ul>
+                        <li onclick="openPersonalExpense();" class="active">PersonalExpense<i class="exclamation-icon"></i></li>
+                        <li onclick="openPersonalAssets();" class="active">PersonalAssets<i class="exclamation-icon"></i></li>
+                        <li onclick="openTravelExpense();"  class="active">TravelExpense<i class="exclamation-icon"></i></li>
+                        <li onclick="openEducationExpense();" class="active">EducationExpense<i class="exclamation-icon"></i></li>
+                        <li>GroupExpense<i class="exclamation-grey-icon"></i><span>Coming soon</span></li>
+                    </ul>
+                </div>
+                <div class="business-expense">
+                    <div class="personal-expense-head">
+                        <div class="icon-business-expense"><img width="83" height="87" src="styles/img/new-layout/business.png"/></div>
+                        <p class="personal-expense-title">Business</p>
+                        <p class="business-expense-subtitle">Applications</p>
+                    </div>
+                    <div class="clear"></div>
+                    <ul>
+                        <li onclick="openBusinessExpense();" class="active">BusinessExpense<i class="exclamation-icon"></i></li>
+                        <li onclick="openBusinessAssets();" class="active">BusinessAssets<i class="exclamation-icon"></i></li>
+                        <li onclick="openTravelExpense();" class="active">TravelExpense<i class="exclamation-icon"></i></li>
+                        <li>QuickExpense<i class="exclamation-grey-icon"></i><span>Coming soon</span></li>
+                        <li>InvoiceExpress<i class="exclamation-grey-icon"></i><span>Coming soon</span></li>
+                        <li>InventorySpend<i class="exclamation-grey-icon"></i><span>Coming soon</span></li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        
+        <div id="full-screen-opacity-te" style="display: none;"></div>
+        <div id="travelexpense-popup">
+            <a class="app-icon close-popup" onclick="closeTravelExpense()"></a>
+            <div class="img-container">
+                <img src="styles/img/new-layout/featured-te-plane.png"/>
+            </div>
+            <div class="content-container">
+                <p class="title">TravelExpense</p>
+                <p class="content">Use our TravelExpense app to quickly and easily create and submit expense reports. Each report is neatly organized by trips; you can add as many trips to a single report as you want or need. When you’re ready to submit your report, click on the submit button and have it delivered instantly to your approver.  You can also print and download your reports, which are complete with size-optimized copies of your receipt images cross- referenced to the expense items on your reports.</p>
+                <p class="content">Our super-efficient Optical Character Recognition (OCR) engine extracts texts from receipts for automated data entry where possible, but you can also edit, drag and drop anything from the extracted text to the digital receipt. This saves you time on data entry so you can focus on your trip rather than spending hours creating your travel report. Our applications are available on the web, mobile and tablet devices so you can create and submit your expense reports on the go.</p>
+            </div>
+        </div>
+
+        <div id="full-screen-opacity-pe" style="display: none;"></div>
+        <div id="personalexpense-popup">
+            <a class="app-icon close-popup" onclick="closePersonalExpense()"></a>
+            <div class="img-container">
+                <img src="styles/img/new-layout/personal-expense-icon.png"/>
+            </div>
+            <div class="content-container">
+                <p class="title">PersonalExpense</p>
+                <p class="content">Organize your receipts and invoices: upload, convert then throw away your paper receipts and invoices and keep digital versions that are searchable and accessible at a moments notice.  You can even upload photos of warranty agreements, set reminders for return date expirations and make notes about the items you have purchased – never lose track of a receipt again!</p>
+                <p class="content">Our system is flexible, allowing you to use our predefined categories, create your own, or simply accept the automatic categorization offered by the personal expense application.</p>
+                <p class="content">Keep track of your expenses with our powerful reporting tools that allow you to see how you’ve spent your money in a given month, or over a range of dates, featuring easy to read and understand charts (pie, bar or trend).</p>
+                <p class="content">Save money using deals that we specially select and deliver to your ReceiptBox based on the items you buy and use everyday.</p>
+            </div>
+        </div>
+
+        <div id="full-screen-opacity-pa" style="display: none;"></div>
+        <div id="personalassets-popup">
+            <a class="app-icon close-popup" onclick="closePersonalAssets()"></a>
+            <div class="img-container">
+                <img src="styles/img/new-layout/personal-assets-icon.png"/>
+            </div>
+            <div class="content-container">
+                <p class="title">PersonalAssets</p>
+                <p class="content">Use our PersonalAssets application to keep track of all of your personal property that cannot be considered an expense.</p>
+                <p class="content">Use our PersonalAssets App to:</p>
+                <ul>
+                    <li>Make an inventory of valuable tangible assets in your home, including jewelry, art, furniture etc</li>
+                    <li>Store images of your invoices or receipts, photos of valuables, certificates of authenticity and important information about your assets</li>
+                    <li>Create asset registers for insurance purposes</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="full-screen-opacity-rb" style="display: none;"></div>
+        <div id="receiptbox-popup">
+            <a class="app-icon close-popup" onclick="closeReceiptBox()"></a>
+            <div class="img-container">
+                <img src="styles/img/new-layout/receipt-box-icon.png"/>
+            </div>
+            <div class="content-container">
+                <p class="title">ReceiptBox</p>
+                <p class="content">ReceiptBox is the repository where you store your digital receipts after they have been uploaded or emailed, and it’s also the starting point for sorting, editing, and organizing them into categories</p>
+                <p class="content">Upload images to your ReceiptBox in a snap! You can:</p>
+                <ul>
+                    <li>Take a picture from your mobile phone</li>
+                    <li>Scan a picture</li> 
+                    <li>Email an attached photo</li>
+                    <li>Forward an e-receipt, or confirmation email</li>
+                    <li>Create manual receipts, even recurring ones</li>
+                </ul>
+                <p class="content">ReceiptBox also lets you keep important information about your purchases:</p>
+                <ul>
+                    <li>Store images of receipts for reimbursements, product returns, and tax deductions</li>
+                    <li>Attach images of warranty cards</li> 
+                    <li>Check your return expiration date instantly</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="full-screen-opacity-ee" style="display: none;"></div>
+        <div id="educationexpense-popup">
+            <a class="app-icon close-popup" onclick="closeEducationExpense()"></a>
+            <div class="img-container">
+                <img src="styles/img/new-layout/education-expense-icon.png"/>
+            </div>
+            <div class="content-container">
+                <p class="title">EducationExpense</p>
+                <p class="content">Use the education expense app to track what you spend on education. Whether it’s for school, college, or university, our EducationExpense application can help you monitor how much you’re spending.</p>
+                <p class="content">Setup a secondary email and allow your child to submit expenses directly to your EducationExpense App. Any receipts sent from your child’s email address will come into your ReceiptBox ready for categorization.</p>
+                <p class="content">Then if you need to, you can easily create reports for tax purposes, applying for loans, scholarships, or other education awards.</p>
+            </div>
+        </div>
+
+        <div id="full-screen-opacity-be" style="display: none;"></div>
+        <div id="businessexpense-popup">
+            <a class="app-icon close-popup" onclick="closeBusinessExpense()"></a>
+            <div class="img-container">
+                <img src="styles/img/new-layout/business-expense-icon.png"/>
+            </div>
+            <div class="content-container">
+                <p class="title">BusinessExpense</p>
+                <p class="content">Use our business expense application to keep track of all business related spending. Our application is suitable for small to medium size businesses and professionals.</p>
+                <p class="content">Use our BusinessExpense Application to:</p>
+                <ul>
+                    <li>Store images of your invoices and receipts in our cloud for expense management, warranty, insurance, and tax purposes</li>
+                    <li>Monitor and track your business expenditures.</li> 
+                    <li>Use analytics to instantly view your spending habits in a convenient and easy to understand chart - for a given month or over a specified period of time.</li>
+                    <li>When you are ready, export your data to Quicken, Xero, Intactt, NetSuite, SAGE or other popular business accounting systems.</li>
+                    <li>You can import totals and reports from your TravelExpense application into this app</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="full-screen-opacity-ba" style="display: none;"></div>
+        <div id="businessassets-popup">
+            <a class="app-icon close-popup" onclick="closeBusinessAssets()"></a>
+            <div class="img-container">
+                <img src="styles/img/new-layout/business-assets-icon.png"/>
+            </div>
+            <div class="content-container">
+                <p class="title">BusinessAssets</p>
+                <p class="content">Use our BusinessAssets application to monitor and track all of your business property & equipment that is not considered an expense.</p>
+                <ul>
+                    <li>Store images of your invoices or receipts, photos of valuables, certificates of authenticity and important information about your assets</li>
+                    <li>Keep track of your asset locations</li> 
+                    <li>Create asset registers for insurance purposes</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="travel-mobile">
+            <div class="travel-mobile-detail">
+                <div class="travel-mobile-img">
+                    <img src="styles/img/new-layout/travel-app.png"/>
+                    <p>Even without our mobile app, you can always email pictures of your receipts from your iPhone or Android to:</p>
+                    <a href="#">receipts@mail.receiptclub.com</a>
+                </div>
+                <div class="travel-mobile-content">
+                    <div class="travel-mobile-title">TravelExpense Mobile App</div>
+                    <p>ReceiptClub’s TravelExpense application, on mobile or web, is our flagship product which has received scores of accolades from seasoned business travelers. “Powerful, simple, fast, amazing” are some of the comments we keep getting.</p>
+                    <ul>
+                        <li>You can prepare easy-to-read multi-trip expense reports within minutes rather than hours right from your mobile phone</li>
+                        <li>Snap and upload images of receipts from your mobile and categorize them instantly; never worry about carrying a paper receipt again!</li>
+                        <li>Convert your foreign travel expenses to your home currency from 165 foreign currencies instantly - at rates prevailing on dates of transactions.</li>
+                        <li>Submit reports to approvers via ReceiptClub or via PDF style reports that include receipt images.</li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+                <a id="signup-btn2" ng-hide="loggedInUser.UserID">Sign Up for Free</a>
+                <p class="signup-free" ng-hide="loggedInUser.UserID">always free – never a fee</p>
+            </div>
+        </div>
+        <div class="section2">
+            <div class="line-group4">
+                <div class="multiple-devices"></div>
+                <h2 class="line12">simplify your expense management with our</h2>
+                <h2 class="line13">advanced proprietary technology</h2>
+            </div>
+        </div>
+        <div class="section3">
+            <div class="step-how-it-work">
+                <p>How It Works</p>
+            </div>
+            <div class="step-upload">
+                <div class="step-upload-detail">
+                    <div class="step-upload-title"><img class="number-one" src="styles/img/new-layout/number-one.png"/>
+                        Upload
+                    </div>
+                    <div class="upload-receipt">
+                        <p class="title">SCAN/SNAP & UPLOAD<br>PAPER RECEIPTS</p>
+                        <p class="subtitle">from any device</p>
+                        <img src="styles/img/new-layout/upload-receipt.png"/>
+                    </div>
+                    <div class="email-receipt">
+                        <p class="title">SCAN/SNAP & EMAIL<br>PAPER RECEIPTS</p>
+                        <p class="subtitle">to receipts@mail.receiptclub.com</p>
+                        <img src="styles/img/new-layout/scan-receipt.png"/>
+                    </div>
+                    <div class="forward-receipt">
+                        <p class="title">FORWARD<br>E-RECEIPTS</p>
+                        <p class="subtitle">to receipts@mail.receiptclub.com</p>
+                        <img src="styles/img/new-layout/forward-receipt.png"/>
+                    </div>
+                    <div class="step-upload-content">
+                        <p>Upload images of receipts or invoices via our website or mobile app, or simply email them to 
+                            <a href="mailto:receipts@mail.receiptclub.com">receipts@mail.receiptclub.com</a>
+                        </p>
+                        <p>When you click on the upload button, our lightning fast proprietary algorithms, RIPE, ROCR and RADE, swing into action to process your receipt at a blazing speed.</p>
+                    </div>
+                    <div class="step-upload-img">
+                        <img src="styles/img/new-layout/step-upload-img-main.png"/>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="step-upload-more">How it works: See what happens behind the scenes<span class="open-more"></span></div>
+                    <div id="readmore-container">
+                        <div class="step-upload-content-bottom">
+                            <p class="title">ReceiptClub Image Processing Engine (RIPE)</p>
+                            <p class="subtitle">Transforms a raw picture of receipt to a refined image.</p>
+                            <p class="content">RIPE, armed with our proprietary imaging algorithms, chops, crops, deskews, rotates, flips, binarizes, resizes and transforms it to a crisp, clean, zoomable, movable, printable image. The refined receipt image is then sent  to ROCR.</p>
+
+                            <p class="title">ReceiptClub Optical Character Recognition (ROCR)</p>
+                            <p class="subtitle">Extracts text from the refined receipt image</p>
+                            <p class="content-first">ROCR extracts readable text from the receipt  image with an amazing degree of accuracy. Not only that, but it creates a formatted invisible layer of OCR right on top of the text on the receipt image such that you can literally highlight drag and drop any text from the receipt image to your digital receipt; true, not science fiction.</p>
+                            <p class="content-second">It also provides three different views of the receipt and OCR layer; plain image of receipt (OCR layer is invisible); click on “Highlight OCR” button, it highlights all OCR text in blue laid precisely over each letter in the image; click on “Show OCR” button, and system will display the OCR text in white on black background – like night vision. These options give you full clarity and access to the extracted data from your receipt.</p>
+                            <p class="content-third">Next, ROCR sends this composite package to RADE.</p>
+
+                            <p class="title">ReceiptClub Automated Data Entry (RADE)</p>
+                            <p class="subtitle">Creates an auto-filled digital receipt</p>
+                            <p class="content-last">RADE parses the extracted machine-readable receipt text from ROCR and auto-fills a digital version of the receipt or invoice, including, in many cases, line item data. RADE can also categorize this information using artificial intelligence and machine learning algorithms. Say goodbye to manual data entry!</p>
+                        </div>
+                        <div class="step-upload-img-bottom">
+                            <img src="styles/img/new-layout/step-upload-img-bottom.png"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="step-validate">
+                <div class="step-validate-detail">
+                    <div class="step-validate-title"><img class="number-two" src="styles/img/new-layout/number-two.png"/>
+                        Validate
+                    </div>
+                    <div class="step-validate-content">
+                        <p>In most cases you can validate your receipt or invoice data with the click of a button and you’re done. However, if there are any validation errors, you can easily edit and correct the digital receipt with our cool drag & drop feature.</p>
+                        <p>For receipts or invoices in a foreign currency, you can use our powerful, real-time Forex conversion tool to instantaneously convert any of 165 global currencies to your home currency. You can even perform backdated conversions at their prevailing rates as far back as 1999.</p>
+                    </div>
+                    <div class="step-validate-img">
+                        <img src="styles/img/new-layout/validate-img.png"/>
+                    </div>
+                </div>
+            </div>
+            <div class="step-done">
+                <div class="step-done-detail">
+                    <p class="title">...and you are done!</p>
+                </div>
+            </div>
+        </div>
+        <!--
+        <div class="receiptclub-applications">
+            <div class="receiptclub-applications-detail">
+                <p class="title">ReceiptClub Applications</p>
+            </div>
+        </div>
+        <div class="featured-te">
+            <div class="featured-te-detail">
+                <div class="featured-te-content">
+                    <div class="featured-te-title">TravelExpense</div>
+                    <p>Use the TravelExpense app to quickly and easily create and submit expense reports. Each report is neatly organized at the trip level – add as many trips to a single report as you want or need.  When you’re ready to submit your report, click the submit button, and watch it get delivered to your approver instantly, or download and save your report.  All reports are complete with size-optimized copies of your receipt images that are cross-referenced to the expense items on your report</p>
+                    <p>Our super efficient OCR, data entry and auto-categorization engines mean you will save time on data entry and can focus on your trip, rather than spending hours clunking through outdated software to submit an expense claim</p>
+                    <p>Because our applications are available on the web, android and iOs mobile and tablet devices, you can create and submit your expense reports on the go</p>
+                </div>
+                <div class="featured-te-img">
+                    <img src="styles/img/new-layout/featured-te-plane.png"/>
+                </div>
+            </div>
+        </div>
+        <div class="featured-pe">
+            <div class="featured-pe-detail">
+                <div class="featured-pe-img">
+                    <img src="styles/img/new-layout/featured-pe-personal.png"/>
+                </div>
+                <div class="featured-pe-content">
+                    <div class="featured-pe-title">PersonalExpense</div>
+                    <p>Organize your receipts and invoices: upload, convert then throw away your paper receipts and invoices and keep digital versions that are searchable and accessible at a moments notice.  You can even upload photos of warranty agreements, set reminders for return date expirations and make notes about the items you have purchased – never lose track of a receipt again!</p>
+                    <p>Our system is flexible, allowing you to use our predefined categories, create your own, or simply accept the automatic categorization offered by the personal expense application.</p>
+                    <p>Keep track of your expenses with our powerful reporting tools that allow you to see how you’ve spent your money in a given month, or over a range of dates, featuring easy to read and understand charts (pie, bar or trend).</p>
+                    <p>Save money using deals that we specially select and deliver to your ReceiptBox based on the items you buy and use everyday.</p>
+                </div>
+            </div>
+        </div>
+        <div class="featured-rb">
+            <div class="featured-rb-detail">
+                <div class="featured-rb-content">
+                    <div class="featured-rb-title">ReceiptBox</div>
+                    <p>ReceiptBox is the repository where you store your digital receipts after they have been uploaded or emailed, and it’s also the starting point for sorting, editing, and organizing them into categories</p>
+                </div>
+                <div class="featured-rb-img">
+                    <img src="styles/img/new-layout/featured-rb-receiptbox.png"/>
+                </div>
+                <div class="clear"></div>
+                <div class="featured-rb-left">
+                    <p class="title">Upload images to your ReceiptBox in a snap!   You can:</p>
+                    <ul>
+                        <li>Take a picture from your mobile phone</li>
+                        <li>Scan a picture</li> 
+                        <li>Email an attached photo</li>
+                        <li>Forward an e-receipt, or confirmation email</li>
+                        <li>Create manual receipts, even recurring ones</li>
+                    </ul>
+                </div>
+                <div class="featured-rb-right">
+                    <p class="title">ReceiptBox also lets you keep important information about your purchases:</p>
+                    <ul>
+                        <li>Store images of receipts for reimbursements, product returns, and tax deductions</li>
+                        <li>Attach images of warranty cards</li> 
+                        <li>Check your return expiration date instantly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="featured-mb">
+            <div class="featured-mb-detail">
+                <div class="featured-mb-img">
+                    <img src="styles/img/new-layout/featured-mb-mobile.png"/>
+                </div>
+                <div class="featured-mb-content">
+                    <div class="featured-mb-title">Mobile Apps</div>
+                    <p>ReceiptClub currently has apps for Android and iPhone, which allow you to access the powerful suite of web-applications right from your mobile phone!</p> 
+                    <p>Use the app to snap and upload pictures of receipts and invoices, categorize the resulting digital receipts, and even create and submit expense reports.</p>
+                    <p>Never worry about carrying a paper receipt again!</p>
+                </div>
+            </div>
+        </div>
+        -->
+        <div class="featured-ga">
+            <p class="first-line">we get along well with others</p>
+            <p class="second-line">if needed, export your ReceiptClub data to other accounting systems like</p>
+            <p class="third-line">QuickBooks, Xero, Intacct, Netsuite, Sage, MicroSoft Dynamics, Oracle, SAP...</p>
+        </div>
+        <div class="pre-section2">
+            <h2 class="title">your privacy & anonymity is guaranteed!<br/>what do we do to safeguard your data and privacy?</h2>
+            <div class="pre-section2-container">
+                <img class="image-left" src="styles/img/new-layout/ssl.png"/>
+                <div class="center-content">
+                    <ul>
+                        <li>We use Enterprise Grade PCI-Certified Web Application Firewall</li>
+                        <li>We use Secure Sockets Layer (SSL) to encrypt communications over the Internet</li>
+                        <li>We use the strongest block ciphers available to encrypt your receipts and documents</li>
+                        <li>We use 256-bit Advanced Encryption Standards (AES-256)</li>
+                        <li>We use advanced Incapsula technology to monitor our infrastructure around-the-clock</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <p class="text">rest assured your data is safe & secure with us</p>
+        </div>
+        <div class="section5" ng-hide="loggedInUser.UserID">
+            <div class="sign-up-form">
+                <div class="sign-up-title">Its Free - Sign Up Now!</div>
+                <div class="sign-up-form-detail">
+                    <form id="frm-user-register-modal" class="ng-pristine ng-invalid ng-invalid-required" ng-submit="registerUser()" style="display: block;">
+                        <div class="control-group">
+                            <div class="alert alert-error hide"></div>
+                        </div>
+                        <!--
+                        <span>
+                            <input type="radio" id="personal" value="personal" name="bundletype" checked="true"/>
+                            <label for="personal"></label>
+                            <p>Personal</p>
+                            <input type="radio" id="professional" value="professional" name="bundletype" />
+                            <label for="professional"></label>
+                            <p>Professional</p>
+                            <input type="radio" id="business" value="business" name="bundletype" />
+                            <label for="business"></label>
+                            <p>Business</p>
+                            <input type="radio" id="custom" value="custom" name="bundletype" />
+                            <label for="custom"></label>
+                            <p>Custom</p>
+                        </span>
+                        -->
+                        <span><input type="text" id="first_name" ng-model="registerUserObj.FirstName" placeholder="FIRST NAME" required autocomplete="off"></span>
+                        <span><input type="text" id="last_name" ng-model="registerUserObj.LastName" placeholder="LAST NAME" required autocomplete="off"></span>
+                        <span><input type="email" id="email" ng-model="registerUserObj.Email" placeholder="EMAIL ADDRESS" required autocomplete="off"></span>
+                        <span><input type="password" id="password" ng-model="registerUserObj.Password" placeholder="PASSWORD" required autocomplete="off"></span>
+                        <span><input type="password" id="password_confirm" ng-model="registerUserObj.PasswordConfirm" placeholder="CONFIRM PASSWORD" required autocomplete="off"></span>
+                        <div class="wrap-select">
+                            <select id="input_country" ng-model="registerUserObj.CountryName" name="CountryName"
+                                ng-options="c.code as c.name for c in countries" required>
+                            </select>
+                            <span class="arrow"><i class="fa fa-caret-down"></i></span>
+                        </div>
+                        <span>
+                            <div class="terms-container">
+                                <input onchange="this.setCustomValidity(validity.valueMissing ? 'Please indicate that you accept the Terms and Conditions' : '');" type="checkbox" id="field_terms" required name="terms" />
+                                <label for="field_terms"></label>
+                                <p>I have read and agree with the <a href="" ng-click="openTermsConditions(true)">terms and conditions.</a></p>
+                            </div>
+                        <span>
+                        <!--<span><input type="checkbox" required> I agree with and accept the <a href="" title="Terms of service" open-page-popup page="terms">terms of service</a> and <a href="" title="Privacy policy" open-page-popup page="privacy">privacy policy</a>.</span>-->
+                        <span class="sing-up-submit">
+                            <input id="sign-up-button" type="submit" value="Sign Up for Free"/>
+                            <p class="signup-free">always free – never a fee</p>
+                            <p class="have-account">Already have an account? <a id="signinlink" show-login-form="" href="">Sign in</a> here</p>
+                        </span>
+                        
+                        <!--<span><input type="text" name="email" value="EMAIL ADDRESS"/></span>
+                        <span><input type="text" name="first-name" value="FIRST NAME"/></span>
+                        <span><input type="text" name="last-name" value="LAST NAME"/></span>
+                        <span><input type="text" name="password" value="PASSWORD"/></span>
+                        <span><input type="text" name="confirm-password" value="CONFIRM PASSWORD"/></span>
+                        <span class="sing-up-submit"><input type="submit" value="Sign up for free"/></span>-->
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    <div class="footer" ng-include src="'views/footer-common.html'"></div>
+    </div>
+</div>
+<div id="btn-scroll-top" class="btn-scroll"><a href="#!/#section1" class="icon-scroll-top"><img src="styles/img/new-layout/bg_up.png"/></a></div>
+</div>
+<script type="text/javascript">
+    setBackgroundCover();
+
+    $(document).mouseup(function (e)
+    {
+        var container1 = $('#travelexpense-popup');
+        var container2 = $('#personalassets-popup');
+        var container3 = $('#personalexpense-popup');
+        var container4 = $('#receiptbox-popup');
+        var container5 = $('#educationexpense-popup');
+        var container6 = $('#businessexpense-popup');
+        var container7 = $('#businessassets-popup');
+
+        if (!container1.is(e.target) && container1.has(e.target).length === 0) { container1.fadeOut( "slow" ); $('#full-screen-opacity-te').fadeOut( "slow" ); }
+        if (!container2.is(e.target) && container2.has(e.target).length === 0) { container2.fadeOut( "slow" ); $('#full-screen-opacity-pa').fadeOut( "slow" ); }
+        if (!container3.is(e.target) && container3.has(e.target).length === 0) { container3.fadeOut( "slow" ); $('#full-screen-opacity-pe').fadeOut( "slow" ); }
+        if (!container4.is(e.target) && container4.has(e.target).length === 0) { container4.fadeOut( "slow" ); $('#full-screen-opacity-rb').fadeOut( "slow" ); }
+        if (!container5.is(e.target) && container5.has(e.target).length === 0) { container5.fadeOut( "slow" ); $('#full-screen-opacity-ee').fadeOut( "slow" ); }
+        if (!container6.is(e.target) && container6.has(e.target).length === 0) { container6.fadeOut( "slow" ); $('#full-screen-opacity-be').fadeOut( "slow" ); }
+        if (!container7.is(e.target) && container7.has(e.target).length === 0) { container7.fadeOut( "slow" ); $('#full-screen-opacity-ba').fadeOut( "slow" ); }
+    });
+
+    function openBusinessAssets () {
+        $('#full-screen-opacity-ba').fadeIn( "slow" );
+        $('#businessassets-popup').fadeIn( "slow" );
+    }
+    
+    function closeBusinessAssets () {
+        $('#full-screen-opacity-ba').fadeOut( "slow" );
+        $('#businessassets-popup').fadeOut( "slow" );
+    }
+
+    function openBusinessExpense () {
+        $('#full-screen-opacity-be').fadeIn( "slow" );
+        $('#businessexpense-popup').fadeIn( "slow" );
+    }
+    
+    function closeBusinessExpense () {
+        $('#full-screen-opacity-be').fadeOut( "slow" );
+        $('#businessexpense-popup').fadeOut( "slow" );
+    }
+
+    function openEducationExpense () {
+        $('#full-screen-opacity-ee').fadeIn( "slow" );
+        $('#educationexpense-popup').fadeIn( "slow" );
+    }
+    
+    function closeEducationExpense () {
+        $('#full-screen-opacity-ee').fadeOut( "slow" );
+        $('#educationexpense-popup').fadeOut( "slow" );
+    }
+
+    function openReceiptBox () {
+        $('#full-screen-opacity-rb').fadeIn( "slow" );
+        $('#receiptbox-popup').fadeIn( "slow" );
+    }
+    
+    function closeReceiptBox () {
+        $('#full-screen-opacity-rb').fadeOut( "slow" );
+        $('#receiptbox-popup').fadeOut( "slow" );
+    }
+
+    function openPersonalAssets () {
+        $('#full-screen-opacity-pa').fadeIn( "slow" );
+        $('#personalassets-popup').fadeIn( "slow" );
+    }
+    
+    function closePersonalAssets () {
+        $('#full-screen-opacity-pa').fadeOut( "slow" );
+        $('#personalassets-popup').fadeOut( "slow" );
+    }
+
+    function openPersonalExpense () {
+        $('#full-screen-opacity-pe').fadeIn( "slow" );
+        $('#personalexpense-popup').fadeIn( "slow" );
+    }
+    
+    function closePersonalExpense () {
+        $('#full-screen-opacity-pe').fadeOut( "slow" );
+        $('#personalexpense-popup').fadeOut( "slow" );
+    }
+
+    function openTravelExpense () {
+        $('#full-screen-opacity-te').fadeIn( "slow" );
+        $('#travelexpense-popup').fadeIn( "slow" );
+    }
+    
+    function closeTravelExpense () {
+        $('#full-screen-opacity-te').fadeOut( "slow" );
+        $('#travelexpense-popup').fadeOut( "slow" );
+    }
+    
+    $(document).ready(function(){
+
+        $('#user-register-success-form .btn-ok-success').click(function(){
+            $('#user-register-success-form').css({
+                'display':'none'
+            });
+            $('#full-screen-opacity').hide();
+        });
+        
+        var w = $(window).width();
+        var h = $(window).height();
+        var postionLogin = 63;
+        function responsive() {
+            w = $(window).width();
+            h = $(window).height();
+            if ($(window).width() <= 592){
+                postionLogin = 28;
+            } else {
+                postionLogin = 63;
+            }
+        }
+//        console.log(tmp);
+        $('#btn-sign-in a').click(function(){
+            //$('#full-screen').show();
+            //var x = h/2 - $('#user-login-modal').height()/2;
+            //var y = w/2 - $('#user-login-modal').width()/2;
+            var x = 100;
+            var y = w - $('#user-login-modal').width() - postionLogin;
+            $('#user-login-modal').css({
+                'position':'fixed',
+                'top': x,
+                'left': y
+            });
+        });
+        $('#btn-close-reset-pass').click(function(){
+            $('#user-forgot-password-modal').hide();
+        });
+
+        $('a#signinlink').click(function(){
+            var x = 100;
+            var y = w - $('#user-login-modal').width() - postionLogin;
+            $('#user-login-modal').css({
+                'position':'fixed',
+                'top': x,
+                'left': y
+            });
+        });
+        
+        // hide #back-top first
+        $("#btn-scroll-top").hide();
+
+        // fade in #back-top
+        $(function () {
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 450) {
+                    $('#btn-scroll-top').fadeIn();
+                } else {
+                    $('#btn-scroll-top').fadeOut();
+                }
+            });
+
+            // scroll body to 0px on click
+            $('#btn-scroll-top a').click(function () {
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 800);
+                return false;
+            });
+
+            $('.section1 .or-more').click(function () {
+                $('body,html').animate({
+                    scrollTop: $('.section4').position().top - 90
+                }, 800);
+                return false;
+            });
+            
+            $('.section3 .step-upload-more').click(function() {
+                var bg = $('.section3 .open-more').css('background-image');
+                bg = bg.replace('url(','').replace(')','');
+                
+                if(bg.indexOf('minus-icon.png') != -1){
+                    $(".section3 #readmore-container").height('0');
+                    $(".section3 .step-validate").delay( 800 ).animate({'marginTop': "-30px"}, {
+                    duration: 300, 
+                    complete: function() {
+                        $(".section3 .step-validate").animate({'marginTop': "0px"}, {
+                            duration: 300});
+                    }});
+                    $('.section3 .open-more').css('background-image', 'url("styles/img/new-layout/plus-icon.png")');
+                } else {
+                    $(".section3 .step-validate").stop().animate({'marginTop': "-35px"}, {
+                    duration: 300, 
+                    complete: function() {
+                        $(".section3 .step-validate").animate({'marginTop': "0px"}, {
+                            duration: 300, 
+                            complete: $(".section3 #readmore-container").height($(".section3 .step-upload-content-bottom").height())});
+                    }});
+                    
+                    $('.section3 .open-more').css('background-image', 'url("styles/img/new-layout/minus-icon.png")');
+                }
+            });
+            $('#btn-sign-up').click(function () {
+                $('body,html').animate({
+                    scrollTop: $('.sign-up-form').position().top -100
+                }, 800);
+                return false;
+            });
+            
+            $('#signup-btn').click(function () {
+                $('body,html').animate({
+                    scrollTop: $('.sign-up-form').position().top -100
+                }, 800);
+                return false;
+            });
+            $('#sign-up-button').click(function () {
+                $('body,html').animate({
+                    scrollTop: $('.sign-up-form').position().top +20
+                }, 800);
+            });
+            $('#signup-btn2').click(function () {
+                $('body,html').animate({
+                    scrollTop: $('.sign-up-form').position().top -100
+                }, 800);
+                return false;
+            });
+            $('#signup-btn3').click(function () {
+                $('#user-login-modal').hide();
+                $('body,html').animate({
+                    scrollTop: $('.sign-up-form').position().top -100
+                }, 800);
+                return false;
+            });
+            document.getElementById("field_terms").setCustomValidity("Please indicate that you accept the Terms and Conditions");
+            document.addEventListener("DOMContentLoaded", function() {
+                var myForm = document.getElementById("frm-user-register-modal");
+                var checkForm = function(e) {
+                  if(!this.terms.checked) {
+                    alert("Please indicate that you accept the Terms and Conditions");
+                    this.terms.focus();
+                    e.preventDefault(); // equivalent to return false
+                    return;
+                  }
+                };
+
+                // attach the form submit handler
+                myForm.addEventListener("submit", checkForm, true);
+
+                var myCheckbox = document.getElementById("field_terms");
+                var myCheckboxMsg = "Please indicate that you accept the Terms and Conditions";
+
+                // set the starting error message
+                myCheckbox.setCustomValidity(myCheckboxMsg);
+
+                // attach checkbox handler to toggle error message
+                myCheckbox.addEventListener("change", function() {
+                  this.setCustomValidity(this.validity.valueMissing ? myCheckboxMsg : "");
+                }, false);
+
+              }, false);
+
+        });
+        
+        window.onload = window.onresize = responsive;
+        //fix header Home page
+        /*var div = $('#home_header');
+        var start = $(div).offset().top;
+
+        $.event.add(window, "scroll", function() {
+            var p = $(window).scrollTop();
+            //$(div).css({ 'position': 'fixed', 'top':0, 'left':0 });
+        });*/
+    });
+</script>
+

@@ -1,0 +1,322 @@
+<div ng-controller="HomeCtrl">
+<div id="poster-text-templates" ng-include onload="loadHomePosterTextTemplate()" src="'views/_home-poster-text.html'" style="display: none"></div>
+<div id="section1">
+    <div id="home-header">
+        <div class="wrapper-default">
+            <ul id="home-head-menu" class="inline" ng-if="!loggedInUser.UserID">
+                <li><a target="_blank" href="https://receiptclub.zendesk.com/hc/en-us/articles/200377657">What is ReceiptClub ?</a></li>
+                <li><a target="_blank" href="https://receiptclub.zendesk.com/hc/en-us/articles/200079817-How-does-ReceiptClub-work-">How ReceiptClub Works</a></li>
+                <li><a href="http://support.receiptclub.com/hc/en-us/categories/200008063-General-Frequently-Asked-Questions-FAQ-">FAQs</a></li>
+            </ul>
+            <ul id="home-head-menu" class="enabled inline" ng-if="loggedInUser.UserID">
+                <li><a href="javascript:;" class="home-start-tour">Start the tour</a></li>
+                <li><a href="" class="active">Home</a></li>
+                <li><a href="" ng-bind-template="{{loggedInUser.FirstName}} {{loggedInUser.LastName}}"></a></li>
+                <li>
+                    <a href="#!/profile" ng-class="{'active': activePath == '/profile'}">Your Profile</a>
+                </li>
+                <li>
+                    <a href="#!/settings" ng-class="{'active': activePath == '/settings'}">Settings</a>
+                </li>
+                <li><a target="_blank" href="http://support.receiptclub.com/hc/en-us">Help</a></li>
+                <li><a href="#!/logout">Log Out</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="wrapper-default">
+        <div id="wrap-logo">
+            <div id="home-logo"><a href="#!/"></a></div>
+            <div id="slogan"><div></div></div>
+            <div id="goto-app" ng-class="{'enabled': loggedInUser.UserID}">
+                <a href="" id="text-privacy" class="utmaltergothic">Total Privacy&nbsp; <i class="app-icon icon-lock-white"></i></a>
+            </div>
+        </div>
+        <div id="wrap-media" ng-class="{'enabled': loggedInUser.UserID}">
+            <div class="image-cellphone"></div>
+            <div class="sign-up-text">
+                <p class="utmaltergothic">Receipts & Expense</p>
+                <p class="utmaltergothic">Management</p>
+                <a href="" show-page="receiptbox-wrapper" layout="default" id="enter_head_home" ng-show="$parent.loggedInUser.UserID"></a>
+                <a href="" id="login_head_home" ng-show="!loggedInUser.UserID" show-login-form></a>
+                <a href="" id="sign_up_head_home" show-register-form ng-hide="loggedInUser.UserID"></a>
+                <span class="utmaltergothic" ng-show="!loggedInUser.UserID">It's Free</span>
+
+                <form class="form-horizontal" id="user-login-modal" ng-submit="authenticate()">
+                    <div class="title">
+                        <i id="btn-close-login-form" class="app-icon icon-box-close-window pull-right"></i>
+                    </div>
+                    <div class="control-group">
+                        <div class="alert alert-error hide"></div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputLoginEmail">E-mail: <span class="required">*</span></label>
+                        <div class="controls">
+                            <input type="email" id="inputLoginEmail" ng-model="auth.Email" required autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputLoginPassword">Password: <span class="required">*</span></label>
+                        <div class="controls">
+                            <!--<input type="password" id="inputLoginPassword" ng-model="auth.Password" required autocomplete="off">-->
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">&nbsp;</label>
+                        <div class="controls">
+                            <input id="remember-me" type="checkbox" ng-model="auth.RememberMe"> Remember me
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">&nbsp;</label>
+                        <a show-forgot-password-form ng-click="responseStatus = null">Forgot your password?</a>
+                        <div class="controls">
+                            <button type="submit">Login</button>
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal" id="user-register-modal" ng-submit="registerUser()">
+                    <div class="title">
+                        <i id="btn-close-register-form" class="app-icon icon-box-close-window pull-right"></i>
+                    </div>
+                    <div class="control-group">
+                        <div class="alert alert-error hide"></div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="first_name">First name: <span class="required">*</span></label>
+                        <div class="controls">
+                            <input type="text" id="first_name" ng-model="registerUserObj.FirstName" required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="last_name">Last name: <span class="required">*</span></label>
+                        <div class="controls">
+                            <input type="text" id="last_name" ng-model="registerUserObj.LastName" required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="email">E-mail Address: <span class="required">*</span></label>
+                        <div class="controls">
+                            <input type="email" id="email" ng-model="registerUserObj.Email" required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="password">Password: <span class="required">*</span></label>
+                        <div class="controls">
+                            <input type="password" id="password" ng-model="registerUserObj.Password" required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="password_confirm">Confirm password: <span class="required">*</span></label>
+                        <div class="controls">
+                            <input type="password" id="password_confirm" ng-model="registerUserObj.PasswordConfirm" required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="password_confirm">Home Currency: <span class="required">*</span></label>
+                        <div class="controls">
+                            <select ng-model="registerUserObj.CurrencyCode"
+                                    ng-options="currencyCode as currencyName for (currencyCode, currencyName) in currencies">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="checkbox">
+                            <input type="checkbox" required> I agree with and accept the <a href="" title="Terms of service" open-page-popup page="terms">terms of service</a> and <a href="" title="Privacy policy" open-page-popup page="privacy">privacy policy</a>.
+                        </label>
+                        <div class="controls text-center" style="margin-left: 0;">
+                            <button type="submit">Sign up now for free</button>
+                        </div>
+                    </div>
+                </form>
+                <form class="form-inline" id="user-forgot-password-modal" ng-submit="resetPassword(inputResetEmail)">
+                    <div class="title">
+                        <i id="btn-close-forgot-form" class="app-icon icon-box-close-window pull-right"></i>
+                    </div>
+                    <div class="control-group">
+                        <h4>Reset your password</h4>
+                        <div ng-show="responseStatus" class="alert ng-class: {'alert-success': responseStatus == 204, 'alert-error': responseStatus == 500}">
+                            {{responseMessage}}
+                        </div>
+                        <p ng-show="responseStatus != 204">Please fill in your email address, we'll send instructions on how to create new password.</p>
+                        <p ng-show="responseStatus == 204">&nbsp;</p>
+                    </div>
+                    <div class="control-group" ng-show="responseStatus != 204">
+                        <div class="controls">
+                            <label for="inputResetEmail">Email:</label>
+                            <input type="email" id="inputResetEmail" ng-model="inputResetEmail" class="input-xlarge" required>
+                        </div>
+                    </div>
+                    <div class="control-group" ng-show="responseStatus != 204">
+                        <div class="controls">
+                            <label>&nbsp;</label>
+                            <button type="submit">Reset password</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="image-tablet" ng-class="{'enabled': loggedInUser.UserID}"></div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="wrapper-default">
+        <a href="#!/#section2" class="learn-more utmaltergothic">Learn more...</a>
+    </div>
+
+</div>
+<div id="section2">
+    <div class="wrapper-default">
+        <div id="block-left">
+            <p class="block-title blue">How ReceiptClub Works</p>
+            <p class="block-body utmaltergothic">Send us your receipts through multiple channels, including email, upload, or by  taking a snap from your mobile device.</p>
+            <p class="block-body utmaltergothic">When you upload a receipt picture our image-processing engine (RIPE) prepares the picture and passes the information to our OCR engine (ROCR), which then, whenever possible saves the information in the form of a uniform digital receipt.</p>
+            <p class="block-body utmaltergothic">Categorize information into our powerful expense tracking applications, including Personal Expenses, and Travel Expenses.</p>
+        </div>
+        <div id="block-right">
+            <p class="block-title blue">Receipts in Secured Cloud</p>
+            <p class="block-body utmaltergothic">Organize and track your finances, using our powerful analytics tools.  Check on your expenditures for a specific date range, presented in easy to understand charts, including pie, bar and trend charts.</p>
+            <p class="block-body utmaltergothic">Use our search feature to find old receipts right from the comfort of your computer, tablet or mobile device.</p>
+            <p class="block-body utmaltergothic">Enjoy the freedom of cloud based services, accessible anytime, anywhere, on your PC, tablet or mobile phone.</p>
+        </div>
+    </div>
+</div>
+<div id="section3">
+    <div class="row">
+        <a ng-repeat="poster in postersData" ng-show="poster.row == 1" href="" ng-click="triggerPosterPopup($index)"
+           class="poster-popup-btn poster {{poster.bgClass}}">
+            <div class="poster-title">
+                <div class="inline-block pull-left"><span class="utmaltergothic" ng-class="{'white':poster.textColor=='white'}" ng-bind-html-unsafe="poster.title"></span></div>
+                <div class="inline-block pull-right"><i class="app-icon {{poster.iconClass}}"></i></div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="poster-body">
+                <p class="{{poster.textColor}}" ng-bind-html-unsafe="poster.content"></p>
+                <div href="" class="poster-link">More...</div>
+            </div>
+        </a>
+    </div>
+    <div class="row">
+        <a ng-repeat="poster in postersData" ng-show="poster.row == 2" href="" ng-click="triggerPosterPopup($index)"
+           class="poster-popup-btn poster {{poster.bgClass}}">
+            <div class="poster-title">
+                <div class="inline-block pull-left"><span class="utmaltergothic" ng-class="{'white':poster.textColor=='white'}" ng-bind-html-unsafe="poster.title"></span></div>
+                <div class="inline-block pull-right"><i class="app-icon {{poster.iconClass}}"></i></div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="poster-body">
+                <p class="{{poster.textColor}}" ng-bind-html-unsafe="poster.content"></p>
+                <div href="" class="poster-link">More...</div>
+            </div>
+        </a>
+    </div>
+    <poster-carousel posters="postersData" class="hide"></poster-carousel>
+</div>
+
+
+
+<div id="section4">
+    <div class="wrapper-default">
+        <div id="section-title" class="utmaltergothic full-width">Harness the power of Social Commerce</div>
+        <div id="section-text" class="full-width">
+            <p>ReceiptClub revolutionizes the way we shop, get deals and track our expenses on the web, by turbo charging our offering with elements of social commerce.</p>
+            <p>Social commerce is any system that includes the use of social media, and user contributions to assist with the buying and selling of products.  ReceiptClub encourages you, our client, to share purchase information (not receipts) with friends and family through social media.</p>
+            <p>Our social commerce engine also enables you to get in touch with other individuals who have bought an item that you are looking for.  You can in turn use this information to make a decision as to whether you will buy a particular item as well.</p>
+            <p>Through these trusted reviews and recommendations, ReceiptClub will provide you with honest, customer based feedback on products and services that are not ranked based on advertising or any other method.  You can experience the reviews of real life customers, in real time, from around the web and around the world.</p>
+            <p>It's free, it's fun, it's social, it's ReceiptClub!</p>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div id="home-footer">
+    <div class="wrapper-default">
+        <div id="footer-title" class="utmaltergothic">Fantastic features - Coming Soon...</div>
+        <div id="footer-refs">
+            <ul class="ref-block">
+                <li><a href="">QuickBooks Expense Reports</a></li>
+                <li><a href="">QuickBooks Receipt Tracking</a></li>
+                <li><a href="">QuickBooks Timesheets</a></li>
+                <li><a href="">QuickBooks Credit Card Expenses</a></li>
+                <li><a href="">QuickBooks Mileage Tracking</a></li>
+                <li><a href="">QuickBooks Pro vs QuickBooks</a></li>
+            </ul>
+            <ul class="ref-block">
+                <li><a href="">QuickBooks Expense Reports</a></li>
+                <li><a href="">QuickBooks Receipt Tracking</a></li>
+                <li><a href="">QuickBooks Timesheets</a></li>
+                <li><a href="">QuickBooks Credit Card Expenses</a></li>
+                <li><a href="">QuickBooks Mileage Tracking</a></li>
+                <li><a href="">QuickBooks Pro vs QuickBooks</a></li>
+            </ul>
+            <ul class="ref-block">
+                <li><a href="">QuickBooks Expense Reports</a></li>
+                <li><a href="">QuickBooks Receipt Tracking</a></li>
+                <li><a href="">QuickBooks Timesheets</a></li>
+                <li><a href="">QuickBooks Credit Card Expenses</a></li>
+                <li><a href="">QuickBooks Mileage Tracking</a></li>
+                <li><a href="">QuickBooks Pro vs QuickBooks</a></li>
+            </ul>
+            <ul class="ref-block">
+                <li><a href="">QuickBooks Expense Reports</a></li>
+                <li><a href="">QuickBooks Receipt Tracking</a></li>
+                <li><a href="">QuickBooks Timesheets</a></li>
+                <li><a href="">QuickBooks Credit Card Expenses</a></li>
+                <li><a href="">QuickBooks Mileage Tracking</a></li>
+                <li><a href="">QuickBooks Pro vs QuickBooks</a></li>
+            </ul>
+            <div id="footer-logo" class="inline-block"><i class="app-icon icon-footer-logo"></i></div>
+            <div class="clearfix"></div>
+            </div>
+    </div>
+    <div id="footer-links">
+        <div class="wrapper-default">
+            <ul id="home-foot-menu" class="inline">
+                <li><a href="">About Us</a></li>
+                <li><a href="" open-page-popup page="terms">Terms &amp; Conditions</a></li>
+                <li><a href="" open-page-popup page="privacy">Privacy Policy</a></li>
+                <li><a href="">News</a></li>
+                <li><a href="">Sitemap</a></li>
+                <li><a href="#!/contact">Contact Us</a></li>
+                <li><a target="_blank" href="http://support.receiptclub.com/hc/en-us">Help</a></li>
+                <li>Copyright &copy; ReceiptClub, Inc. 2013. All Rights Reserved</li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+<div id="btn-scroll-top" class="btn-scroll"><a href="#!/#section1" class="app-icon icon-scroll-top"></a></div>
+</div>
+
+<script type="text/javascript">
+    setBackgroundCover();
+
+    $(document).ready(function(){
+        // hide #back-top first
+        $("#btn-scroll-top").hide();
+
+        // fade in #back-top
+        $(function () {
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 450) {
+                    $('#btn-scroll-top').fadeIn();
+                } else {
+                    $('#btn-scroll-top').fadeOut();
+                }
+            });
+
+            // scroll body to 0px on click
+            $('#btn-scroll-top a').click(function () {
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 800);
+                return false;
+            });
+
+            $('#section1 .wrapper-default .learn-more').click(function () {
+                $('body,html').animate({
+                    scrollTop: 600
+                }, 800);
+                return false;
+            });
+        });
+    });
+</script>

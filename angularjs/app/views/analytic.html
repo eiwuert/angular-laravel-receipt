@@ -1,0 +1,178 @@
+<div class="analytic-page">
+    <div id="rd-header">
+        <h2 id="rd-title" class="utmaltergothic">Charts</h2>
+        <a id="rd-logo" href="#!"></a>
+        <a ng-show="currentApp == 'personal_expense'" href="" id="back-toPE-tt" style="  margin-left: 145px;" class="app-icon icon-chrome-backbtn pull-left" ng-click="goToPE()"></a>
+
+        <a ng-show="currentApp == 'business_expense'" href="" id="back-toBE-tt" style="  margin-left: 145px;" class="app-icon icon-chrome-backbtn pull-left" ng-click="goToBE()"></a>
+
+        <a ng-show="currentApp == 'education_expense'" href="" id="back-toEE-tt" style="  margin-left: 145px;" class="app-icon icon-chrome-backbtn pull-left" ng-click="goToEE()"></a>
+
+        <a ng-show="currentApp == 'personal_assets'" href="" id="back-toPA-tt" style="  margin-left: 145px;" class="app-icon icon-chrome-backbtn pull-left" ng-click="goToPA()"></a>
+
+        <a ng-show="currentApp == 'business_assets'" href="" id="back-toBA-tt" style="  margin-left: 145px;" class="app-icon icon-chrome-backbtn pull-left" ng-click="goToBA()"></a>
+
+        <div id="rd-actions">
+            <a ng-show="currentApp == 'personal_expense'" href="" ng-click="goToPE()" class="app-icon icon-box-close-window"></a>
+            <a ng-show="currentApp == 'business_expense'" href="" ng-click="goToBE()" class="app-icon icon-box-close-window"></a>
+            <a ng-show="currentApp == 'education_expense'" href="" ng-click="goToEE()" class="app-icon icon-box-close-window"></a>
+            <a ng-show="currentApp == 'personal_assets'" href="" ng-click="goToPA()" class="app-icon icon-box-close-window"></a>
+            <a ng-show="currentApp == 'business_assets'" href="" ng-click="goToBA()" class="app-icon icon-box-close-window"></a>
+        </div>
+        <!--<a href="" class="app-icon icon-chrome-backbtn pull-right" ng-click="goToPE()"></a>-->
+    </div>
+
+    <div id="analytic" class="container-fluid">
+        <div class="row-fluid" id="nav">
+            <div class="span2">
+                <a ng-show="currentApp == 'personal_expense'" id="app-name" class="btn ng-scope aqua btn-flat" href="" ng-click="goToPE()">PersonalExpense</a>
+                <a ng-show="currentApp == 'business_expense'" id="app-name" class="btn ng-scope aqua btn-flat" href="" ng-click="goToBE()">BusinessExpense</a>
+                <a ng-show="currentApp == 'education_expense'" id="app-name" class="btn ng-scope aqua btn-flat" href="" ng-click="goToEE()">EducationExpense</a>
+                <a ng-show="currentApp == 'personal_assets'" id="app-name" class="btn ng-scope aqua btn-flat" href="" ng-click="goToPA()">PersonalAssets</a>
+                <a ng-show="currentApp == 'business_assets'" id="app-name" class="btn ng-scope aqua btn-flat" href="" ng-click="goToBA()">BusinessAssets</a>
+            </div>
+            <div class="span1"><a href="" id="chart-colum" class="chart ng-class:{'active': chartType == 'column'}" ng-click="chartType = 'column'"><span class="app-icon icon-bar-chart"></span></a></div>
+            <div class="span1"><a href="" id="chart-pie" class="chart ng-class:{'active': chartType == 'pie'}" ng-click="chartType = 'pie'"><span class="app-icon icon-pie-chart"></span></a></div>
+            <!--<div class="span1"><a href="" class="chart ng-class:{'active': chartType == 'line'}"><span class="app-icon icon-line-chart disabled"></span></a></div>-->
+            <div class="span1" style="display: none"><a ng-click="chartType = 'line'" href="" class="chart ng-class:{'active': chartType == 'line'}"><span class="app-icon icon-line-chart"></span></a></div>
+            <!--
+            <div class="span2 pull-right today-deal">
+                <div class="lightning-deals text-right">
+                    <div class="lightning-deals-text"><i class="app-icon icon-treasure"></i> Today's Deals</div>
+                </div>
+            </div>
+            -->
+            <div class="pull-right item-nav">
+                <a href="http://support.receiptclub.com/" target="_blank"><i class="fa fa-question"></i>HELP</a>
+            </div>
+            <!--
+            <div class="pull-right item-nav">
+                <a href=""><i class="app-icon print"></i>PRINT</a>
+            </div>
+            -->
+        </div>
+        <div class="row-fluid" id="content-wrapper">
+            <div class="span6 charts-block clearfix">
+                <div></div>
+
+                <ul class="nav nav-tabs clearfix">
+                    <li class="active pull-left"><a id="analytic-category-tab" href="" data-type="{{chartType}}" onclick="hideCalendar()" ng-click="chartType='column'; filterBy = 'Category'" data-toggle="tab">Category</a></li>
+                    <li class="pull-left"><a id="analytic-merchant-tab" href="" data-type="{{chartType}}" onclick="hideCalendar()" ng-click="chartType='column'; filterBy = 'Merchant'" data-toggle="tab">Merchant</a></li>
+                    <li class="btn pull-right chart-filter-date date-filter-label" style="display: block;padding-left: 0px;padding-right: 0px;margin: 0;border-left-width: 1px;border-bottom-left-radius: 0;margin-top: 1px;border-bottom-right-radius: 0;border-bottom: none;" out-period-reset-filter>
+                         <a style="  border: none;  background: none; " onclick="toggleCalendarShow();" href="" class="dropdown">{{ tmpPeriodFrom | date:'MMM-yyyy'}} - {{ tmpPeriodTo | date:'MMM-yyyy' }} <b class="caret"></b></a>
+                        <div id="calendar-wrapper" style="display: none">
+                            <div rci-calendar-inline class="calendar-inline date-from" ng-model="tmpPeriodFrom"></div>
+                            <div rci-calendar-inline class="calendar-inline date-to" ng-model="tmpPeriodTo"></div>
+                            <button class="btn filter-submit" style="position: absolute;top: 23px;left: 363px;padding: 7px 6px;" ng-click="chartType = 'column'; setPeriodFilter()" ng-class="{'filtering': filtering}">Go</button>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <h2 ng-hide="isTrendChartMode"><span ng-show="chartType == 'column'">Bar</span><span ng-show="chartType != 'column'">{{ chartType }}</span> chart by {{ filterBy }}</h2>
+                        <h2 ng-show="isTrendChartMode">Trend by {{ trendName }}</h2>
+                        <p class="period">for {{ periodFrom | date:'MMM-yyyy'}} - {{ periodTo | date:'MMM-yyyy' }}</p>
+                    </div>
+                    <div id="chart-container"></div>
+                </div>
+            </div>
+            <div class="span6 categories-block clearfix">
+                <table class="app-table tb-pe app-analytic" style="width: 100%;">
+                    <tr>
+                        <th class="col-cat"><div class="th firstth">{{ filterBy | uppercase }}</div></th>
+                        <th class="col-cur"><div class="th">CUR</div></th>
+                        <th class="col-amo">
+                            <div class="total-amount">Total {{loggedInUser.CurrencyCode}}<br>{{TotalAmount}}</div>
+                            <div class="th">AMOUNT</div>
+                        </th>
+                        <th class="col-mon"><div class="th">{{ monthRange}}-MONTH AVERAGE</div></th>
+                        <th class="col-tre"><div class="th">TREND</div></th>
+                        <th class="col-non" style="width: 12px;"><div class="th lastth">&nbsp;</div></th>
+                    </tr>
+                    <tr>
+                        <td colspan="6" style="padding: 0">
+                            <div class="custom-scrollbar">
+                                <div class="app-table-child-wrapper" app-resize-height>
+                                    <table id="chart-table" class="app-table-child" fluid-table>
+                                        <tr bindonce ng-repeat="item in gridData" ng-class="{'highlight': item.isHighlight}">
+                                            <td class="col-cat align-left" style="padding-left: 6px;">
+                                                <i class="app-icon icon-folder fix-nomargin"></i>
+                                                <span class="bold text-ellipsis" bo-text="item.Name"></span>
+                                            </td>
+                                            <td class="col-cur text-center" bo-text="item.Currency"></td>
+                                            <td class="col-amo align-right"><span class="wrap-indent-right" bo-text="item.Amount | itemPrice"></span></td>
+                                            <td class="col-mon align-right"><span class="wrap-indent-right" bo-text="item.AverageAmount | itemPrice"></span></td>
+                                            <td class="col-tre">
+                                                <a href="" class="app-icon icon-line-chart mini" ng-class="{'disabled': monthRange < 2}" ng-click="viewTrendChart(item)"></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        
+        $("#back-toPE-tt").tooltip({
+            placement: "bottom",
+            title: "Back to PersonalExpense",
+            animation: true
+        });
+
+        $("#back-toBE-tt").tooltip({
+            placement: "bottom",
+            title: "Back to BusinessExpense",
+            animation: true
+        });
+        
+        $("#back-toEE-tt").tooltip({
+            placement: "bottom",
+            title: "Back to EducationExpense",
+            animation: true
+        });
+
+        $("#back-toPA-tt").tooltip({
+            placement: "bottom",
+            title: "Back to PersonalAssets",
+            animation: true
+        });
+
+        $("#back-toBA-tt").tooltip({
+            placement: "bottom",
+            title: "Back to BusinessAssets",
+            animation: true
+        });
+
+        hideCalendar = function () {
+            var elmnt = document.getElementById("analytic-category-tab");
+            var attr = elmnt.getAttribute("data-type");
+            if (attr == "column") {
+                $("#chart-colum").addClass("active");
+            } else if (attr == "pie") {
+                $("#chart-pie").addClass("active");
+            }
+    
+            $("#calendar-wrapper").css("display", "none");
+        }
+        
+        toggleCalendarShow = function () {
+            if ($("#calendar-wrapper").css("display") == "none") {
+                $("#calendar-wrapper").css("display", "block");
+            } else {
+                $("#calendar-wrapper").css("display", "none");
+            }
+        }
+    });
+</script>
+<style>
+    .version-indicator{
+        display: none;
+    }
+</style>

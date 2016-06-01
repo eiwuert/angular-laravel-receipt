@@ -1,0 +1,49 @@
+{
+	"name": "laravel/laravel",
+	"description": "The Laravel Framework.",
+	"keywords": ["framework", "laravel"],
+	"require": {
+		"laravel/framework": "4.2.*",
+		"tecnick.com/tcpdf": "dev-master",
+		"phpexcel/phpexcel": "dev-master",
+		"dompdf/dompdf" : "dev-master",
+		"aws/aws-sdk-php-laravel": "1.*",
+		"videlalvaro/php-amqplib": "2.2.*",
+		"shkm/jsend": "dev-master",
+        "publero/net_gearman": "1.0.x-dev",
+        "wisembly/elephant.io": "dev-master",
+        "sly/notification-pusher": "dev-master",
+        "guzzlehttp/guzzle": "~5.0"
+	},
+	"autoload": {
+		"classmap": [
+			"app/commands",
+			"app/controllers",
+            "app/controllers/v2",
+			"app/models",
+			"app/database/migrations",
+			"app/database/seeds",
+			"app/tests/TestCase.php",
+			"app/libs",
+            "scripts/autoload"
+		]
+	},
+	"scripts": {
+		"post-install-cmd": [
+			"php artisan optimize"
+		],
+		"pre-update-cmd": [
+			"php artisan clear-compiled"
+		],
+		"post-update-cmd": [
+			"php artisan optimize"
+		],
+		"post-create-project-cmd": [
+			"php artisan key:generate"
+		]
+	},
+	"config": {
+		"preferred-install": "dist"
+	},
+	"minimum-stability": "stable"
+}

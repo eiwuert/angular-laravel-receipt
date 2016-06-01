@@ -1,0 +1,413 @@
+<div class="app-wrapper" ng-controller="RBCtrl">
+<div class="app-box app-rb">
+<div class="app-headmenu">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span5">
+                <ul class="unstyled inline app-nav-block block-bot-left">
+                    <li>
+                        <div class="rc-filter">
+                            <div class="btn-group filter-type">
+                                <button ng-disabled="!loadedAllReceipt" class="btn" ng-bind="tmpFilterTypeName"></button>
+                                <button ng-disabled="!loadedAllReceipt" class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li ng-repeat="ftype in filterTypeList">
+                                        <span tabindex="-1" href="" ng-click="selectFilterType(ftype); filterReceipts(ftype);" class="" ng-class="{'_has-count-receipt' : ftype.newreceipt>0 && ['archivedReceipts', 'all'].indexOf(ftype.code)<0}">
+                                            <a class="a-filter-col1" ng-bind="ftype.name"></a>
+                                            <p class="p-filter-col2" ng-bind="ftype.totalofRC"></p>
+                                            <p ng-if="['all','newReceipts'].indexOf(ftype.code)<0 && ftype.newreceipt != 0" ng-bind-template="({{ftype.newreceipt}})"></p>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="rb-filter">
+                                <div class="date-range-box hide-date">
+                                    <input class="temp-item-from" type="hidden">
+                                    <input class="temp-item-to" type="hidden">
+                                    <table class="tb-datepicker">
+                                        <tr>
+                                            <td class="algin-right">From</td>
+                                            <td><div class="date-from"></div></td>
+                                            <td rowspan="2">
+                                                <input class="btn box-range-ok" type="button" value="OK"/><br/>
+                                                <input class="btn box-range-cancel" type="button" value="Cancel"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-right">To</td>
+                                            <td><div class="date-to"></div></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="btn-group filter-date date-wrapper" >
+                                <button ng-disabled="!loadedAllReceipt" class="btn">
+                                    <span ng-show="!tmpAllDate" ng-bind-template="{{dateFromDisplay| onlyMonthSpaceYear}} - {{dateToDisplay| onlyMonthSpaceYear}}"></span>
+                                    <span ng-show="tmpAllDate">All Dates</span>
+                                </button>
+                                <button ng-disabled="!loadedAllReceipt" class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu limit-width">
+                                    <li><a tabindex="-1" href="" element-id="rb-filter" picker-mode="month" rb-datepicker quick-filter="true">Select Date Range</a></li>
+                                    <li><a tabindex="-1" href="" class="all-dates" ng-click="filterReceipts();">All Dates</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="span2 text-center" style="height: 91px; position: relative">
+                <h2 class="utmaltergothic">ReceiptBox</h2>
+                <div class="receipt-nav">
+                    <form id="receiptImageForm" enctype="multipart/form-data">
+                        <a id="manual-button-create" href="" open-rd="{ReceiptID: 0}" class="btn nav virtual-rc"
+                           data-toggle="tooltip"
+                           data-placement="left"
+                           title=""
+                           data-original-title="Create a manual receipt for a transaction<br>which has no printed receipt">
+
+                            MANUAL ENTRY</a>
+
+                        <a href="" id="rbUpload" class="btn nav virtual-rc" ng-click="chooseImage();"
+                           data-toggle="tooltip"
+                           data-placement="right"
+                           title=""
+                           data-original-title="Upload images of printed receipts for automatic<br>data extraction (up to 9 receipts at a time)">
+
+                            UPLOAD RECEIPT</a>
+                        <input name="fileUploads[]" type="file" id="input-rb-upload" class="hide" accept=".png, .jpg, .jpeg, .gif, .pdf" multiple="multiple"/>
+
+                        <div class="rc-list-upload hide" id="paper-receipt-queue">
+                        </div>
+                    </form>
+                    <!--Upload recript for device support camera-->
+                    <a href="" class="nav snap-rc" ng-click="triggerTakeSnap()" ng-if="deviceSupportCamera" data-placement="bottom" title="Click here to upload">
+                        <div class="app-icon icon-green-camera"></div>SNAP RECEIPT
+                    </a>
+                    <form ng-if="deviceSupportCamera" action="{{uploadURL}}?uid={{uploadUserID}}&location={{uploadLocation}}&uploadType=snap" method="post" enctype="multipart/form-data" id="snap_upload_form" style="display: none">
+                        <input ng-click="checkOCRStatus()" type="file" capture="camera" accept="image/*" id="takePictureField" class="button" style="display: none" name="Filedata" onchange="triggerUploadImage(this.files)">
+                    </form>
+
+                    <div class="rc-list-upload" id="paper-receipt-queue"></div>
+                    <!--End Upload recript for device support camera-->
+                </div>
+            </div>
+            <a href="" ng-click="backToApp()" class="back-to-app utmaltergothic hide" id="rb-back-to-app">
+                <i class="app-icon icon-revert"></i>Back To App
+            </a>
+            <div class="span5 text-right">
+                <ul class="start-tour">
+                    <li class="bt-start-tour" ng-click="closeUploadArea(); showSlideGuide('tutorial-slider-receiptbox', 'TakeTourBtn');">
+                        <button href="javascript:;" class="home-start-tour add-items">
+                            Take a Tour
+                        </button>
+                    </li>
+                    <!--
+                        <li>
+                            <h3 class="lightning-deals-text block-top-right"><span><i class="app-icon icon-treasure" style="float: none"></i>Today's Deals</span></h3>
+                        </li>
+                    -->
+                </ul>
+            </div>
+            <div class="message-upload-custom">
+              <div class="wrap-block-upload">
+                          <span ng-class="{'gray-bar': !finishConvert, 'blue-bar' : finishConvert }"
+                                class="totalFileUpload message_converted">
+                              <span id="message_convert"></span>
+                            <div class="receiptOutGoing" ng-show="startTransmitting">
+                              <div id="wrapProgessbarOut">
+                                <div class="box-upload">
+                                  <div class="inner-box-upload">
+                                    <div class="progressBar-upload"></div>
+                                    <div class="branding-upload">ROCR</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="receiptInGoing" ng-show="firstConverted">
+                              <div id="wrapProgessbarIn">
+                                <div class="box-upload">
+                                  <div class="inner-box-upload">
+                                    <div class="progressBar-received"></div>
+                                    <div class="branding-upload">ROCR</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <i ng-if="finishConvert" class="app-icon icon-close-upload" ng-click="closeUpload();"></i>
+                          </span>
+              </div>
+
+              <div class="wrap-block-upload" ng-class="{'mg-t-25': uploadLineMg}">
+                        <span ng-class="{'gray-bar': !finishUpload, 'blue-bar' : finishUpload }"
+                              class="message_upload totalFileUpload"><span class="mesage-upload-file"></span>
+                            <span class="wrap-top-watch">
+                                <span id="stopwatch-upload" class="stopwatch-upload">
+                                    <input id="startUploadCtr" class="controlStopwatch" name="controlStopwatch"
+                                           type="radio"/>
+                                    <input id="stopUploadCtr" class="controlStopwatch" name="controlStopwatch"
+                                           type="radio"/>
+                                    <input id="resetUploadCtr" class="controlStopwatch" name="controlStopwatch"
+                                           type="radio"/>
+                                    <span class="timerUpload">
+                                        <span class="cellUpload">
+                                            <span
+                                              class="numbersUpload tenminuteUplpad movesixUplpad">0 1 2 3 4 5 6</span>
+                                        </span>
+                                        <span class="cellUpload">
+                                            <span
+                                              class="numbersUpload minuteUplpad movetenUplpad">0 1 2 3 4 5 6 7 8 9</span>
+                                        </span>
+                                        <span class="cellUpload divider">
+                                            <span class="numbersUpload">:</span>
+                                        </span>
+                                        <span class="cellUpload">
+                                            <span
+                                              class="numbersUpload tensecondUplpad movesixUplpad">0 1 2 3 4 5 6</span>
+                                        </span>
+                                        <span class="cellUpload">
+                                            <span
+                                              class="numbersUpload secondUplpad movetenUplpad">0 1 2 3 4 5 6 7 8 9</span>
+                                        </span>
+                                        <span class="cellUpload divider">
+                                            <span class="numbersUpload">:</span>
+                                        </span>
+                                        <span class="cellUpload">
+                                            <span class="numbersUpload milisecondUplpad movetenUplpad">0 1 2 3 4 5 6 7 8 9</span>
+                                        </span>
+                                        <span class="cellUpload">
+                                            <span class="numbersUpload tenmilisecondUplpad movetenUplpad">0 1 2 3 4 5 6 7 8 9</span>
+                                        </span>
+                                    </span>
+                                </span>
+                            </span>
+                        </span>
+              </div>
+              <!--<span class="totalFileUpload message_converted"><i class="loading-upload">&nbsp;</i><span></span> seconds<p id="stopwatch-upload" class="stopwatch-upload"></p></span>-->
+
+              <!--Div contain process bar, file name -->
+              <div ng-class="{'blue-bar' : finishUpload }" class="wrap-progess-upload-area" ng-show="keepUploadArea">
+                <div class="progess-bar-total">
+                  <!--<span class="percent-uploaded fl" ng-bind="percentUploaded"></span>-->
+                  <div class="progessbar-uploaded">
+                    <span class="percent-loading"></span>
+                  </div>
+                  <span class="percent-uploaded fl" ng-bind="percentUploaded"></span>
+                  <span class="info-total-upload" ng-bind="uploadlFileStatistics"></span>
+                </div>
+                <div class="list-fileuploading">
+                  <ul class="ulListUpload" id="ulListUpload">
+                    <li ng-repeat="file in uploadQueueFile" class="item-uploading clearfix" name="{{file.unqName}}">
+                      <span class="filenameUpload">{{file.orgName}}</span>
+                      <span class="filesizeUpload">{{file.fileSize}} MB</span>
+                      <i class="upload-rb-status app-icon" id="{{file.unqName}}"></i>
+                    </li>
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrap-table-rb">
+    <div class="deleting-receipt" ng-show="deletingReceipt">&nbsp;</div>
+    <table class="app-table">
+        <tr>
+            <th class="col-dat">
+                <div class="th firstth">
+                    <i class="app-icon icon-checkbox-sqr pull-left"
+                       ng-class="{'icon-checkbox-sqr': !isCheckAll, 'icon-checkedbox-sqr': isCheckAll}" style="margin: 2px 0 0 5px;"></i>
+                    ENTRY
+                </div>
+            </th>
+            <th class="col-purchase-date">
+                <div class="th">
+                    PURCHASE
+                </div>
+            </th>
+            <th class="col-rec"><div class="th" id="merchant-col">MERCHANT</div></th>
+            <th class="col-cur"><div class="th">CUR</div></th>
+            <th class="col-amo">
+                <div class="th">
+                    AMOUNT
+                </div>
+            </th>
+            <th class="col-app"><div class="th">APP</div></th>
+            <th class="col-cat"><div class="th">CATEGORY</div></th>
+            <th class="col-res"><div class="th">RECEIPT STATUS</div></th>
+            <th class="col-typ"><div class="th">TYPE</div></th>
+            <th class="col-exp"><div class="th">PERIOD</div></th>
+            <th class="col-inf"><div class="th">MORE</div></th>
+            <th class="col-att"><div class="th">&nbsp;</div></th>
+            <th class="col-shr" style="border-left: none;"><div class="th" style="border-left: none;">&nbsp;</div></th>
+            <th class="col-non"><div class="th lastth">&nbsp;</div></th>
+        </tr>
+        <tr>
+            <td colspan="14">
+                <div class="custom-scrollbar">
+                    <div class="app-table-child-wrapper" app-resize-height id="rb-receipt-list">
+                        <table class="app-table-child" fluid-table>
+                            <tbody bindonce ng-repeat="receipt in receiptList | limitTo:receiptListLimit" ng-class="{'clicked': receipt.clicked}" receipt-id="{{ receipt.ReceiptID}}">
+                            <tr class="level-cat ng-class:{'bold': receipt.IsOpened == 0, 'verified': receipt.VerifyStatus == 2}"
+                                open-rd="{ReceiptID: receipt.ReceiptID, VerifyStatus: receipt.VerifyStatus, OpenFrom: 'receiptbox-wrapper'}"
+                                ng-click="markAsOpen(receipt);changeRoute('/receiptbox/receipt-detail');">
+                                <td class="align-left col-dat" ng-class="{'blue-bar': (receipt.NewReceiptUploaded && tmpFilterType == 'all') || (receipt.NewReceiptUploaded && tmpFilterType == 'newReceipts') || (receipt.NewReceiptUploaded && tmpFilterType == 'paperReceipts') }" ng-click="$event.stopPropagation()" >
+                                    <i class="app-icon icon-checkbox-sqr _disable" ng-show="receipt.IsReported" title="Items in this receipt have been submitted in a report, and so they cannot be changed or deleted"></i>
+                                    <i onclick="checkboxOnClick(this);" class="app-icon icon-checkbox-sqr"
+                                       ng-click="$event.stopPropagation(); setCheckboxStatus(receipt); updateDeleteList(receiptDeleteList, receipt);"
+                                       ng-class="{'icon-checkbox-sqr': !receipt.IsChecked, 'icon-checkedbox-sqr': receipt.IsChecked, 'checkboxshift':!receipt.IsReported}"
+                                       ng-show="!receipt.IsReported"></i>
+                                    <span bo-html="receipt.CreatedTime | formatDate:'dd-MMM-yyyy'" ng-click="$event.stopPropagation()"></span>
+                                </td>
+                                <td class="col-purchase-date" bo-html="receipt.PurchaseTime | formatDate:'dd-MMM-yyyy'"></td>
+                                <td class="align-left col-rec">
+                                    <div class="wrap">
+                                        <i class="app-icon fix-nomargin ng-class:{'icon-mail-open': receipt.IsOpened != '0', 'icon-mail-close': receipt.IsOpened == '0'}"
+                                           ng-click="$event.stopPropagation()"></i>
+                                        <i class="app-icon fix-nomargin ng-class:{'icon-circle-m': !receipt.IsCollapsed, 'icon-circle-p': receipt.IsCollapsed}"
+                                           ng-click="$event.stopPropagation();
+                                                                       receipt.IsCollapsed = !receipt.IsCollapsed"
+                                           bo-show="receipt.Items.length"></i>
+                                        <span href="" class="receipt-name text-ellipsis" tooltip="{{receipt.MerchantName}}" bo-text="receipt.MerchantName" ng-class="{'fix-nopadding':!receipt.Items.length}"></span>
+                                    </div>
+                                    <span class="home-currency-rb ng-class:{'hide': loggedInUser.CurrencyCode == receipt.CurrencyCode}" ng-bind="receipt.CurrencyCode"></span>
+                                </td>
+                                <td class="col-cur" bo-html="loggedInUser.CurrencyCode"></td>
+                                <td class="align-right col-amo">
+                                    <span class="wrap-indent-right" ng-bind="receipt.DigitalTotal| number:2"></span>
+                                </td>
+                                <td class="col-app">
+                                    <span bo-html="receipt.App" title="{{receipt.App| categoryAppName}}"></span>
+                                </td>
+                                <td class="col-cat align-left">
+                                    <span class="text-ellipsis" ng-bind="receipt.Category"></span>
+                                </td>
+                                <td class="align-left col-res">
+                                    <span class="wrap-indent-left text-ellipsis" ng-bind="receipt| receiptStatus"></span>
+                                </td>
+                                <td class="col-typ">
+                                    <span bo-html="receipt.ReceiptType | receiptTypeAbbrFilter" title="{{receipt.ReceiptType| receiptTypeFilter}}"></span></td>
+                                <td class="col-exp">
+                                    <span ng-if="receipt.Category != null" title="{{receipt.ExpensePeriod=='MX' ? 'Mixed': ''}}" ng-bind="receipt.ExpensePeriod"></span>
+                                </td>
+                                <td class="col-inf">
+                                    <i class="app-icon icon-more icon-more-grey"></i>
+                                    <!--
+                                    Temporary replaced by placeholder. Don't remove this button
+                                    <i class="app-icon icon-more" ng-class="{'icon-more-grey':receipt.More.IsEmpty}"
+                                       ng-click="$event.stopPropagation(); openShowMoreModal(receipt)"></i>
+                                    -->
+                                </td>
+                                <td class="col-att" style="position: relative;" ng-click="$event.stopPropagation()">
+                                    <file-popover wrapper-id="receipt-attachment-{{ receipt.ReceiptID}}" attachments="receipt.Attachments"></file-popover>
+                                </td>
+                                <td class="col-shr" ng-click="$event.stopPropagation()">&nbsp;</td>
+                            </tr>
+                            <tr class="level-item ng-class:{'categorized': item.CategorizeStatus == 2}" bindonce ng-repeat="item in receipt.Items" ng-hide="receipt.IsCollapsed"
+                                open-rd="{ReceiptID: receipt.ReceiptID, ItemID: item.ItemID, VerifyStatus: receipt.VerifyStatus, OpenFrom: 'receiptbox-wrapper'}"
+                                ng-click="markAsOpen(receipt)" item-id="{{ item.ItemID}}">
+                                <td class="align-left col-dat">
+                                    <i class="app-icon icon-checkbox-sqr _disable" ng-show="receipt.IsReported"></i>
+                                    <i class="app-icon icon-checkbox-sqr"
+                                       ng-click="$event.stopPropagation(); setCheckboxStatus(item); updateDeleteList(itemDeleteList, item);"
+                                       ng-class="{'icon-checkbox-sqr': !item.IsChecked, 'icon-checkedbox-sqr': item.IsChecked, 'checkboxshift':!receipt.IsReported}"
+                                       ng-show="!receipt.IsReported"></i>
+                                </td>
+                                <td></td>
+                                <td class="align-left col-rec">
+                                    <div class="wrap"><span class="text-ellipsis" ng-bind-template="- {{ item.Name}}"></span></div>
+                                </td>
+                                <td class="col-cur" bo-html="loggedInUser.CurrencyCode"></td>
+                                <td class="align-right col-amo">
+                                    <span class="wrap-indent-right" bo-html="item.Amount | number:2"></span>
+                                </td>
+                                <td class="col-app">
+                                    <span title="{{item.CategoryApp| categoryAppName}}" ng-bind="item.CategoryApp| categoryAbbr"></span>
+                                </td>
+                                <td class="col-cat align-left">
+                                    <a class="text-ellipsis" tooltip="{{item.CategoryName}}" ng-if="item.CategoryID > 0" ng-bind="item.CategoryName"></a>
+                                    <a ng-if="item.CategoryID == 0">Not categorized</a>
+                                </td>
+                                <td class="align-left col-res">
+
+                                </td>
+                                <td></td>
+                                <td class="col-exp">
+                                    <span ng-if="item.CategoryAppAbbr != 'TE' && receipt.Category != null" ng-bind="item.ExpensePeriod | formatDate:'MMM-yyyy'"></span>
+                                    <span ng-if="item.CategoryAppAbbr == 'TE'" ng-bind="item.Reference"></span>
+                                </td>
+
+                                <td class="col-inf"><i class="app-icon icon-more icon-more-grey"></i></td>
+                                <!--
+                                Temporary replaced by placeholder. Don't remove this button
+                                <td class="col-inf" ng-click="$event.stopPropagation(); openShowMoreModal(item)"><i class="app-icon icon-more" bo-class="{'icon-more-grey':item.More.IsEmpty}"></i></td>
+                                -->
+                                <td class="col-att" ng-click="$event.stopPropagation()">
+                                    <file-popover wrapper-id="item-attachment-{{ item.ItemID}}" attachments="item.Attachments"></file-popover>
+                                </td>
+                                <!--<td class="col-dea" ng-click="$event.stopPropagation()"><i class="app-icon icon-deal"></i></td>-->
+                                <td class="col-shr" ng-click="$event.stopPropagation()"><!--<i class="app-icon icon-share-small"></i>--></td>
+                            </tr>
+                            </tbody>
+                            <tbody ng-if="receiptList.length == 0 && isLoadedSuccess">
+                            <tr>
+                                <td ng-if="tmpFilterName != 'All Receipts'" colspan="13">There are no <span ng-bind="tmpFilterName"></span> in your ReceiptBox.</td>
+                                <td ng-if="tmpFilterName == 'All Receipts'" colspan="13">You have no receipt in your ReceiptBox.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination pagination-right" style="display: block; padding: 4px 0 5px 0; margin: 0; border-top: 1px solid #ddd; position: relative;">
+                        <div class="link-icons clearfix">
+                            <a href="" ng-click="deleteReceiptItem()" class="delete-link"><div class="app-icon delete-red"></div>DELETE</a>
+                            <!-- Temporarily hide
+                                <a href=""><div class="app-icon export"></div>EXPORT</a>
+                                <a href=""><div class="app-icon email"></div>EMAIL</a>
+                                <a href="" ng-click="downloadPdf()" class="an"><div class="app-icon print"></div>PRINT</a>
+                            -->
+                            <a ng-hide="directUploads.isUploading" id="receive-button" href="" ng-click="receiveReceipts()" class="an"><div class="app-icon receive"></div>RECEIVE</a>
+                        </div>
+                      <div ng-if="!isLoadedSuccess" class="bold loadingReceipt">Loading...</div>
+                        <ul style="float: right; margin-bottom: 6px;">
+                            <li><a href="" ng-class="{'not-active': isFirstPage}" ng-click="loadMoreReceipt('first')" title="Go to First page"><i class="icon-fast-backward"></i></a></li>
+                            <li><a href="" ng-class="{'not-active': isFirstPage}" ng-click="loadMoreReceipt('previous')" title="Go to Previous page"><i class="icon-backward"></i></a></li>
+                            <li ng-class="{'active': !loadedAllReceipt}"><a href="" ng-class="{'not-active': isLastPage}" ng-click="loadMoreReceipt('next')" title="Go to Next page"><i class="icon-forward"></i></a></li>
+                            <li ng-class="{'active': !loadedAllReceipt}"><a href="" ng-class="{'not-active': isLastPage}" ng-click="loadMoreReceipt('last')" title="Go to Last page"><i class="icon-fast-forward"></i></a></li>
+                        </ul>
+                        <div style="float: right; margin: 10px 5px 6px;" ng-if="loadedAllReceipt || isLoadedSuccess">
+                            <span ng-bind-template="{{filterNameReceipt}}: "></span>
+                            <span ng-if="receiptList.length" ng-bind-template="{{tmpReceiptListOffset}}-{{tmpReceiptLenght}} of {{tmpReceiptTotalList}}"></span>
+                            <span ng-if="!receiptList.length">0-0 of 0</span>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#manual-button-create").tooltip({
+            html: true,
+            template: '<div class="tooltip button-create"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+        });
+        $("#rbUpload").tooltip({
+            html: true,
+            template: '<div class="tooltip button-upload"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+        });
+//
+//        $('body').click(function(){
+//            $("#manual-button-create").tooltip("show");
+//            $("#rbUpload").tooltip("show");
+//        });
+    });
+</script>

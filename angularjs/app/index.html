@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en" ng-app="rciSpaApp" ng-class="{'landing': activePath == '/'}">
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+    <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="fragment" content="!"/>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+        <script>
+            if (navigator.userAgent.match(/iPhone|iPod|iPad/i)) {
+                var iconFolderPath = 'http://receiptclub.com/receiptclub/images/';
+                // iPhone
+                document.write('<link href="' + iconFolderPath + 'apple-touch-icon-57x57.png" sizes="57x57" rel="apple-touch-icon">');
+                // iPhone (Retina)
+                document.write('<link href="' + iconFolderPath + 'apple-touch-icon-114x114.png" sizes="114x114" rel="apple-touch-icon">');
+                // iPhone 5
+                // iPad
+                document.write('<link href="' + iconFolderPath + 'apple-touch-icon-72x72.png" sizes="72x72" rel="apple-touch-icon">');
+                // iPad (Retina)
+                document.write('<link href="' + iconFolderPath + 'apple-touch-icon-144x14421.png" sizes="144x144" rel="apple-touch-icon">');
+            }
+        </script>
+        <link rel="icon" type="image/png" href="favicon.ico?20140908">
+        <!--<link rel="stylesheet" href="styles/bootstrap/css/bootstrap-glyphicon.mini.css">-->
+        <link rel="stylesheet" href="styles/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="components/jquery-ui/themes/smoothness/jquery-ui.css">
+        <!--<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">-->
+        <link rel="stylesheet" href="components/ios-add-to-homescreen/style/add2home.css">
+        <!-- build:css styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css" >
+        <link rel="stylesheet" href="styles/app.css" >
+        <link rel="stylesheet" href="styles/ff.css" >
+        <link rel="stylesheet" href="styles/ie11.css">
+        <link rel="stylesheet" href="styles/safari.css">
+        <!-- endbuild -->
+        <link rel="stylesheet" href="components/hellozoom/hellozoom.css">
+        <link rel="stylesheet" href="components/hopscotch/css/hopscotch.min.css">
+        <link rel="stylesheet" href="components/uploadifive/uploadifive.css">
+        <link rel="stylesheet" href="components/flipclock/flipclock.css" >
+        <title>ReceiptClub</title>
+        <script>
+            //        if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/BlackBerry/i) ||
+            //                navigator.userAgent.match(/iPhone|iPod/i) || navigator.userAgent.match(/Opera Mini/i) ||
+            //                navigator.userAgent.match(/IEMobile/i)) {
+            //            window.document.location = 'index-m.html#!/';
+            //        }
+        </script>
+    </head>
+    <body ng-class="{'front': activePath == '/', 'profile': activePath == '/profile' || activePath == '/contact' || activePath == '/register-success' || activePath == '/settings' || activePath == '/privacy' }">
+        <div id="global-mask"></div>
+        <div id="loading-indicator" class="loading-indicator" ng-include="'views/_newads.html'"></div>
+        <div id="one-time-loading-indicator">
+            <div class="wrapper">
+                <h4>Welcome to</h4>
+                <h3>ReceiptClub</h3>
+                <h6>Loading....please wait</h6>
+                <div class="progress-wrapper">
+                    <div class="progress progress-striped">
+                        <div class="bar" style="width: {{ loadedModulePercent}};"></div>
+                    </div>
+                </div>
+                <h5>it’s smooth sailing on our easy</h5>
+                <h2>expense management platform</h2>
+                <h5>report your expenses effortlessly</h5>
+            </div>
+        </div>
+        <!--[if lt IE 7]>
+          <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+        <![endif]-->
+
+        <!--[if lt IE 9]>
+          <script src="components/es5-shim/es5-shim.js"></script>
+          <script src="components/json3/lib/json3.min.js"></script>
+        <![endif]-->
+
+        <div id="top-header" ng-include src="'views/header.html'"></div>
+        <div id="container" class="superman">
+            <div class="sidebar-ad" ng-class="{'sidebar-in-RD' : inAppScreen == 'RECEIPT_DETAIL'}">
+                <div id="sidebar-right" class="hide" ng-class="{'terms-sidebar-right': activePath == '/terms-privacy', 'analytic-sidebar-right': activePath == '/analytic', 'travel_expense_sidebar' : inAppScreen == 'REPORT_LIST' || inAppScreen == 'TRIP_DETAIL' || inAppScreen == 'TRIP_LIST' || inAppScreen == 'REPORT_DETAIL' || inAppScreen == 'APPROVER_LIST', 'receipt_details_sidebar' : inAppScreen == 'RECEIPT_DETAIL'}">
+
+                <div id="sidebar-ad" class="site-ad sidebar-app">
+                    <!--Amazon ads here-->
+                </div>
+
+                <div id="sidebar-ad-big2" class="site-ad sidebar-app">
+                <!--Amazon ads here-->
+                </div>
+
+                </div>
+                <div id="sidebar-right2" class="hide" ng-class="{'terms-sidebar-right': activePath == '/terms-privacy', 'analytic-sidebar-right': activePath == '/analytic', 'travel_expense_sidebar' : inAppScreen == 'REPORT_LIST' || inAppScreen == 'TRIP_DETAIL' || inAppScreen == 'TRIP_LIST' || inAppScreen == 'REPORT_DETAIL' || inAppScreen == 'APPROVER_LIST', 'receipt_details_sidebar' : inAppScreen == 'RECEIPT_DETAIL' }">
+                    <div class="site-ad2 sidebar-app">
+                        <div id="sidebar-ad2">
+                            <!--Amazon ads here-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="main-content">
+                <div id="ngview-wrapper" ng-view></div>
+                <div id="home-page-wrapper" ng-include="'views/home.html'"></div>
+                <div ng-if="loggedInUser.IsLogged == 1">
+                    <div class="page-app hide" id="dashboard-wrapper" ng-include="'views/dashboard.html'"></div>
+                    <div class="page-app hide" id="receiptbox-wrapper" ng-include="'views/receipt-list.html'"></div>
+                    <div id="receipt-detail-wrapper" class="page-app hide"
+                         style="background: #fff; position: absolute; top: 0px; left: 0; right: 0; bottom: 0; z-index: 1"
+                         ng-include="'views/receipt-detail.html'"></div>
+                    <div class="page-app hide" id="personal-expense-wrapper" ng-include="'views/personal-expense.html'"></div>
+                    <div class="page-app hide" id="business-expense-wrapper" ng-include="'views/business-expense.html'"></div>
+                    <div class="page-app hide" id="education-expense-wrapper" ng-include="'views/education-expense.html'"></div>
+                    <div class="page-app hide" id="personal-assets-wrapper" ng-include="'views/personal-assets.html'"></div>
+                    <div class="page-app hide" id="business-assets-wrapper" ng-include="'views/business-assets.html'"></div>
+                    <div class="page-app hide" id="trip-list-wrapper" ng-include="'views/trip-list.html'"></div>
+                    <div class="page-app hide" id="trip-detail-wrapper" ng-include="'views/trip-detail.html'"></div>
+                    <div class="page-app hide" id="report-list-wrapper" ng-include="'views/report-list.html'"></div>
+                    <div class="page-app hide" id="report-detail-wrapper" ng-include="'views/report-detail.html'"></div>
+                    <div class="page-app hide" id="approver-list-wrapper" ng-include="'views/report-approver-list.html'"></div>
+                    <div class="page-app hide" id="approver-detail-wrapper" ng-include="'views/report-approver-detail.html'"></div>
+                    <show-more-receipt></show-more-receipt>
+                    <show-more-item></show-more-item>
+                </div>
+            </div>
+        </div>
+        <div id="messageBox" class="modal modal-rc hide" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-header">
+                <i class="icon-logo"></i>
+                <h3>Validation Results</h3>
+                <button class="app-icon pop-up-close-window" data-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer"></div>
+        </div>
+
+        <div id="messageBoxPopup" class="modal modal-rc hide" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-header">
+                <i class="icon-logo"></i>
+                <h3>Validation Results</h3>
+                <button class="app-icon pop-up-close-window" data-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer"></div>
+        </div>
+
+        <div id="add-expense-content" class="hide">
+            <ul class="unstyled">
+                <li><button class="btn btn-mini btn-success" ng-click="addExpense()">Add Expense</button></li>
+            </ul>
+        </div>
+
+        <div id="pageModal" class="modal modal-rc hide" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-header">
+                <div class="modal-header">
+                    <i class="icon-logo pull-left"></i>
+                    <h3></h3>
+                    <button class="app-icon icon-close-window pull-right" data-dismiss="modal" aria-hidden="true"></button>
+                </div>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+        <div class="version-indicator">
+            <a href="">Private Beta 6 v6.81 20150116</a>
+        </div>
+        <iframe id="ifrUpload"  src="_rdr.html" frameborder="0" class="hide"></iframe>
+
+        <script type="text/javascript" src="components/jquery/1.10/jquery.min.js"></script>
+        <script type="text/javascript" src="components/jquery/1.10/jquery-ui.min.js"></script>
+        <!--<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+        <!--<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>-->
+        <!--<script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>-->
+        <script src="components/socket/sockjs.min.js"></script>
+        <script src="styles/bootstrap/js/bootstrap.min.js"></script>
+        <script src="styles/bootstrap/js/bootstrap-modal-popover.js"></script>
+        <script src="components/detect.js"></script>
+        <script src="components/angular/1.1.5/angular.js"></script>
+        <script src="components/angular/1.1.5/angular-resource.min.js"></script>
+        <script src="components/angular-bindonce/bindonce.js"></script>
+        <script src="components/highcharts/highcharts.js"></script>
+        <script src="components/angular-local-storage/angular-local-storage.js"></script>
+        <script src="components/uploadifive/jquery.uploadifive.min.js"></script>
+        <script src="components/jquery-form/jquery.form.js"></script>
+        <script src="components/jquery-ui-timepicker-addon.js"></script>
+        <script src="components/angular-ui-date/src/date.js"></script>
+        <script src="components/loadingindicator.js"></script>
+        <script src="components/lodash/dist/lodash.min.js"></script>
+        <script src="components/restangular/dist/restangular.min.js"></script>
+        <script src="components/angular-sanitize/angular-sanitize.min.js"></script>
+        <script src="components/hellozoom/hellozoom.js"></script>
+        <script src="components/jquery.carouFredSel-6.2.1-packed.js"></script>
+        <script src="components/timezone-js/src/date.js"></script>
+        <script src="components/jquery.tablesorter/js/jquery.tablesorter.min.js"></script>
+        <script src="components/IndexedDBShim/dist/IndexedDBShim.min.js"></script>
+        <script src="components/db.js/db.js"></script>
+        <script src="components/hopscotch/js/hopscotch.js"></script>
+        <script src="components/stopwatch/hellowatch.js"></script>
+        <script src="components/timezonepicker/jquery.timezone-picker.js"></script>
+        <script src="components/aws-sdk-js/dist/aws-sdk.js"></script>
+        <script src="components/timezone/jquery.maphilight.min.js"></script>
+        <script src="components/timezone/jquery.timezone-picker.min.js"></script>
+        <script src="components/htmlParser/htmlParser.js"></script>
+        <script src="components/postscribe/postscribe.min.js"></script>
+        <script type="text/javascript" src="components/flipclock/flipclock.min.js"></script>
+        <script src="components/jquery.nicescroll.min.js"></script>
+        <script src="components/jstz/jstz-1.0.4.min.js"></script>
+        <script src="components/pdfJS/src/pdf.js"></script>
+        <script src="components/pdfJS/presentation_mode.js"></script>
+        <script src="components/pdfJS/src/shared/util.js"></script>
+        <script src="components/pdfJS/src/display/api.js"></script>
+        <script src="components/pdfJS/src/display/metadata.js"></script>
+        <script src="components/pdfJS/src/display/pattern_helper.js"></script>
+        <script src="components/pdfJS/src/display/font_loader.js"></script>
+        <script src="components/pdfJS/src/display/svg.js"></script>
+        <script src="components/pdfJS/download_manager.js"></script>
+
+        <script type="text/javascript">
+            //Add2home js configuration
+            var addToHomeConfig = {
+                //expire:200,
+                touchIcon:true,
+                autostart:false
+            };
+        </script>
+        <!--add2home js must be loaded after its configuration-->
+        <script type="application/javascript" src="components/ios-add-to-homescreen/src/add2home.js"></script>
+        <script type="text/javascript" src="components/recaptcha/recaptcha_ajax.js"></script>
+        <script type="application/javascript" src="components/vc-angular-recaptcha/release/angular-recaptcha.js"></script>
+
+        <!-- build:js scripts/scripts.js -->
+        <script src="scripts/functions/help_balloons.js"></script>
+        <script src="scripts/functions/common.js"></script>
+        <script src="scripts/functions/addon.js"></script>
+        <script src="scripts/functions/pushServer.js"></script>
+        <script src="scripts/config/app.js"></script>
+        <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/main/main.js"></script>
+        <script src="scripts/controllers/dashboard/dashboard.js"></script>
+        <script src="scripts/controllers/analytic/analytic.js"></script>
+        <script src="scripts/controllers/receipt_box/receipt_box.js"></script>
+        <script src="scripts/controllers/receipt_box/receipt_detail.js"></script>
+        <script src="scripts/controllers/personal_expense/personal_expense.js"></script>
+        <script src="scripts/controllers/business_expense/business_expense.js"></script>
+        <script src="scripts/controllers/education_expense/education_expense.js"></script>
+        <script src="scripts/controllers/personal_assets/personal_assets.js"></script>
+        <script src="scripts/controllers/business_assets/business_assets.js"></script>
+        <script src="scripts/controllers/travel_expense/trip_list.js"></script>
+        <script src="scripts/controllers/travel_expense/trip_detail.js"></script>
+        <script src="scripts/controllers/travel_expense/report_list.js"></script>
+        <script src="scripts/controllers/travel_expense/report_detail.js"></script>
+        <script src="scripts/controllers/travel_expense/approver_list.js"></script>
+        <script src="scripts/controllers/travel_expense/approver_detail.js"></script>
+        <script src="scripts/directives/calendars.js"></script>
+        <script src="scripts/directives/main.js"></script>
+        <script src="scripts/directives/popover_showmore.js"></script>
+        <script src="scripts/directives/popover_memo.js"></script>
+        <script src="scripts/directives/personal_expense.js"></script>
+        <script src="scripts/directives/receipt_box.js"></script>
+        <script src="scripts/directives/angular_money_directive.js"></script>
+        <script src="scripts/directives/uploadifive.js"></script>
+        <script src="scripts/directives/receipt_detail.js"></script>
+        <script src="scripts/directives/merchant_autocomplete.js"></script>
+        <script src="scripts/directives/travel_expense.js"></script>
+        <script src="scripts/directives/inline_edit.js"></script>
+        <script src="scripts/filters/utility.js"></script>
+        <script src="scripts/services/openexchange.js"></script>
+        <script src="scripts/services/awsRestangular.js"></script>
+        <script src="scripts/services/restAngularService.js"></script>
+        <script src="scripts/services/maintainService.js"></script>
+        <!-- endbuild -->
+
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                //$("html").niceScroll();
+                setBackgroundCover();
+                jQuery(window).resize(function() {
+                    setBackgroundCover();
+
+                    if ($(window).width() > 1024) {
+                        $('#rd-container .container-col1.show-if-size-change').show().removeClass('show-if-size-change');
+                        $('#rd-container .container-col2.show-if-size-change').show().removeClass('show-if-size-change');
+                    }
+                });
+                var displayNotify = false;
+                if (typeof (Storage) !== "undefined") {
+                    //Local storage supported
+                    if (localStorage.bookmarkNotificationRead && localStorage.bookmarkNotificationRead != '') {
+                        displayNotify = false;
+                    } else {
+                        displayNotify = true;
+                        //Disable only when close button of the balloon is clicked
+                        //lib function: addToHome.close()
+                    }
+                } else {
+                    //Use cookie instead
+                    var bmCookie = getCookie("bookmarkNotificationRead");
+                    if (bmCookie != null && bmCookie != "") {
+                        displayNotify = false;
+                    } else {
+                        displayNotify = true;
+                    }
+                }
+                showBookmarkNotification(displayNotify);
+
+                loadAmazonAds();
+            });
+            function showBookmarkNotification(display) {
+                if (navigator.userAgent.match(/iPad/i)) {
+                    toggleiOSBalloon(display);
+                }
+            }
+            function toggleiOSBalloon(display) {
+                //This function can be disabled since add2home js can detect to toggle automatically
+                //by adding meta tag content-captable=yes in html head
+                if (display) {
+                    addToHome.show();
+                }
+            }
+            function saveNotificationTimestamp() {
+                if (typeof (Storage) == "undefined") {
+                    localStorage.bookmarkNotificationRead = new Date();
+                } else {
+                    setCookie("bookmarkNotificationRead", new Date(), 365);
+                }
+            }
+        </script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.
+        <script>
+          var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+          (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+          g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+          s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+        -->
+
+        <div class="loadingpersional"></div>
+
+        <div class="hide" id="amz-ad-block">
+            <!--Amazon ads here-->
+        </div>
+        <div class="guid-slide" id="tutorial-slider-receiptbox" style="opacity: 0; z-index: -100;">
+            <div id="wrapper-slider">
+                <div class="caroufredsel">
+                    <div class="main-slide">
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Welcome! Let’s Get Started with ReceiptBox</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>How to save your receipts</h3>
+                                <p class="stf">Four different ways to send your receipts to ReceiptClub!</p>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/slide-1.png" alt="">
+                                <p class="ttf" style="font-family: arial;line-height: 45px;font-size: 17px;color: #474747;">Always remember to use the email address you signed up with when emailing or forwarding receipts!</p>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with ReceiptBox</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>1. Upload</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/slide-2.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with Receipt Details</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>2. Validate</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/slide-3.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with ReceiptBox</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>3. you’re done!</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/slide-4.png" alt="">
+                                <div class="bottom">
+                                    <img class="find-icon" src="styles/img/caroufredsel/findhere.png" alt="">
+                                    <ul class="list-select">
+                                        <li><a href="#"><span class="app-icon icon-video"></span>Video tutorials</a></li>
+                                        <li><a href="#"><span class="app-icon icon-guide"></span>User Guide</a></li>
+                                        <li><a href="#"><span class="app-icon icon-faq"></span>Video FAQ</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="" class="close-slide"></a>
+                    <a href="#" class="slide-button prev-button"></a>
+                    <a href="#" class="slide-button next-button"></a>
+                    <div class="slider-paging"></div>
+                </div>
+            </div>
+        </div>
+        <div class="guid-slide" id="tutorial-slider-travelexpense" style="opacity: 0; z-index: -100;">
+            <div id="wrapper-slider">
+                <div class="caroufredsel">
+                    <div class="main-slide">
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Welcome! Let’s Get Started with TravelExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>1. create new trip</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/slide1.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with TravelExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>2. view trip details</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/slide2.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with TravelExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>3. add expense to trip</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/slide3.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with TravelExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>4. add trip to report</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/slide4.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with TravelExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>5. submit the report</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/slide5.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with TravelExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>6. you’re done!</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/slide-4.png" alt="">
+                                <div class="bottom">
+                                    <img class="find-icon" src="styles/img/caroufredsel/findhere.png" alt="">
+                                    <ul class="list-select">
+                                        <li><a href="#"><span class="app-icon icon-video"></span>Video tutorials</a></li>
+                                        <li><a href="#"><span class="app-icon icon-guide"></span>User Guide</a></li>
+                                        <li><a href="#"><span class="app-icon icon-faq"></span>Video FAQ</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="" class="close-slide"></a>
+                    <a href="#" class="slide-button prev-button"></a>
+                    <a href="#" class="slide-button next-button"></a>
+                    <div class="slider-paging"></div>
+                </div>
+            </div>
+        </div>
+        <div class="guid-slide" id="tutorial-slider-businessassets" style="opacity: 0; z-index: -100;">
+            <div id="wrapper-slider">
+                <div class="caroufredsel">
+                    <div class="main-slide">
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Welcome! Let’s Get Started with BusinessAssets</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>1. Add Expense</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/BusinessAssets-slide1.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with BusinessAssets</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>2. view Expense details</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/BusinessAssets-slide2.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with BusinessAssets</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>3. view chart</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/BusinessAssets-slide3.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <a href="" class="close-slide"></a>
+                    <a href="#" class="slide-button prev-button"></a>
+                    <a href="#" class="slide-button next-button"></a>
+                    <div class="slider-paging"></div>
+                </div>
+            </div>
+        </div>
+        <div class="guid-slide" id="tutorial-slider-businessexpense" style="opacity: 0; z-index: -100;">
+            <div id="wrapper-slider">
+                <div class="caroufredsel">
+                    <div class="main-slide">
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Welcome! Let’s Get Started with BusinessExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>1. Add Expense</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/BusinessExpense-slide1.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with BusinessExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>2. view Expense details</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/BusinessExpense-slide2.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with BusinessExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>3. view chart</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/BusinessExpense-slide3.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <a href="" class="close-slide"></a>
+                    <a href="#" class="slide-button prev-button"></a>
+                    <a href="#" class="slide-button next-button"></a>
+                    <div class="slider-paging"></div>
+                </div>
+            </div>
+        </div>
+        <div class="guid-slide" id="tutorial-slider-personalexpense" style="opacity: 0; z-index: -100;">
+            <div id="wrapper-slider">
+                <div class="caroufredsel">
+                    <div class="main-slide">
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Welcome! Let’s Get Started with PersonalExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>1. Add Expense</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/PersonalExpense-slide1.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with PersonalExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>2. view Expense details</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/PersonalExpense-slide2.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with PersonalExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>3. view chart</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/PersonalExpense-slide3.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <a href="" class="close-slide"></a>
+                    <a href="#" class="slide-button prev-button"></a>
+                    <a href="#" class="slide-button next-button"></a>
+                    <div class="slider-paging"></div>
+                </div>
+            </div>
+        </div>
+        <div class="guid-slide" id="tutorial-slider-personalassets" style="opacity: 0; z-index: -100;">
+            <div id="wrapper-slider">
+                <div class="caroufredsel">
+                    <div class="main-slide">
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Welcome! Let’s Get Started with PersonalAssets</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>1. Add Expense</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/PersonalAssets-slide1.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with PersonalAssets</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>2. view Expense details</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/PersonalAssets-slide2.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with PersonalAssets</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>3. view chart</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/PersonalAssets-slide3.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <a href="" class="close-slide"></a>
+                    <a href="#" class="slide-button prev-button"></a>
+                    <a href="#" class="slide-button next-button"></a>
+                    <div class="slider-paging"></div>
+                </div>
+            </div>
+        </div>
+        <div class="guid-slide" id="tutorial-slider-educationexpense" style="opacity: 0; z-index: -100;">
+            <div id="wrapper-slider">
+                <div class="caroufredsel">
+                    <div class="main-slide">
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Welcome! Let’s Get Started with EducationExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>1. Add Expense</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/EducationExpense-slide1.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with EducationExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>2. view Expense details</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/EducationExpense-slide2.png" alt="">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h2 class="title">
+                                <img src="styles/img/caroufredsel/logo-slide.png" alt="">
+                                <span>Getting Started with EducationExpense</span>
+                            </h2>
+                            <div class="block-content">
+                                <h3>3. view chart</h3>
+                                <img class="tutorial-img" src="styles/img/caroufredsel/EducationExpense-slide3.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <a href="" class="close-slide"></a>
+                    <a href="#" class="slide-button prev-button"></a>
+                    <a href="#" class="slide-button next-button"></a>
+                    <div class="slider-paging"></div>
+                </div>
+            </div>
+        </div>
+
+        <!--Maintenance notice-->
+        <div id="maintain-notice" class="alert" style="display: none">
+            <button type="button" class="close">&times;</button>
+            <strong>Warning!</strong>
+            <span class="notice-text"></span>
+        </div>
+    </body>
+</html>

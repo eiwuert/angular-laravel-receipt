@@ -1,0 +1,54 @@
+<div id="createReportBox" class="modal modal-rc hide form-modal" tabindex="-1" role="dialog" aria-hidden="true" ng-init="$parent.initNewReport()">
+    <div class="modal-header">
+        <div class="modal-header">
+            <i class="icon-logo pull-left"></i>
+            <h3>create new report</h3>
+            <button class="app-icon pop-up-close-window" data-dismiss="modal" aria-hidden="true"></button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <ul class="unstyled alert alert-danger text-left" ng-show="$parent.responseMessage">
+                <li ng-repeat="message in $parent.responseMessage">- {{ message }}</li>
+            </ul>
+            <div class="control-group">
+                <label class="control-label">Report Name:</label>
+                <div class="controls">
+                    <input type="text" ng-model="report.Title" class="input-long" tabindex="1">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="col">
+                    <label class="control-label">Date:</label>
+                    <div class="controls">
+                        <input type="text" ng-model="report.Date" rci-calendar class="input-medium" tabindex="3">
+                    </div>
+                </div>
+                <div class="col right">
+                    <label class="control-label">Report#:</label>
+                    <div class="controls">
+                        <input type="text" ng-model="report.Reference" class="input-long" tabindex="4" maxlength="10">
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Submitter:</label>
+                <div class="controls">
+                    <input type="text" ng-model="report.SubmitterEmail" class="input-long" tabindex="5" disabled>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Approver:</label>
+                <div class="controls">
+                    <input type="text" ng-model="report.ApproverEmail" class="input-long" tabindex="6">
+                </div>
+            </div>
+            <input type="hidden" ng-model="report.IsSubmitted">
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="$parent.resetNewReport()" tabindex="10">Reset</button>
+        <button ng-click="$parent.createReport()" tabindex="11">Done</button>
+        <button ng-click="$parent.resetNewReport()" data-dismiss="modal" aria-hidden="true" tabindex="12">Cancel</button>
+    </div>
+</div>

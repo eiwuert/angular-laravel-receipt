@@ -1,0 +1,231 @@
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<div class="wrapper" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+     xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    <div class="content-terms-privacy" ng-controller="HomeCtrl">
+        <div class="header" ng-show="showHeader" app-show-header>
+            <div class="logo"><a href="#" show-page="home-page-wrapper" layout="landing" title="ReceiptClub"><img src="styles/img/new-layout/logo.png"/></a></div>
+        </div>
+        <div class="header-app" ng-show="!showHeader" app-show-header>
+            <div class="logo"><a app-reset-prefix href="#" show-page="home-page-wrapper" layout="landing" title="ReceiptClub"><img src="styles/img/layout/logo-rci.png"/></a></div>
+            <div class="slogan"><img src="styles/img/layout/slogan-rci.png"/></div>
+            <div class="menu-top">
+                <ul class="button-top trms-priv">
+                    <li id="btn-sign-in"><a href="" ng-click="alreadyActivated()" ng-show="!loggedInUser.UserID" show-login-form="">Sign In</a></li>
+                    <li><a id="btn-sign-up" href="" ng-click="backToSignupHome()" show-register-form="" ng-hide="loggedInUser.UserID">Sign Up</a></li>
+                    <li><a href="#!/logout" ng-show="loggedInUser.UserID">Sign Out</a></li>
+                    <li class="back-to-app"  ng-show="loggedInUser.UserID"><a href="" show-page="receiptbox-wrapper" layout="default" id="enter_head_home">Back to App</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="app-box app-db box-terms-privacy">
+            <div class="app-headmenu">
+                <div class="container-fluid">
+                    <div class="row-fluid">
+                        <div class="span2 text-center">
+                            <h2 class="utmaltergothic">Terms & Conditions</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="db-content">
+                    <div class="db-content-scroll">
+                        <div class="db-menu">
+                            <ul app-resize-height-with-header screen="terms-condition">
+                                <li id="db_terms_condition" class="menu-item-db active"><i class="icon-terms-condition">&nbsp;</i><a href="">Terms & Conditions</a></li>
+                                <li id="db_privacy_policy" class="menu-item-db"><i class="icon-privacy_policy">&nbsp;</i><a href="">Privacy Policy</a></li>
+                            </ul>
+                        </div>
+                        <div class="db-boxs" app-resize-height-with-header screen="terms-condition" id="db_terms_condition" ng-controller="ProfileCtrl" action="profile" style="display:block;">
+                            <h2 class="title-DB-box">Terms & Conditions</h2>
+                            <div class="setting-detail">
+                                <div class="form-setting" app-resize-height-with-header screen="terms-condition">
+                                    <div class="dash-term-content" ng-include src="'views/terms.html'"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="db-boxs" app-resize-height-with-header screen="terms-condition" id="db_privacy_policy" ng-controller="ProfileCtrl" action="profile" style="display:none;">
+                            <h2 class="title-DB-box">Privacy Policy</h2>
+                            <div class="setting-detail">
+                                <div class="form-setting" app-resize-height-with-header screen="terms-condition">
+                                    <div class="privacy-content" ng-include src="'views/privacy.html'"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer" ng-include src="'views/footer-common.html'"></div>
+    </div>
+</div>
+
+    
+
+
+<script type="text/javascript">
+    var leavePage = true;
+    $(document).ready(function(){
+        
+        $("li#db_privacy_policy").click(function(){
+            $('h2.utmaltergothic').text("Privacy Policy");
+            return false;
+        });
+        $("li#db_terms_condition").click(function(){
+            $('h2.utmaltergothic').text("Terms & Conditions");
+            return false;
+        });
+        
+        $(".db-menu ul li a").each(function(){
+            $(this).hover(function(){
+                $(this).parent().find("div").addClass("isoscelesRight");
+            });
+            $(this).mouseleave(function(){
+                if(!$(this).parent().hasClass('active')) {
+                    $(this).parent().find("div").removeClass("isoscelesRight");
+                }
+            });
+        });
+        // tab profile scroll top
+        $('[class^="img-db"]').click(function(){
+            $('.form-setting').animate({
+                scrollTop: 0
+            });
+            return false;
+        });
+        //slide show in dashboard
+        var count = $('.slide-image').length;
+        for(x=0; x < count ;x++){
+            $('.slide-pager ul').prepend("<li class='slide-pager-slot'></li>");
+        }
+
+        $('.slide-pager-slot:first-child').addClass('focus');
+
+        var eindex=0;
+
+        $('.slide-pager-slot').click(function(){
+            eindex = $('.slide-pager-slot').index(this);
+            $('.slide-image').stop().animate({opacity:0});
+            $('.slide-image:eq(' + eindex + ')').stop().animate({opacity:1});
+            $('.slide-pager-slot').removeClass('focus');
+            $(this).addClass('focus');
+        });
+
+        function setimagefocus(){
+            $('.slide-pager-slot').removeClass('focus');
+            $('.slide-pager-slot:eq(' + eindex + ')').addClass('focus');
+            $('.slide-image').stop().animate({opacity:0}).hide();
+            $('.slide-image:eq(' + eindex + ')').stop().animate({opacity:1}).show();
+        }
+
+        function slideswap(){
+//            if(eindex==count-1){eindex=-1;}
+//            eindex++;
+//            setimagefocus();
+        }
+        start_slideswap();
+        function start_slideswap(){
+            timeinterval = 1200;
+            play = setInterval(slideswap,timeinterval);
+        }
+        $(".slide-container").hover(function() {
+            clearInterval(play);
+        }, function(){
+            start_slideswap();
+        });
+
+        $('.slide-control-prev').click(function(){
+            eindex--;
+            if(eindex==-1){eindex=count-1;}
+            setimagefocus();
+        });
+        $('.slide-control-next').click(function(){
+            eindex++;
+            if(eindex==count){eindex=0;}
+            setimagefocus();
+        });
+
+        //confirm before leaving form
+        var formValueProfile;
+        var formValueTmp;
+        var checkFlag
+        var frm;
+        var msg;
+        var itemId;
+        $('.a-profile').click(function(){
+            $('.sub-menu li#db_my_info').click();
+//            $('div.db-menu ul li.menu-item-db').removeClass('active');
+//            $('.sub-menu li').removeClass('active');
+//            .addClass('active');
+//            $('#db_profile').addClass('active');
+        });
+        $('.sub-menu li').click(function(e){
+            $('div.db-menu ul li.menu-item-db').removeClass('active');
+            $('#db_profile').addClass('active');
+            var submenuID =  $(this).attr('id');
+            $('.sub-menu li').removeClass('active');
+                $('.sub-menu li#'+submenuID).addClass('active');
+                $('.db-boxs').hide();
+                $('.db-boxs#'+submenuID).show();
+        });
+        $('div.db-menu ul li.menu-item-db').click(function(e){
+            var idDbLi = '#' + $(this).attr('id');
+            if(idDbLi != '#db_profile')
+            {
+                $(".db-boxs").hide();
+                $(".db-boxs"+idDbLi).show();
+                itemId = '#' + $(this).attr('page');
+                $('#profile-save, #setting-save').click(function(){
+                    formValueProfile = null;
+                });
+                if(checkFlag == 'profileLink' && $(this).hasClass('img-db-settings')){
+                    formValueTmp = $('form#profileForm').serialize();
+                    if(formValueProfile!=null && formValueProfile != formValueTmp){
+                        leavePage = false;
+                        var tmpProfile = formValueProfile;
+                        showMessageConfirm('profile', msg, tmpProfile, itemId);
+
+                    }
+                }
+                if(checkFlag == 'settingLink' && $(this).hasClass('img-db-user')){
+                    formValueTmp = $('form#settingForm').serialize();
+                    //frm = 'setting';
+                    if(formValueProfile!=null && formValueProfile != formValueTmp){
+                        leavePage = false;
+                        var tmpSetting = formValueProfile;
+                        showMessageConfirm('setting', msg, tmpSetting, itemId);
+                    }
+                }
+                if($(this).hasClass('img-db-user') || $(this).hasClass('img-db-settings')) {
+
+                    if($(this).hasClass('img-db-user')) {
+                        formValueProfile = $('form#profileForm').serialize();
+                        frm = 'profile';
+                        msg = 'Do you want to save your changes to your Profile?';
+                    }
+                    if($(this).hasClass('img-db-settings')) {
+                        formValueProfile = $('form#settingForm').serialize();
+                        frm = 'setting';
+                        msg = 'Do you want to save your changes to your Settings?';
+                    }
+                    checkFlag = $(this).attr('id');
+                }else{
+                    if(frm == 'profile')
+                        formValueTmp = $('form#profileForm').serialize();
+
+                    if(frm == 'setting')
+                        formValueTmp = $('form#settingForm').serialize();
+
+                    if(formValueProfile!=null && formValueProfile != formValueTmp){
+                        leavePage = false;
+                        showMessageConfirm(frm, msg, formValueProfile, itemId);
+                    }
+                }
+                $('div.db-menu ul li').removeClass("active");
+                $('div.db-menu ul li div').removeClass("isoscelesRight");
+                $(this).addClass("active");
+                $(this).find('div').addClass("isoscelesRight");
+            }
+
+        });
+    });
+</script>

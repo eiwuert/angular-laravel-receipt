@@ -1,0 +1,104 @@
+<div class="app-wrapper" ng-controller="PECtrl">
+    <div class="app-box app-pe">
+        <div class="app-headmenu">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span5 clearfix">
+                        <ul class="unstyled inline app-nav-block block-top-left" ng-class="{'_has-range':tmpUsePeriodRange}">
+                            <li>
+                                <div class="filterdate">
+                                    <div class="block">
+                                        <label class="text-label">Expense Period Range <input id="checkbox-date" type="checkbox" ng-click="toggleRange()" ng-init="initRange()" class="checkbox-range"></label>
+                                        <div class="calendar-row"><div rci-calendar-inline class="calendar-inline date-from" ng-model="tmpPeriodFrom"></div></div>
+                                        <button class="btn filter-submit" ng-class="{'filtering': filtering, '_has-range':tmpUsePeriodRange}" ng-click="getPEList(true)">Go</button>
+                                    </div><br/>
+                                    <div class="block" ng-show="tmpUsePeriodRange">
+                                        <div class="calendar-row"><div rci-calendar-inline class="calendar-inline date-to" ng-model="tmpPeriodTo"></div></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="span2 text-center">
+                        <h2 class="utmaltergothic">PersonalExpense</h2>
+                        <add-expense app="personal_expense" from="periodFrom" to="periodTo"></add-expense>
+                    </div>
+                    <a href="" ng-click="backToApp()" class="back-to-app utmaltergothic hide" id="rb-back-to-app">
+                        <i class="app-icon icon-revert"></i>Back To App
+                    </a>
+                    <div class="span5 text-right">
+                        <ul class="start-tour">
+                            <li class="bt-start-tour" ng-click="showSlideGuide('tutorial-slider-personalexpense', 'TakeTourBtn');">
+                                <button href="javascript:;" class="home-start-tour add-items">
+                                    Take a Tour
+                                </button>
+                            </li>
+                            <!--
+                                <li>
+                                    <h3 class="lightning-deals-text block-top-right"><span><i class="app-icon icon-treasure" style="float: none"></i>Today's Deals</span></h3>
+                                </li>
+                            -->
+                        </ul>
+                        <div class="function-icons">
+                            <a class="go-to-charts" href="#!/personal-expense/analytic/{{periodFrom}}/{{periodTo}}"><i class="fa fa-pie-chart"></i>CHARTS</a>
+                            <!--<a href=""><div class="app-icon report-icon"></div>REPORTS</a>-->
+                            <a href="" ng-click="export()"><i class="fa fa-sign-out"></i>EXPORTS</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="app-table tb-pe app-pe">
+            <tr>
+                <th class="col-chk">
+            <div class="th firstth">
+                <div class="app-icon icon-checkbox-sqr">&nbsp;</div>
+            </div>
+            </th>
+            <th class="col-cat">
+            <div class="th">
+                <i class="app-icon icon-circle icon-circle-p"></i>CATEGORY
+            </div>
+            </th>
+            <th class="col-amo" ng-click="predicate = 'Amount';
+                        reverse = !reverse">
+            <div class="total-amount">Total {{loggedInUser.CurrencyCode}}<br>{{totalAmount| itemPrice}}</div>
+            <div class="th">AMOUNT <i class="app-icon ng-class:{'icon-arrow-ud': predicate != 'Amount', 'icon-arrow-d': predicate == 'Amount' && reverse, 'icon-arrow-u': predicate == 'Amount' && !reverse}"></i></div>
+            </th>
+            <th class="col-itm">
+            <div class="th"><i class="app-icon icon-explore-item"></i>ITEM</div>
+            </th>
+            <th class="col-mrc" ng-click="predicate = 'MerchantName';
+                        reverse = !reverse"><div class="th">MERCHANT <i class="app-icon ng-class:{'icon-arrow-ud': predicate != 'MerchantName', 'icon-arrow-d': predicate == 'MerchantName' && reverse, 'icon-arrow-u': predicate == 'MerchantName' && !reverse}"></i></div></th>
+            <th class="col-dat" ng-click="predicate = 'PurchaseTime';
+                        reverse = !reverse"><div class="th">PURCHASE <i class="app-icon ng-class:{'icon-arrow-ud': predicate != 'PurchaseTime', 'icon-arrow-d': predicate == 'PurchaseTime' && reverse, 'icon-arrow-u': predicate == 'PurchaseTime' && !reverse}"></i></div></th>
+            <th class="col-exp"><div class="th">PERIOD</div></th>
+            <th class="col-inf"><div class="th">MORE</div></th>
+            <th class="col-att"><div class="th">&nbsp;</div></th>
+            <th class="col-shr" style="border-left: none;"><div class="th" style="border-left: none;">&nbsp;</div></th>
+            <th class="col-non"><div class="th lastth">&nbsp;</div></th>
+            </tr>
+            <tr>
+                <td colspan="11" style="padding: 0">
+                    <div class="custom-scrollbar">
+                        <div class="app-table-child-wrapper" app-resize-height>
+                            <table id="pe-item-list" class="app-table-child hide-thead" fluid-table opt-pe-cat-group wrapper-id="pe-item-list" categories="PECats" curr-app="pe" open-from="personal-expense-wrapper" from="periodFrom" to="periodTo"></table>
+                        </div>
+                        <div class="pagination pagination-right" style="display: block; padding: 4px 0 5px 0; margin: 0; border-top: 1px solid #ddd; position: relative; height: 33px">
+                            <div class="link-icons">
+                                <a href="" ng-click="deleteItems()" class="delete-link"><div class="app-icon delete-red"></div>REMOVE ITEM(S)</a>
+                                <!--<a class="go-to-charts" href="#!/personal-expense/analytic/{{periodFrom}}/{{periodTo}}"><div class="app-icon analytic"></div>CHARTS</a>
+                                <a href=""><div class="app-icon report"></div>REPORT</a>
+                                <a href="" ng-click="export()"><div class="app-icon export"></div>EXPORT</a>
+                                <a href=""><div class="app-icon email"></div>EMAIL</a>
+                                <a href=""><div class="app-icon print"></div>PRINT</a>
+                                <a href="" ng-click="export()"><div class="app-icon export"></div>EXPORT</a>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+{
+  "name": "IndexedDBShim",
+  "homepage": "https://github.com/axemclion/IndexedDBShim",
+  "_release": "b5b97839cf",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "b5b97839cf04f8d892476f5de0bceb780e26905e"
+  },
+  "_source": "git://github.com/axemclion/IndexedDBShim.git",
+  "_target": "*",
+  "_originalSource": "IndexedDBShim",
+  "_direct": true
+}

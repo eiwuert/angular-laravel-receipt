@@ -1,0 +1,182 @@
+.HelloZoomArea {
+	position: absolute;
+	display: none;
+	z-index: 10002;
+	border: 1px solid #999;
+	background: #fff;
+	cursor: pointer;
+    border-radius: 7px 7px 0 0;
+}
+
+.invoice-receipt-zoom .HelloZoomHeader {
+    background-position: -250px 0;
+}
+
+.HelloZoomHeader {
+    background-color: #1f4ca5;
+    border-bottom: 1px solid #888888;
+    color: #FFFFFF;
+    font-size: 9pt !important;
+    height: 36px;
+    line-height: 36px !important;
+    text-align: center !important;
+    border-radius: 7px 7px 0 0;
+}
+
+.HelloZoomPrint {
+    background: url("img/print_zoom.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 22px;
+    margin-left: 8px !important;
+    margin-top: 8px !important;
+    width: 28px;
+}
+
+.HelloZoomMail {
+  background: url("img/mail_zoom.png") no-repeat scroll 0 0 transparent;
+  float: left;
+  height: 24px;
+  margin-left: 7px !important;
+  margin-top: 7px !important;
+  width: 33px;
+}
+
+.HelloZoomTitle {
+    float: left;
+    height: 28px;
+    margin-left: 165px;
+    margin-top: 5px;
+    width: 28px;
+}
+
+.HelloZoomDownload {
+    background: url("img/zoom-download.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 17px;
+    margin: 10px 0 0 7px;
+    width: 17px;
+}
+
+.HelloZoomClose {
+    background: url("img/zoom-out.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    font-weight: bold;
+    height: 25px;
+    margin: 6px 0 0 170px;
+    width: 25px;
+}
+
+.HelloZoomXClose {
+    background: url("img/x-close.png") no-repeat scroll 0 0 transparent;
+    float: right;
+    margin: 12px 10px 0 0;
+    width: 13px;
+    height: 12px;
+}
+
+.invoice-receipt-zoom .HelloZoomClose {
+    margin-left: 240px;
+}
+
+.OriginalPrint, .ParentOriginalPrint {
+  background: url("../images/print.png") no-repeat scroll 0 0 transparent;
+  cursor: pointer;
+  float: left;
+  height: 12px;
+  margin-left: 8px !important;
+  margin-top: 8px !important;
+  width: 18px;
+}
+
+.OriginalZoomIn, .ParentOriginalZoomIn {
+    background: url("../images/zoom-in.png") no-repeat scroll 0 0 transparent;
+    float: right;
+    font-weight: bold;
+    height: 19px;
+    margin-right: 9px !important;
+    margin-top: 4px !important;
+    width: 18px;
+}
+
+.OriginalMail, .ParentOriginalMail {
+  background: url("../images/mail.png") no-repeat scroll 0 0 transparent;
+  cursor: pointer;
+  float: left;
+  height: 13px;
+  margin-left: 7px !important;
+  margin-top: 8px !important;
+  width: 18px;
+}
+
+.OriginalSave {
+  background: url("../images/download.png") no-repeat scroll 0 0 transparent;
+  cursor: pointer;
+  float: left;
+  height: 12px;
+  margin-left: 7px !important;
+  margin-top: 8px !important;
+  width: 12px;
+}
+
+.HelloZoomImageWrapper {
+    overflow-y: scroll;
+    text-align: center;
+    width: 660px;
+}
+
+.HelloZoomImageWrapper img {
+    width: 630px;
+}
+
+.HelloZoomContent {
+    width: 568px;
+    overflow-y: scroll;
+    cursor: auto;
+}
+
+.HelloZoomHeader.raw-text-zoom-header {
+    background-color: #1f4ca5;
+}
+
+.HelloZoomHeader .raw-text-header {
+	width: 488px;
+	float: left;
+	margin-left: 40px;
+    text-transform: uppercase;
+}
+
+.HelloZoomHeader .raw-text-header h4 {
+	margin: 3px 0;
+	font-size: 15px;
+	line-height: 15px;
+}
+
+.HelloZoomHeader .raw-text-header h5 {
+	margin: 0;
+	font-size: 12px;
+	line-height: 13px;
+}
+
+.HelloZoomContent .raw-text-title {
+	width: auto;
+	text-align: center;
+	font-size: 15px;
+	line-height: 16px;
+}
+
+.HelloZoomContent .raw-text-title p:first-child {
+	font-size: 14px;
+    line-height: 14px;
+}
+
+.HelloZoomContent .raw-text {
+	height: auto;
+	width: auto;
+	font-size: 14px;
+	line-height: 16px;
+	margin: 0;
+}
+
+.invoice-receipt-zoom .HelloZoomImageWrapper img {
+    width: 716px;
+}

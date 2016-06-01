@@ -1,0 +1,24 @@
+{
+  "author": {
+    "name": "revolunet"
+  },
+  "name": "angular-google-analytics",
+  "description": "East Analytics for your AngularJS application",
+  "version": "0.0.0",
+  "homepage": "https://github.com/revolunet/angular-google-analytics",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/revolunet/angular-google-analytics.git"
+  },
+  "main": "./dist/angular-google-analytics.js",
+  "dependencies": {
+    "angular": "1.0.6",
+    "angular-mocks": "1.0.6",
+    "angular-scenario": "1.0.6"
+  },
+  "gitHead": "5dac41cc0ce2e513521d466303db951026f57013",
+  "readme": "# angular-google-analytics\r\n\r\nA simple service that let you integrate google analytics tracker in your AngularJS applications.\r\n\r\nProudly brought to you by the [@revolunet](http://twitter.com/revolunet) team.\r\n\r\n## features\r\n\r\n - configurable\r\n - automatic page tracking\r\n - events tracking\r\n - e-commerce tracking\r\n\r\n## example\r\n\r\n```js\r\nvar app = angular.module('app', ['angular-google-analytics'])\r\n    .config(function(AnalyticsProvider, function() {\r\n        // initial configuration\r\n        AnalyticsProvider.setAccount('UA-XXXXX-xx');\r\n\r\n        // track all routes (or not)\r\n        AnalyticsProvider.trackPages(true);\r\n        \r\n        // url prefix (default is empty)\r\n        // - for example: when an app doesn't run in the root directory\r\n        AnalyticsProvider.trackPrefix('my-application');\r\n    }))\r\n    .controller('SampleController', function(Analytic) {\r\n        // create a new pageview event\r\n        Analytic.trackPage('/video/detail/XXX');\r\n\r\n        // create a new tracking event\r\n        Analytic.trackEvent('video', 'play', 'django.mp4');\r\n        \r\n        // tracking e-commerce\r\n        // - create transaction\r\n        Analytics.addTrans('1', '', '2.42', '0.42', '0', 'Amsterdam', '', 'Netherlands');\r\n        \r\n        // - add items to transaction\r\n        Analytics.addItem('1', 'sku-1', 'Test product 1', 'Testing', '1', '1');\r\n        Analytics.addItem('1', 'sku-2', 'Test product 2', 'Testing', '1', '1');\r\n        \r\n        // - complete transaction\r\n        Analytics.trackTrans();\r\n    });\r\n```\r\n\r\n## configuration\r\n\r\n```js\r\n// setup your account\r\nAnalyticsProvider.setAccount('UA-XXXXX-xx');\r\n// automatic route tracking (default=true)\r\nAnalyticsProvider.trackPages(false);\r\n```\r\n\r\n## Licence\r\nAs AngularJS itself, this module is released under the permissive [MIT license](http://revolunet.mit-license.org). Your contributions are always welcome.\r\n",
+  "readmeFilename": "README.md",
+  "_id": "angular-google-analytics@0.0.1",
+  "commit": "5dac41cc0ce2e513521d466303db951026f57013"
+}

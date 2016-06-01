@@ -1,0 +1,215 @@
+<div class="app-wrapper" ng-controller="TripDetailCtrl">
+    <div class="app-box app-te td">
+        <div class="app-headmenu">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span5">
+                        <!--<ul class="unstyled inline block-top-left">
+                            <li>
+                                <a href="" ng-click="openCreateTripForm()" class="bold">
+                                    <i class="app-icon icon-btn-plus"></i> New Trip
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" show-page="trip-list-wrapper" active-class="aqua" selected-item="#menu-travel-expense" class="bold">
+                                    <i class="app-icon icon-btn-list"></i> Trip List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" show-page="report-list-wrapper" active-class="aqua" selected-item="#menu-travel-expense" class="bold">
+                                    <i class="app-icon icon-btn-list"></i> Report List
+                                </a>
+                            </li>
+                        </ul>-->
+                        <ul class="unstyled inline app-nav-block block-bot-left">
+                            <li class="trip-detail-title">
+                                <h4 class="utmaltergothic limit-title"><span ng-bind="currentTrip.LegInName"></span></h4>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="span2 text-center relative-pos">
+                        <h2 class="utmaltergothic">TravelExpense</h2>
+                        <h4 class="utmaltergothic subtitle">Trip Details</h4>
+
+                        <div ng-class="{'grey' : currentTrip.ReportStatus == '', 'green' : currentTrip.ReportStatus == 'Approved', 'blue': currentTrip.ReportStatus == 'Draft', 'yellow': currentTrip.ReportStatus == 'Submitted', 'red': currentTrip.ReportStatus == 'Rejected' }" class="title-status">{{currentTrip.ReportStatus | forTrip}}</div>
+
+                    </div>
+                    <a href="" class="back-to-app back-to-reportlist btn add-items utmaltergothic show" show-page="trip-list-wrapper" active-class="aqua" selected-item="#menu-travel-expense">
+                        <i class="app-icon icon-back-arrow"></i>Back To Trip List
+                    </a>
+                    <div class="span5 text-right">
+                        <ul class="start-tour">
+                            <li class="bt-start-tour">
+                                <button href="javascript:;" class="home-start-tour add-items">
+                                    Take a Tour
+                                </button>
+                            </li>
+                            <!--
+                            <li>
+                                <h3 class="lightning-deals-text block-top-right"><span><i class="app-icon icon-treasure" style="float: none"></i>Today's Deals</span></h3>
+                            </li>
+                            -->
+                        </ul>
+                    </div>
+                  <span ng-if="!currentTrip.IsSubmitted || (currentTrip.IsSubmitted && currentTrip.IsApproved == 1)">
+                            <add-expense class="btn-add-expense-to-trip" app="travel_expense" from="periodFrom" to="periodTo" customtext="to Trip"></add-expense>
+                        </span>
+                  <add-to-report class="add-to-report-bouncer" ng-if="!currentTrip.IsSubmitted  || (currentTrip.IsSubmitted && currentTrip.IsApproved == 1)"></add-to-report>
+                  <a ng-show="!currentTrip.IsSubmitted || (currentTrip.IsSubmitted && currentTrip.IsApproved == 1)" class="btn add-items add-report-btn btn-delete-trip" ng-click="delete();" href=""><span class="add-trip-report-text">Delete Trip</span></a>
+                </div>
+            </div>
+        </div>
+        <table class="app-table tb-tl" id="tableTripDetail">
+            <tr>
+                <th class="col-chk">
+                    <div class="th firstth">
+                        &nbsp;
+                    </div>
+                </th>
+                <th class="col-name"><div class="th">TRIP NAME</div></th>
+                <th class="col-stt"><div class="th"><trip-reduced-header value="T" description="Trip State; Possible Values: <b><u>U</u></b>pcoming, <b><u>C</u></b>urrent, <b><u>P</u></b>ast"></trip-reduced-header></div></th>
+                <th class="col-amo"><div class="th">AMOUNT</div></th>
+                <th class="col-from"><div class="th">FROM</div></th>
+                <th class="col-to"><div class="th">TO</div></th>
+                <th class="col-sdat"><div class="th">START DATE</div></th>
+                <th class="col-edat"><div class="th">END DATE</div></th>
+                <th class="col-ref"><div class="th">TRIP#</div></th>
+                <th class="col-rep"><div class="th">REPORT#</div></th>
+                <th class="col-stt"><div class="th"><trip-reduced-header value="S" description="Status<br><b><u>D</u></b>raft, <b><u>P</u></b>ending Approval, <b><u>A</u></b>pproved, <b><u>R</u></b>ejected"></trip-reduced-header></div></th>
+                <th class="col-clm"><div class="th">CLAIMED</div></th>
+                <th class="col-apv"><div class="th lastth">APPROVED</div></th>
+            </tr>
+            <tbody class="app-table-child">
+                <tr>
+                    <td class="col-name" colspan="2">
+                        <ul id="td-trip-name" class="nav nav-tabs">
+                            <li class="dropdown active">
+                                <span id="spanTripName" class="trip-name bold limit-title" ng-class="{'have-leg': currentTrip.Leg != 0}" title="{{currentTrip.Name}}">
+                                    <inline-edit value="currentTrip.Name" quick-save edit-status="currentTrip.editStatus" field="Name" oid="currentTrip.TripID" maxlength="128" ng-if="! currentTrip.IsSubmitted || (currentTrip.IsSubmitted && currentTrip.IsApproved == 1) "></inline-edit>
+                                    <a ng-if="currentTrip.IsSubmitted" ng-bind="currentTrip.Name"></a>
+                                </span>
+                                <i class="dropdown-toggle app-icon icon-arrow-dropdown" data-toggle="dropdown" ng-class="{'have-leg': currentTrip.Leg != 0}"></i>
+                                <span class="trip-leg" ng-show="currentTrip.Leg">
+                                    <number-inline-edit display="currentTrip.LegText" value="currentTrip.Leg" ng-show="$parent.currentTrip.Leg != 0" type="leg" maxlength="2" quick-save oid="currentTrip.TripID" field="Leg" ng-if="! currentTrip.IsSubmitted || (currentTrip.IsSubmitted && currentTrip.IsApproved == 1)"></number-inline-edit>
+                                    <a ng-if="currentTrip.IsSubmitted" ng-bind="currentTrip.LegText"></a>
+                                </span>
+                                <ul id="tripListPreview" class="dropdown-menu" ng-class="{'have-leg': currentTrip.Leg != 0}">
+                                    <li ng-repeat="trip in tripList" ng-mouseover="fillTripData(trip)" ng-mouseout="restoreTripData()">
+                                        <a href="" ng-click="viewTrip(trip.TripID)" data-toggle="tab" ng-bind-template="{{ trip.Name }} {{trip.Leg | tripLegInName}}"></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </td>
+                    <td class="col-stt"><trip-state value="currentTrip.State"></trip-state></td>
+                    <td class="align-right col-amo bold"><div class="wrap-indent-right" ng-bind="currentTrip.Amount | number:2"></div></td>
+                    <td class="col-from align-left">
+                        <inline-edit addition-class="text-ellipsis" value="currentTrip.Departure" quick-save edit-status="currentTrip.editStatus" field="Departure" oid="currentTrip.TripID" ng-if="! currentTrip.IsSubmitted || (currentTrip.IsSubmitted && currentTrip.IsApproved == 1)"></inline-edit>
+                        <span ng-if="currentTrip.IsSubmitted" tooltip="{{currentTrip.Departure}}" ng-bind="currentTrip.Departure"></span>
+                    </td>
+                    <td class="col-to align-left">
+                        <inline-edit addition-class="text-ellipsis" value="currentTrip.Arrival" quick-save edit-status="currentTrip.editStatus" field="Arrival" oid="currentTrip.TripID" ng-if="! currentTrip.IsSubmitted || (currentTrip.IsSubmitted && currentTrip.IsApproved == 1)"></inline-edit>
+                        <span ng-if="currentTrip.IsSubmitted" tooltip="{{currentTrip.Arrival}}" ng-bind="currentTrip.Arrival"></span>
+                    </td>
+                    <td class="col-sdat">
+                        <div class="item-expend-period-wrapper">
+                            <span ng-bind="currentTrip.StartDate | formatDate:'dd-MMM-yyyy'"></span>
+                            <input type="text" class="item-expend-period" rci-calendar ng-model="currentTrip.StartDate" oid="currentTrip.TripID" field="StartDate" ng-if="! currentTrip.IsSubmitted || (currentTrip.IsSubmitted && currentTrip.IsApproved == 1)">
+                        </div>
+                    </td>
+                    <td class="col-edat">
+                        <div class="item-expend-period-wrapper">
+                            <span ng-bind="currentTrip.EndDate | formatDate:'dd-MMM-yyyy'"></span>
+                            <input type="text" class="item-expend-period" rci-calendar ng-model="currentTrip.EndDate" oid="currentTrip.TripID" field="EndDate" ng-if="! currentTrip.IsSubmitted || (currentTrip.IsSubmitted && currentTrip.IsApproved == 1)">
+                        </div>
+                    </td>
+                    <td class="col-ref align-left">
+                        <inline-edit value="currentTrip.Reference" maxlength="10" quick-save edit-status="currentTrip.editStatus" field="Reference" oid="currentTrip.TripID" ng-if="! currentTrip.IsSubmitted || (currentTrip.IsSubmitted && currentTrip.IsApproved == 1)"></inline-edit>
+                        <span ng-if="currentTrip.IsSubmitted" ng-bind="currentTrip.Reference"></span>
+                    </td>
+                    <td class="col-rep orange align-left">
+                        <a href="" ng-click="loadReportDetail(currentTrip.ReportID)" ng-bind="currentTrip.Report"></a>
+                    </td>
+                    <td class="col-stt" ng-click="trip.IsChecked = true;">
+                        <trip-state value="currentTrip.ReportStatus"></trip-state>
+                    </td>
+                    <td class="col-clm align-right red" ng-bind="currentTrip.Claimed | number:2"></td>
+                    <td class="col-apv align-right green" ng-bind="currentTrip.Approved | number:2"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="tb-pe-wrapper">
+            <table class="app-table tb-pe app-te" fluid-table>
+                <tr>
+                    <th class="col-chk">
+                        <div class="th firstth">
+                            <div class="app-icon icon-checkbox-sqr">&nbsp;</div>
+                        </div>
+                    </th>
+                    <th class="col-cat"><div class="th"><i class="app-icon icon-circle icon-circle-p"></i>CATEGORY</div></th>
+                    <th class="col-amo" ng-click="predicate = 'Amount'; reverse = !reverse"><div class="th">AMOUNT <i class="app-icon ng-class:{'icon-arrow-ud': predicate != 'Amount', 'icon-arrow-d': predicate == 'Amount' && reverse, 'icon-arrow-u': predicate == 'Amount' && !reverse}"></i></div></th>
+                    <th class="col-itm"><div class="th"><i class="app-icon icon-explore-item"></i>ITEM</div></th>
+                    <th class="col-mrc" ng-click="predicate = 'MerchantName'; reverse = !reverse"><div class="th">MERCHANT <i class="app-icon ng-class:{'icon-arrow-ud': predicate != 'MerchantName', 'icon-arrow-d': predicate == 'MerchantName' && reverse, 'icon-arrow-u': predicate == 'MerchantName' && !reverse}"></i></div></th>
+                    <th class="col-dat" ng-click="predicate = 'PurchaseTime'; reverse = !reverse"><div class="th">PURCHASE<i class="app-icon ng-class:{'icon-arrow-ud': predicate != 'PurchaseTime', 'icon-arrow-d': predicate == 'PurchaseTime' && reverse, 'icon-arrow-u': predicate == 'PurchaseTime' && !reverse}"></i></div></th>
+                    <th class="col-exp"><div class="th">TRIP#</div></th>
+                    <th class="col-inf"><div class="th">MORE</div></th>
+                    <th class="col-att"><div class="th">&nbsp;</div></th>
+                    <th class="col-shr" style="border-left: none;"><div class="th" style="border-left: none;">&nbsp;</div></th>
+                    <th class="col-non"><div class="th lastth">&nbsp;</div></th>
+                </tr>
+                <tr>
+                    <td colspan="11" style="padding: 0">
+                        <div class="custom-scrollbar">
+                            <div class="app-table-child-wrapper" app-resize-height id="td-pe-child">
+                                <table id="te-pe-item-list" class="app-table-child hide-thead" opt-pe-cat-group hide-add-item="currentTrip.IsSubmitted && currentTrip.IsApproved != 1" wrapper-id="te-pe-item-list" categories="itemCategories" curr-app="te" ref="{{currentTrip.Reference}}" open-from="trip-detail-wrapper" from="periodFrom" to="periodTo"></table>
+                            </div>
+                            <div class="pagination pagination-right" style="display: block; margin: 0; position: relative; height: 33px; padding: 5px; background: #eee">
+                                <div class="link-icons">
+                                    <a href="" ng-click="printTrip()"><div class="app-icon print"></div>PRINT</a>
+                                    <a href="" ng-click="deleteItems()" class="delete-link" ng-show="!currentTrip.IsSubmitted || (currentTrip.IsSubmitted && currentTrip.IsApproved == 1)">
+                                        <div class="app-icon delete-red"></div>REMOVE ITEM(S)</a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div ng-include src="'views/add-to-report.html'"></div>
+  <div class="print-report-wrap">
+    <div class="print-report clearfix">
+            <span class="title-box-alert">
+                <i class="icon-logo"></i>
+                <b class="title-box-download">Print trip</b>
+                <button onclick="hideReportWrap();" class="app-icon pop-up-close-window" data-dismiss="modal" aria-hidden="true"></button>
+            </span>
+      <div class="box-select-reporttype trip-print-pdf">
+        <p ng-if="isGeneratingReport"><input type="button" class="btn" ng-click="exportPDF();" id="print-report-btn" value="Download"/><input onclick="hideReportWrap();" type="button" class="btn cancel-report-btn" value="Cancel"/></p>
+        <p class="lbl_loadingtext" ng-if="!isGeneratingReport">Generating PDF report... </p>
+        <div class="downloading-report print-download">&nbsp;</div>
+        <p class="downloadint print-download">Downloading...</p>
+      </div>
+      <div class="box-pdf-viewer">
+        <div class="loadding-pdf">&nbsp;</div>
+        <iframe src="{{urlReport}}" width="100%" height="100%"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function hideReportWrap() {
+    $('.print-report-wrap').hide();
+  }
+
+  $(document).ready(function(){
+      $("#tripListPreview").niceScroll({
+          autohidemode: "cursor",
+          horizrailenabled: false,
+          hidecursordelay: 100,
+          cursoropacitymin: 0,
+          cursoropacitymax: 0
+      });
+  });
+</script>

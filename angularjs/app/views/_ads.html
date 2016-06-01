@@ -1,0 +1,76 @@
+<div id="ads" style="">
+     <h3>Sponsored Ad</h3>
+ </div>
+
+<script>
+     var adsFiles = [
+          "30daysfitness.jpg",
+          "Cartier-Banner-2013-12.jpg",
+          "Ferrari-1.png",
+          "Heineken-2.jpg",
+          "Heineken.gif",
+          "Jim-Ellis-Audi.jpg",
+          "Lexus-1.jpg",
+          "Lexus-2.jpg",
+          "amazon-1.jpg",
+          "amazon-2.jpg",
+          "amazon-4.png",
+          "amazon.jpg",
+          "american-express-2.jpg",
+          "american-express.jpg",
+          "beknown-monster.jpg",
+          "bmw.jpg",
+          "cadillac-2.jpg",
+          "cadillac.jpg",
+          "cartier.jpg",
+          "cnc-motors.jpeg",
+          "corvette.gif",
+          "ferrari-1.jpg",
+          "ford.jpg",
+          "greenlight.jpg",
+          "ipad-air.png",
+          "iphone-4-4s.jpg",
+          "landrover.jpg",
+          "macbook-pro.jpg",
+          "macys.gif",
+          "mcdonalds-2.jpg",
+          "mcdonalds-3.jpg",
+          "mcdonalds-4.jpg",
+          "mcdonalds-5.jpg",
+          "mcdonalds-6.jpg",
+          "mcdonalds.jpg",
+          "mercedes-benz.jpg",
+          "microsoft.jpg",
+          "omegawatches.jpg",
+          "portland-farmer-market.jpg",
+          "range-rover-sport.jpg",
+          "rolls-royce-wraith.jpg",
+          "safeway-2.gif",
+          "sprint.jpg",
+          "subway.jpg",
+          "sweater-dresses.jpg",
+          "target.jpg",
+          "toyota-4Runner.jpg",
+          "toyota-scion.jpg",
+          "toyota.jpg",
+          "verizon.jpg",
+          "volvo-1.jpg",
+          "walgreens.jpg",
+          "watchclub.gif",
+          "windows-phone.jpg",
+          "alaska-airline-1.jpg",
+          "alaska-airline-2.jpg",
+          "american-airline-1.jpg",
+          "american-airline-2.jpg",
+          "cape-air.jpg",
+          "delta-airline-1.jpg",
+          "delta-airline-2.jpg"
+     ]
+
+     var imgEle;
+     for (var i = 0; i < adsFiles.length; i++) {
+          imgEle = '<img id="advert-' + (i + 1) + '" src="styles/img/ads/' + adsFiles[i] +'" class="hide">';
+         $("#ads").append(imgEle);
+     }
+     $("#ads").append('<h2 class="color">retrieving receipt, please wait...</h2>');
+</script>

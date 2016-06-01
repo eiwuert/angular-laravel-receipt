@@ -1,0 +1,131 @@
+<div class="header" ng-show="showHeader" app-show-header>
+    <div class="logo"><a href="#!" show-page="home-page-wrapper" layout="landing" title="ReceiptClub"><img src="styles/img/new-layout/logo.png"/></a></div>
+</div>
+<div class="header-app" ng-show="!showHeader" app-show-header>
+    <div class="logo"><a  href="#!" show-page="home-page-wrapper" layout="landing" title="ReceiptClub"><img src="styles/img/layout/logo-rci.png"/></a></div>
+    <div class="slogan"><img src="styles/img/layout/slogan-rci.png"/></div>
+    <div class="menu-top">
+        <div class="menu-top-right-1 block-menu">
+            <a href="" class="help_info pd-r-20 firstChild" ng-click="openDashboard('about')" onclick="backtoDashboard();">About</a>
+            <a href="http://support.receiptclub.com/" target="_blank" class="help_info pd-r-20 firstChild">Help</a>
+        </div>
+        <div class="menu-top-right-1 block-menu">
+            <a href="" class="username_info firstChild"><span ng-bind="loggedInUser.FirstUserName" ng-click="openDashboard('mysetting')" onclick="goToDashboardTab('profile');"></span>&nbsp;<span ng-click="openDashboard('mysetting')" onclick="goToDashboardTab('profile');" ng-bind="loggedInUser.LastUserName"></span><i class="icon-dropdown-arr memu-seting-profile">&nbsp;</i></a>
+            <ul class="menu-contact hide" ng-if="loggedInUser.UserID > 0">
+                <div class="arrowDiv">
+                    <li><i class="icon-yourpf-usermenu">&nbsp;</i><a href="" ng-click="openDashboard('mysetting')" onclick="goToDashboardTab('profile');" ng-class="{'active': activePath == '/profile'}">Your Profile</a></li>
+                    <li><i class="icon-setting-usermenu">&nbsp;</i><a href="" ng-click="openDashboard('mysetting')" onclick="goToDashboardTab('setting');" ng-class="{'active': activePath == '/settings'}">Settings</a></li>
+                    <li><i class="icon-logout-usermenu">&nbsp;</i><a href="#!/logout" ng-show="loggedInUser.UserID">Sign Out</a></li>
+                </div>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="menu" responsive-menu>
+    <div id="nav-title-container">
+        <ul class="nav-title">
+            <li id="nav-payments-title">
+                <h2>Payment Transactions</h2>
+            </li>
+            <li id="nav-expense-title">
+                <h2>Expense Management</h2>
+            </li>
+        </ul>
+    </div>
+    <div id="nav-container">
+        <!--<ul id="nav-home" class="nav">-->
+            <!--<li>-->
+                <!--<a class="app-icon icon-home" href="" show-page="home-page-wrapper" layout="landing"></a>-->
+            <!--</li>-->
+        <!--</ul>-->
+        <ul id="nav-payments" class="nav">
+            <!--<li><a href="" class="not-active has-arrow-down btn dropdown-toggle" role="button" data-toggle="dropdown" data-trigger="click" data-placement="top" title="Coming soon!">CreditCards<b class="caret"></b></a></li>-->
+            <li ng-click="changeRoute('/dashboard');"><a href="" id="menu-dashboard" switch-dashboard show-page="dashboard-wrapper" class="btn blue-btn" active-class="blue"  ng-class="{'blue': $parent.activePath == '/dashboard'}"><i class="icon-nav-dashboard">&nbsp;</i>Dashboard</a></li>
+            <li class="btn-comingsoon"><a ng-click="keepUploadArea = false;" href="" class="not-active has-arrow-down btn dropdown-toggle" role="button" data-toggle="dropdown" data-trigger="click" data-placement="top" onmouseover="changeTitle(this);" onmouseout="revertTitle(this, 'CreditCards')">CreditCards<b class="caret"></b></a></li>
+            <li class="btn-comingsoon"><a ng-click="keepUploadArea = false;" href="" class="not-active has-arrow-down btn dropdown-toggle" role="button" data-toggle="dropdown" data-trigger="click" data-placement="top"  onmouseover="changeTitle(this);" onmouseout="revertTitle(this, 'BankAccounts')">BankAccounts<b class="caret"></b></a></li>
+            <li ng-click="showSlideGuide('tutorial-slider-receiptbox'); changeRoute('/receiptbox');"><a href="" ng-click="keepUploadArea = false;" onclick="resetShiftClick();" id="menu-receiptbox" show-page="receiptbox-wrapper" class="btn green-btn" active-class="green" ng-class="{'green': $parent.activePath == '/receiptbox'}" data-guid="tutorial-slider-receiptbox">ReceiptBox</a></li>
+        </ul>
+        <ul id="nav-expense-management" class="nav">
+            <li class="menu-e1" ng-click="changeRoute('/personal-expense');showSlideGuide('tutorial-slider-personalexpense');"><a ng-click="keepUploadArea = false;" onclick="resetShiftClick();" id="menu-personal-expense" href="" show-page="personal-expense-wrapper" class="btn blue-btn" active-class="aqua" ng-class="{'aqua': activePath == '/personal-expense'}">PersonalExpense</a></li>
+            <li class="menu-e2" ng-click="changeRoute('/travel-expense/trip-list');"><a ng-click="keepUploadArea = false;" onclick="resetShiftClick();" id="menu-travel-expense" href="" show-page="trip-list-wrapper" class="btn blue-btn" active-class="aqua" ng-class="{'aqua': activePath == '/travel-expense'}" data-guid="tutorial-slider-travelexpense">TravelExpense</a></li>
+            <li class="menu-e3" ng-click="changeRoute('/travel-approver/report-list');"><a ng-click="keepUploadArea = false;" onclick="resetShiftClick();" id="menu-travel-approver" href="" show-page="approver-list-wrapper" class="btn blue-btn" active-class="aqua" ng-class="{'aqua': activePath == '/travel-approver'}">TravelApprover</a></li>
+            <!--<li class="menu-e3"><a class="not-active btn" href="" data-trigger="click" data-placement="top" onmouseover="changeTitle(this);" onmouseout="revertTitle(this, 'BusinessExpense')" ng-class="{'aqua': activePath == '/business-expense'}">BusinessExpense</a></li>-->
+            <li class="menu-e4" ng-click="changeRoute('/business-expense');showSlideGuide('tutorial-slider-businessexpense');"><a ng-click="keepUploadArea = false;" onclick="resetShiftClick();" id="menu-business-expense" href="" show-page="business-expense-wrapper" class="btn blue-btn" active-class="aqua" ng-class="{'aqua': activePath == '/business-expense'}">BusinessExpense</a></li>
+            <li class="menu-e5" ng-click="changeRoute('/education-expense');showSlideGuide('tutorial-slider-educationexpense');"><a ng-click="keepUploadArea = false;" onclick="resetShiftClick();" id="menu-education-expense" href="" show-page="education-expense-wrapper" class="btn blue-btn" active-class="aqua" ng-class="{'aqua': activePath == '/education-expense'}">EducationExpense</a></li>
+            <!--<li class="menu-e4"><a class="not-active btn" href="" data-trigger="click" data-placement="top" onmouseover="changeTitle(this);" onmouseout="revertTitle(this, 'EducationExpense')" ng-class="{'aqua': activePath == '/education-expense'}">EducationExpense</a></li>-->
+            <li class="menu-e6" ng-click="changeRoute('/personal-assets');showSlideGuide('tutorial-slider-personalassets');"><a ng-click="keepUploadArea = false;" onclick="resetShiftClick();" id="menu-personal-assets" href="" show-page="personal-assets-wrapper" class="btn blue-btn" active-class="aqua" ng-class="{'aqua': activePath == '/personal-assets'}">PersonalAssets</a></li>
+            <li class="menu-e7" ng-click="changeRoute('/business-assets');showSlideGuide('tutorial-slider-businessassets');"><a ng-click="keepUploadArea = false;" onclick="resetShiftClick();" id="menu-business-assets" href="" show-page="business-assets-wrapper" class="btn blue-btn" active-class="aqua" ng-class="{'aqua': activePath == '/business-assets'}">BusinessAssets</a></li>
+            <!--<li class="menu-e5"><a class="not-active btn" href="" data-trigger="click" data-placement="top" onmouseover="changeTitle(this);" onmouseout="revertTitle(this, 'PersonalAssets')" ng-class="{'aqua': activePath == '/personal-assets'}">PersonalAssets</a></li>-->
+            <!--<li class="menu-e6"><a class="not-active btn" href="" data-trigger="click" data-placement="top" onmouseover="changeTitle(this);" onmouseout="revertTitle(this, 'BusinessAssets')" ng-class="{'aqua': activePath == '/business-assets'}">BusinessAssets</a></li>-->
+            <li class="menu-e8"><a ng-click="keepUploadArea = false;" class="not-active btn" href="" data-trigger="click" data-placement="top" onmouseover="changeTitle(this);" onmouseout="revertTitle(this, 'QuickExpense')" ng-class="{'aqua': activePath == '/quick-expense'}">QuickExpense</a></li>
+            <li class="menu-e9"><a ng-click="keepUploadArea = false;" class="not-active btn" href="" data-trigger="click" data-placement="top" onmouseover="changeTitle(this);" onmouseout="revertTitle(this, 'GroupExpense')" ng-class="{'aqua': activePath == '/group-expense'}">GroupExpense</a></li>
+            <li class="menu-e10"><a ng-click="keepUploadArea = false;" class="not-active btn" href="" data-trigger="click" data-placement="top" onmouseover="changeTitle(this);" onmouseout="revertTitle(this, 'InvoiceExpress')" ng-class="{'aqua': activePath == '/invoicing'}">InvoiceExpress</a></li>
+            <li class="menu-e11"><a ng-click="keepUploadArea = false;" class="not-active btn" href="" data-trigger="click" data-placement="top" onmouseover="changeTitle(this);" onmouseout="revertTitle(this, 'InventorySpend')" ng-class="{'aqua': activePath == '/wholesale'}">InventorySpend</a></li>
+            <li class="menu-more">
+                <a href=""></a>
+                <ul class="menu-more-list">
+					<li class="lower placeholder">&nbsp;</li>
+				</ul>
+            </li>
+        </ul>
+        <ul class="nav">
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+<script>
+    function goToDashboardTab (tab) {
+        $('#menu-dashboard').click();
+        setTimeout(function(){
+            $('#menu-dashboard').removeClass('blue');
+        },10);
+        switch(tab) {
+            case 'profile':
+                $('#db_my_info').click();
+                break;
+            case 'setting':
+                $('#db_setting').click();
+                break;
+            default :
+                break;
+        }
+    }
+    function backtoDashboard () {
+        $('#menu-dashboard').click();
+        setTimeout(function(){
+            $('#menu-dashboard').removeClass('blue');
+        },10);
+    }
+    var removeClass = true;
+    $('document').ready(function(){
+        $(".memu-seting-profile").click(function () {
+            $(".menu-top-right-1 .menu-contact").toggleClass('show');
+            removeClass = false;
+        });
+
+        $(".menu-top-right-1 a.help_info").click(function()
+        {
+            if (removeClass) {
+                $(".menu-top-right-1 .menu-contact").removeClass('show');
+                $(".menu-top-right-1 .menu-help_info").removeClass('show');
+            }
+            removeClass = true;
+        });
+        $("html").click(function (e) {
+            if (removeClass) {
+                $(".menu-top-right-1 .menu-contact").removeClass('show');
+                $(".menu-top-right-1 .menu-help_info").removeClass('show');
+            }
+            removeClass = true;
+
+            if(!$('.message-upload-custom').hasClass('uploading-receipt')){
+                $('.message-upload-custom .totalFileUpload').hide();
+            }
+
+            if($('.notify-message').hasClass('in-screen-report')){
+                $('.notify-message').hide();
+            }
+        });
+    });
+</script>

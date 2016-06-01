@@ -1,0 +1,218 @@
+<div class="app-wrapper" ng-controller="TripListCtrl">
+    <div class="app-box app-te tl">
+        <div class="app-headmenu">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span5">
+                        <div class="filter">
+                            <div class="btn-group filter-type">
+                                <button class="btn" ng-bind="filters.name"></button>
+                                <button class="btn dropdown-toggle" data-toggle="dropdown" ng-click="getTripTotal()">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li ng-repeat="ftype in filterTypeList">
+                                        <p><a class="tripTotala1" href="" ng-click="selectFilterType(ftype);" ng-bind="ftype.name"></a><p ng-bind="ftype.totalTrip"></p></p>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div id="trip-filter">
+                                <div class="date-range-box">
+                                    <input class="temp-item-from" type="hidden">
+                                    <input class="temp-item-to" type="hidden">
+                                    <div class="date-from"></div>
+                                    <div class="date-between">To</div>
+                                    <div class="date-to"></div>
+                                    <div class="clearfix"></div>
+                                    <div class="button-wrapper">
+                                        <input class="box-range-cancel btn" type="button" value="Cancel" />
+                                        <input class="box-range-ok btn" type="button" value="OK" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group filter-date date-wrapper" >
+                                <button class="btn">
+                                    <span ng-show="!filters.allDate" ng-bind-template="{{dateFromDisplay | onlyDateWithSpace}} - {{dateToDisplay | onlyDateWithSpace}}"></span>
+                                    <span ng-show="filters.allDate">All Dates</span>
+                                </button>
+                                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu limit-width">
+                                    <li><a tabindex="-1" href="" element-id="trip-filter" rb-datepicker quick-filter="true">Select Date Range</a></li>
+                                    <li><a tabindex="-1" href="" class="all-dates" ng-click="applyAllDate()">All Dates</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span2 text-center">
+                        <h2 class="utmaltergothic">TravelExpense</h2>
+                        <h4 class="utmaltergothic">Trip List</h4>
+                        <a class="btn add-items create-report-btn" href="" ng-click="openCreateTripForm()">
+                            Create New Trip
+                        </a>
+                        <a class="btn add-items show-triplist-btn" ng-click="$parent.changeRoute('/travel-expense/report-list');" id="btn-report-list" href="" onclick="resetShiftClick();" ng-class="{'aqua': activePath == '/travel-expense'}" active-class="aqua" show-page="report-list-wrapper" selected-item="#menu-travel-expense">
+                          Show Report List
+                        </a>
+                    </div>
+                    <div class="span5 text-right">
+                        <ul class="start-tour">
+                            <li class="bt-start-tour" ng-click="">
+                                <button href="javascript:;" class="home-start-tour add-items">
+                                    Take a Tour
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="app-table tb-tl" fluid-table>
+            <tr>
+                <th class="col-chk">
+                    <div class="th firstth">
+                        <!--<i class="app-icon icon-checkbox-sqr" ng-click="checkAll(tripList);" ng-show="allowCheckAll"-->
+                           <!--ng-class="{'icon-checkbox-sqr': !isCheckAll, 'icon-checkedbox-sqr': isCheckAll}"></i>-->
+                    </div>
+                </th>
+                <th class="col-name"><div class="th">TRIP NAME</div></th>
+        <th class="col-stt"><div class="th"><trip-reduced-header value="T" description="Trip Period<br><b><u>U</u></b>pcoming, <b><u>C</u></b>urrent, <b><u>P</u></b>ast"></trip-reduced-header></div></th>
+                <th class="col-amo">
+                    <div class="th">
+                        AMOUNT
+                    </div>
+                </th>
+                <th class="col-from"><div class="th">FROM</div></th>
+                <th class="col-to"><div class="th">TO</div></th>
+                <th class="col-sdat">
+                    <div class="th">
+                        START DATE
+                    </div>
+                </th>
+                <th class="col-edat">
+                    <div class="th">
+                        END DATE
+                    </div>
+                </th>
+                <th class="col-ref"><div class="th">TRIP#</div></th>
+                <th class="col-rep"><div class="th">REPORT#</div></th>
+                <th class="col-stt"><div class="th"><trip-reduced-header value="S" description="Status<br><b><u>D</u></b>raft, <b><u>P</u></b>ending Approval, <b><u>A</u></b>pproved, <b><u>R</u></b>ejected"></trip-reduced-header></div></th>
+                <th class="col-clm"><div class="th">CLAIMED</div></th>
+                <th class="col-apv"><div class="th">APPROVED</div></th>
+                <th class="col-non"><div class="th lastth">&nbsp;</div></th>
+            </tr>
+            <tr>
+                <td colspan="14" style="padding: 0">
+                    <div class="custom-scrollbar">
+                        <div class="app-table-child-wrapper" app-resize-height id="te-trip-list">
+                            <table class="app-table-child" fluid-table>
+                                <tbody bindonce ng-repeat="trip in tripList">
+                                    <tr>
+                                        <td class="col-chk">
+                                            <!--<i class="app-icon icon-checkbox-sqr _disable" ng-show="trip.IsSubmitted" title="This trip has been submitted in a report, and so they cannot be changed or deleted"></i>-->
+                                            <!--<i onclick="checkboxOnClick(this);" class="app-icon" ng-click="toggleCheckboxStatus(trip)"-->
+                                                <!--ng-class="{'icon-checkbox-sqr': !trip.IsChecked, 'icon-checkedbox-sqr': trip.IsChecked, 'checkboxshift': !trip.IsSubmitted}"-->
+                                                <!--ng-show="!trip.IsSubmitted"></i>-->
+                                        </td>
+                                        <td class="align-left col-name">
+                                            <a href="" ng-click="loadTripDetail(trip.TripID)" class="trip-name bold text-ellipsis" tooltip="{{trip.Name}}" bo-text="trip.Name"></a>
+                                            <span ng-show="trip.Leg">Leg <span ng-bind="trip.Leg"></span></span>
+                                        </td>
+                                        <td class="col-stt">
+                                            <trip-state value="trip.State"></trip-state>
+                                        </td>
+                                        <td class="align-right col-amo bold">
+                                            <div class="wrap-indent-right text-ellipsis" bo-text="trip.Amount | number:2"></div>
+                                        </td>
+                                        <td class="col-from align-left">
+                                            <inline-edit addition-class="text-ellipsis" value="trip.Departure" quick-save edit-status="editStatus" field="Departure" oid="trip.TripID"  ng-if="! trip.IsSubmitted"></inline-edit>
+                                            <span ng-if="trip.IsSubmitted" class="text-ellipsis" tooltip="{{ trip.Departure }}" ng-bind="trip.Departure"></span>
+                                        </td>
+                                        <td class="col-to align-left">
+                                            <inline-edit addition-class="text-ellipsis" value="trip.Arrival" quick-save edit-status="editStatus" field="Arrival" oid="trip.TripID" ng-if="! trip.IsSubmitted"></inline-edit>
+                                            <span ng-if="trip.IsSubmitted" class="text-ellipsis" tooltip="{{ trip.Departure }}" ng-bind="trip.Arrival"></span>
+                                        </td>
+                                        <td class="col-sdat">
+                                            <div class="item-expend-period-wrapper">
+                                                <span ng-bind="trip.StartDate | formatDate:'dd-MMM-yyyy'"></span>
+                                                <input type="text" class="item-expend-period" rci-calendar ng-model="trip.StartDate" oid="trip.TripID" field="StartDate" ng-if="! trip.IsSubmitted">
+                                            </div>
+                                        </td>
+                                        <td class="col-edat">
+                                            <div class="item-expend-period-wrapper">
+                                                <span ng-bind="trip.EndDate | formatDate:'dd-MMM-yyyy'"></span>
+                                                <input type="text" class="item-expend-period" rci-calendar ng-model="trip.EndDate"  oid="{{ trip.TripID }}" field="EndDate" ng-if="! trip.IsSubmitted">
+                                            </div>
+                                        </td>
+                                        <td class="col-ref align-left">
+                                            <inline-edit value="trip.Reference" maxlength="10" quick-save field="Reference" edit-status="editStatus" oid="trip.TripID" ng-if="! trip.IsSubmitted"></inline-edit>
+                                            <span ng-if="trip.IsSubmitted" ng-bind="trip.Reference"></span>
+                                        </td>
+                                        <td class="col-rep orange align-left" ng-bind="trip.Report"></td>
+                                        <td class="col-stt">
+                                            <trip-state-filter value="trip.ReportStatus"></trip-state-filter>
+                                        </td>
+                                        <td class="col-clm align-right red" bo-text="trip.Claimed | number:2"></td>
+                                        <td class="col-apv align-right green" bo-text="trip.Approved  | number:2"></td>
+                                    </tr>
+                                </tbody>
+                                <tbody ng-show="IslastPage"><tr><td colspan='13'><button ng-click='loadMoreTrips();' class='btn btn-xs'>Load More</button></td></tr></tbody>
+                            </table>
+                        </div>
+
+                        <div class="pagination pagination-right" style="display: block; padding: 4px 0 5px 0; margin: 0; border-top: 1px solid #ddd; position: relative;">
+                            <div class="link-icons">
+                                <!--<a href="" ng-click="printTrip();"><div class="app-icon print"></div>PRINT</a>
+                                <a href="" ng-click="deleteSelectedTrip()" class="delete-link"><div class="app-icon delete-red"></div>DELETE</a>-->
+                                <!--<a href=""><div class="app-icon analytic"></div>CHARTS</a>-->
+                                <!--<a href=""><div class="app-icon export"></div>EXPORT</a>-->
+                                <!--<a href=""><div class="app-icon email"></div>EMAIL</a>-->
+                                <!--<a href=""><div class="app-icon print"></div>PRINT</a>-->
+                            </div>
+                            <div ng-if="page.isWorking" class="bold loadingReport">Loading...</div>
+                            <div style="position: absolute; top: 15px; right: 162px;">
+                                <span ng-bind-template="{{filters.type | tripTypeFilterFullFormat}}: "></span>
+                                <span ng-show="tripList.length"
+                                      ng-bind-template="{{page.indexFrom}}-{{page.indexTo}} of {{page.totalByType}}"></span>
+                                <span ng-show="!tripList.length">0-0 of 0</span>
+                            </div>
+
+                            <ul>
+                                <li><a href="" ng-click="paginateFirst()" title="Go to First page"><i class="icon-fast-backward"></i></a></li>
+                                <li><a href="" ng-click="paginatePrevious()" title="Go to Previous page"><i class="icon-backward"></i></a></li>
+                                <li><a href="" ng-click="paginateNext()" title="Go to Next page"><i class="icon-forward"></i></a></li>
+                                <li><a href="" ng-click="paginateLast()" title="Go to Last page"><i class="icon-fast-forward"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div ng-include src="'views/create-trip.html'"></div>
+    <div class="print-report-wrap">
+      <div class="print-report clearfix">
+            <span class="title-box-alert">
+                <i class="icon-logo"></i>
+                <b class="title-box-download">Print trip</b>
+                <button class="app-icon pop-up-close-window" data-dismiss="modal" aria-hidden="true"></button>
+            </span>
+        <div class="box-select-reporttype trip-print-pdf">
+          <p ng-if="isGeneratingReport"><input type="button" class="btn" ng-click="exportPDF();" id="print-report-btn" value="Download"/><input onclick="hideReportWrap();" type="button" class="btn cancel-report-btn" value="Cancel"/></p>
+          <p class="lbl_loadingtext" ng-if="!isGeneratingReport">Generating PDF report... </p>
+          <div class="downloading-report print-download">&nbsp;</div>
+          <p class="downloadint print-download">Downloading...</p>
+        </div>
+        <div class="box-pdf-viewer">
+          <div class="loadding-pdf">&nbsp;</div>
+          <iframe src="{{urlReport}}" width="100%" height="100%"></iframe>
+        </div>
+      </div>
+    </div>
+</div>
+<script>
+  function hideReportWrap(){
+    $('.print-report-wrap').hide();
+  }
+</script>

@@ -1,0 +1,60 @@
+<div class="app-wrapper" ng-controller="RBCtrl">
+    <div class="app-box app-rb">
+        <div class="app-headmenu">
+            <div class="receipt-nav">
+                <div href="" class="nav snap-rc">
+                    <div class="app-icon icon-green-camera" ng-click="triggerTakeSnap()"></div>
+                    <p>SNAP RECEIPT</p>
+                </div>
+                <div href="" class="nav receive-rc">
+                    <div class="app-icon icon-receive-big" ng-click="receiveNewReceipts()"></div>
+                    <p>RECEIVE RECEIPT</p>
+                </div>
+            </div>
+
+            <form action="{{uploadURL}}?uid={{uploadUserID}}&location={{uploadLocation}}&uploadType=snap" method="post" enctype="multipart/form-data" id="snap_upload_form" style="display: none">
+                <input type="file" capture="camera" accept="image/*" id="takePictureField" class="button" style="display: none" name="Filedata" onchange="triggerUploadImage(this.files)">
+            </form>
+        </div>
+        <table class="app-table app-table-child" id="rb-receipt-list" infinite-scroll="loadMoreReceipt()" infinite-scroll-disabled="loadedAllRBList">
+            <thead>
+                <th class="col-rec no-border-right"><div class="th firstth">RECEIPTS</div></th>
+                <th class="col-ocu no-border-left"><div class="th">&nbsp;</div></th>
+                <th class="col-amo">
+                    <div class="th lastth can-sort" ng-click="sortReceipts('amount')">
+                        AMOUNT
+                        <div class="app-icon ng-class:{'icon-arrow-ud': sortField != 'amount', 'icon-arrow-u': sortField == 'amount' && sortValue==1, 'icon-arrow-d': sortField == 'amount' && sortValue==0}"></div>
+                    </div>
+                </th>
+            </thead>
+
+            <tbody bindonce ng-repeat="receipt in receiptList">
+                <tr class="level-cat ng-class:{'bold': receipt.VerifyStatus == 0}" ng-click="receipt.IsCollapsed = !receipt.IsCollapsed">
+                    <td class="align-left col-rec">
+                        <div class="wrap text-ellipsis">
+                            <i class="app-icon ng-class:{'icon-circle-m': !receipt.IsCollapsed, 'icon-circle-p': receipt.IsCollapsed}"
+                               bo-show="receipt.Items.length"></i>
+                            <span href="" class="receipt-name" tooltip="{{receipt.MerchantName}}" bo-text="receipt.MerchantName" ng-class="{'fix-nopadding':!receipt.Items.length}"></span>
+                        </div>
+                    </td>
+                    <td class="col-ocu">
+                        <span class="home-currency-rb ng-class:{'hide': loggedInUser.CurrencyCode == receipt.CurrencyCode}">{{ loggedInUser.CurrencyCode }}</span>
+                    </td>
+                    <td class="align-right col-amo">
+                        <span class="wrap-indent-right">{{receipt.DigitalTotal | number:2}}</span>
+                    </td>
+                </tr>
+                <tr class="level-item" bindonce ng-repeat="item in receipt.Items" ng-hide="receipt.IsCollapsed">
+                    <td class="align-left col-rec">
+                        <div class="wrap text-ellipsis"><span class="">- {{ item.Name }}</span></div>
+                    </td>
+                    <td class="col-ocu">&nbsp;</td>
+                    <td class="align-right col-amo">
+                        <span class="wrap-indent-right" bo-html="item.Amount | number:2"></span>
+                    </td>
+                </tr>
+                <tr class="hide" ng-if="$last" ng-init="applyStyling('truncate')"></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

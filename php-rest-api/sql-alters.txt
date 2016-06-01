@@ -1,0 +1,232 @@
+/* Created: 2014-08-13
+ * Keep all alteration of database here  
+ */
+ 
+/*
+|--------------------------------------------------------------------------
+| 2014-08-21 - Dean
+| Change Created time from INT to DOUBLE
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE  `Receipt` CHANGE  `CreatedTime`  `CreatedTime` DOUBLE NOT NULL DEFAULT  '0' COMMENT 'Unix timestamp when the receipt item record was created',
+CHANGE  `ModifiedTime`  `ModifiedTime` DOUBLE NOT NULL DEFAULT  '0' COMMENT  'Unix timestamp when the receipt record information was last modified';
+
+/*
+|--------------------------------------------------------------------------
+| 2014-10-11 - SONVQ
+| Create table Maintenance
+|--------------------------------------------------------------------------
+*/
+CREATE TABLE IF NOT EXISTS `Maintenance` (
+  `MaintenanceID` int(11) NOT NULL AUTO_INCREMENT,
+  `StartTime` double NOT NULL DEFAULT '0',
+  `EndTime` double NOT NULL DEFAULT '0',
+  `CreatedTime` double NOT NULL DEFAULT '0',
+  `ModifiedTime` double NOT NULL DEFAULT '0',
+  `Reason` varchar(255) CHARACTER SET ascii DEFAULT NULL,
+  `UserID` int(11) NOT NULL,
+  PRIMARY KEY (`MaintenanceID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+/*
+|--------------------------------------------------------------------------
+| 2014-10-11 - Quentin
+| Add LastRejected column to report table.
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE `Report` ADD `LastRejected` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'Make a copy of report from last rejected status. Display as read-only for approver.' ;
+
+/*
+|--------------------------------------------------------------------------
+| 2014-10-12 - Quentin
+| Move LastRejected report to a separated table.
+|--------------------------------------------------------------------------
+*/
+CREATE TABLE IF NOT EXISTS `ReportRejected` (
+`ReportRejectedID` int(11) NOT NULL,
+  `ReportID` int(11) NOT NULL,
+  `Usage` varchar(50) NOT NULL COMMENT 'Type of usage: report, print_all, print_claimed, print_approved',
+  `Json` text NOT NULL COMMENT 'Acopy of report object from last rejected status. Display as read-only for approver'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `ReportRejected`
+ ADD PRIMARY KEY (`ReportRejectedID`);
+
+ALTER TABLE `ReportRejected`
+MODIFY `ReportRejectedID` int(11) NOT NULL AUTO_INCREMENT;
+
+/*
+|--------------------------------------------------------------------------
+| 2014-10-12 - Quentin
+| Drop LastRejected report column.
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE `Report`
+  DROP `LastRejected`;
+
+/*
+|--------------------------------------------------------------------------
+| 2014-11-19 - Quentin
+| Add table for new Siphon&PushGun upload flow
+|--------------------------------------------------------------------------
+*/
+CREATE TABLE IF NOT EXISTS `UploadInfo` (
+  `UserID` int(11) NOT NULL,
+  `SocketID` varchar(100) NOT NULL,
+  `PushServerIP` varchar(100) NOT NULL,
+  `Created` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `UploadInfo`
+ ADD PRIMARY KEY (`UserID`);
+
+/*
+|--------------------------------------------------------------------------
+| 2014-12-15 - Steve
+| Add column for PE guide
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE  `Profile` ADD  `ShowPEGuide` TINYINT NOT NULL DEFAULT  '1';
+/* Add column for TE guide */
+ALTER TABLE  `Profile` ADD  `ShowTEGuide` TINYINT NOT NULL DEFAULT  '1';
+/*
+|--------------------------------------------------------------------------
+| 2014-12-16 - Quentin
+| Add column Email in Merchant table
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE `Merchant` ADD `Email` VARCHAR(255) NULL AFTER `CountryCode`;
+
+/*
+|--------------------------------------------------------------------------
+| 2014-12-18 - Quentin
+| Add column MerchantEmail in Receipt table
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE `Receipt` ADD `MerchantEmail` VARCHAR(255) NULL AFTER `MerchantPhone`;
+
+/*
+|--------------------------------------------------------------------------
+| 2014-12-19 - Quentin
+| Add column S3RegionCode in Country table
+| Create table S3Region
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE `Country` ADD `S3RegionCode` VARCHAR(45) NULL ;
+
+CREATE TABLE IF NOT EXISTS `S3Region` (
+  `S3RegionCode` varchar(45) NOT NULL,
+  `Name` varchar(128) DEFAULT NULL,
+  `Endpoint` varchar(128) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `S3Region`
+ ADD PRIMARY KEY (`S3RegionCode`);
+
+
+|--------------------------------------------------------------------------
+| 2014-12-22 - Steve
+| Add column ShowRBGuide in profile table
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE `Profile` ADD `ShowRBGuide` TINYINT NOT NULL DEFAULT '1' AFTER `PhoneExt`;
+ALTER TABLE `Profile` ADD `ShowBEGuide` TINYINT NOT NULL DEFAULT '1' ;
+ALTER TABLE `Profile` ADD `ShowEEGuide` TINYINT NOT NULL DEFAULT '1' ;
+ALTER TABLE `Profile` ADD `ShowPAGuide` TINYINT NOT NULL DEFAULT '1' ;
+ALTER TABLE `Profile` ADD `ShowBAGuide` TINYINT NOT NULL DEFAULT '1' ;
+
+/*
+|--------------------------------------------------------------------------
+| 2014-12-23 - Quentin
+| Add column FileBucket in File table to store aws region bucket
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE `File` ADD `FileBucket` VARCHAR(100) NOT NULL COMMENT 'Bucket name where file is stored' AFTER `FileName`;
+
+/*
+|--------------------------------------------------------------------------
+| 2015-01-05 - Quentin
+| Add column FileName in Merchant table to store OCR search keys
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE `Merchant` ADD `FindName` VARCHAR(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `MccCode`;
+
+/*
+|--------------------------------------------------------------------------
+| 2015-01-07 - Steve
+| Add table MerchantParser
+|--------------------------------------------------------------------------
+*/
+
+CREATE TABLE IF NOT EXISTS `MerchantAlgos` (
+  `MerchantID` int(11) NOT NULL,
+  `PaperReceiptFindName` varchar(1000) DEFAULT NULL,
+  `PaperReceiptBot` varchar(255) DEFAULT NULL,
+  `PaperInvoiceFindName` varchar(1000) DEFAULT NULL,
+  `PaperInvoiceBot` varchar(255) DEFAULT NULL,
+  `EmailReceiptFindName` varchar(1000) DEFAULT NULL,
+  `EmailReceiptBot` varchar(255) DEFAULT NULL,
+  `EmailInvoiceFindName` varchar(1000) DEFAULT NULL,
+  `EmailInvoiceBot` varchar(255) DEFAULT NULL,
+  `DigitalReceiptFindName` varchar(1000) DEFAULT NULL,
+  `DigitalReceiptBot` varchar(255) DEFAULT NULL,
+  `DigitalInvoiceFindName` varchar(1000) DEFAULT NULL,
+  `DigitalInvoiceBot` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for table `MerchantAlgos`
+--
+ALTER TABLE `MerchantAlgos`
+ ADD PRIMARY KEY (`MerchantID`);
+
+/*
+|--------------------------------------------------------------------------
+| 2015-01-09 - Quentin
+| Remove column FindName of Merchant
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE `Merchant`
+ DROP `FindName`;
+
+/*
+|--------------------------------------------------------------------------
+| 2015-01-12 - Steve
+| Add column Searchable, OperationCode, Language to 'Merchant'
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE `Merchant` ADD `Searchable` TINYINT NOT NULL DEFAULT '0' ;
+ALTER TABLE `Merchant` ADD `OperationCode` VARCHAR(2) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL ;
+ALTER TABLE `Merchant` ADD `Language` VARCHAR(255) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL ;
+ 
+/*
+|--------------------------------------------------------------------------
+| 2015-01-12 - Quentin
+| Add table to store fall-back synchronizations of merchant
+|--------------------------------------------------------------------------
+*/ 
+CREATE TABLE IF NOT EXISTS `MerchantOcrSync` (
+  `OcrIP` varchar(255) NOT NULL,
+  `MerchantIDs` varchar(255) NOT NULL,
+  `Created` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE `MerchantOcrSync`
+ ADD PRIMARY KEY (`OcrIp`);
+
+
+/*
+|--------------------------------------------------------------------------
+| 2015-01-20 - Steve
+| Add column Website to 'Merchant'
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE `Merchant` ADD `Website` VARCHAR(255) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL ;
+/*
+|--------------------------------------------------------------------------
+| 2015-01-20 - Quentin
+| Change default of Merchant Searchable from 0 to 1
+|--------------------------------------------------------------------------
+*/
+ALTER TABLE `Merchant` CHANGE `Searchable` `Searchable` TINYINT(4) NOT NULL DEFAULT '1';

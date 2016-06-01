@@ -1,0 +1,36 @@
+<div id="CategoriesBox" class="modal hide custom-box" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3>SELECT CATEGORY</h3>
+    </div>
+    <div class="modal-body">
+        <div class="search-bar-wrapper">
+            <i class="app-icon search-bar"></i>
+            <input type="text" class="form-text" name="cat_search" placeholder="Search" search-cat>
+        </div>
+        <div class="wrap uncategorized" ng-class="{'current': noCurrentCat}">
+            <i class="app-icon icon-success-small" ng-show="noCurrentCat"></i>
+            <i class="app-icon icon-ban"></i>
+            <div class="uppercase cat-name text-ellipsis">
+                <a href="" ng-click="preparePerformSelectCat(0)">Uncategorized</a>
+            </div>
+        </div>
+        <div class="categories-tbl-wrapper">
+            <table class="app-table-child hide-thead" toggle-branch>
+                <tbody ng-repeat="rowGroup in categoryTree">
+                    <tr ng-repeat="row in rowGroup" ng-class="{'hide': row.parentCollapse || row.masterCollapse, 'current': row.current}" class="{{ row.class }}" category-id="{{ row.CategoryID }}">
+                        <td class="align-left col-cat">
+                            <div class="wrap" ng-class="{'collapse-disabled': row.collapseDisabled}">
+                                <i class="app-icon icon-success-small" ng-show="row.current"></i>
+                                <i class="app-icon icon-circle-small fix-nomargin" ng-class="{'icon-circle-p': ! row.expand, 'icon-circle-m': row.expand, 'hide': row.collapseDisabled}"></i>
+                                <div class="uppercase cat-name text-ellipsis">
+                                    <a href="" ng-click="preparePerformSelectCat(row)">{{ row.CategoryName }}</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<div id="addTripBox" class="modal hide custom-box" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <i class="icon-logo"></i>
+        <h3>Add trip</h3>
+        <button type="button" class="app-icon pop-up-close-window" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <ul class="unstyled alert alert-danger" ng-show="responseMessage">
+                <li ng-repeat="message in responseMessage">- {{ message }}</li>
+            </ul>
+            <table class="table table-striped table-hover table-list">
+                <tr>
+                    <th>trip list</th>
+                    <th width="9%">amount</th>
+                    <th width="9%">from</th>
+                    <th width="9%">to</th>
+                    <th width="14%">start date</th>
+                    <th width="14%" style="border-right: solid 1px #618bcf;">end date</th>
+                    <th class="no-border"></th>
+                </tr>
+                <tr ng-repeat="trip in trips">
+                    <td class="border-left" ng-class="{'border-bottom': $last}" ng-bind="trip.Name"></td>
+                    <td class="text-right" ng-class="{'border-bottom': $last}"  ng-bind="trip.Amount | currency"></td>
+                    <td class="text-center" ng-class="{'border-bottom': $last}" ng-bind="trip.Departure"></td>
+                    <td class="text-center" ng-class="{'border-bottom': $last}" ng-bind="trip.Arrival"></td>
+                    <td class="text-center" ng-class="{'border-bottom': $last}" ng-bind="trip.StartDate | formatDate:'dd-MMM-yyyy'"></td>
+                    <td class="text-center border-right" ng-class="{'border-bottom': $last}"
+                        ng-bind="trip.EndDate | formatDate:'dd-MMM-yyyy'"></td>
+                    <td class="no-border">
+                        <i class="app-icon" ng-show="trip.IsNew == 1" ng-click="trip.IsChecked = !trip.IsChecked; pickTrip(trip);" ng-class="{'icon-checkbox-sqr': !trip.IsChecked, 'icon-checkedbox-sqr': trip.IsChecked}"></i>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <p class="row">
+            <span class="span2">trip selected:</span>
+            <span class="span1 selected-trip" ng-pluralize count="selectedTripIDs.length" when="{'0': '0 trip', '1': '1 trip', 'other': '{} trips'}"></span>
+        </p>
+        <p class="row">
+            <span class="span2">total amount of</span>
+            <span class="span1 selected-trip" ng-pluralize count="selectedTripIDs.length" when="{'0': '0 trip:', '1': '1 trip:', 'other': '{} trips:'}"></span><span class="span2 amount">{{ selectedAmount | currency}}</span>
+        </p>
+
+        <button class="btn" ng-click="reset()">Reset</button>
+        <button class="btn btn-primary" ng-click="addToReport()">Done</button>
+        <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true" ng-click="reset()">Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,137 @@
+<div id="popup-receipt-details">
+    <div id="modalBoxReceipt" class="modal modal-info modal-receipt hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <i class="icon-logo"></i>
+            <h4 id="myModalspan">More Receipt Details</h4>
+            <button class="app-icon pop-up-close-window" data-dismiss="modal" aria-hidden="true"></button>
+        </div>
+        <div class="item-head-info">
+            <div class="hi-block-right">
+                <span class="">Total: </span>
+                <span class="bold">{{moreBoxData.DigitalTotal}} {{ TmpCurrencyCode}}</span>
+            </div>
+        </div>
+        <div class="modal-body">
+            <form action="">
+                <div class="mb-block-left">
+                    <div class="form-inline">
+                        <span class="checkbox bold">Memo</span>
+                        <div class="align-right">
+                            <textarea id="popup-memo" placeholder="Enter your memo" ng-model="moreBoxData.Memo"></textarea>
+                        </div>
+                    </div>
+                    <div class="rows-wrapper">
+                        <div class="form-inline">
+                            <span class="checkbox bold">Tags</span>
+                            <input type="text" disabled>
+                        </div>
+                        <div class="form-inline">
+                            <span class="checkbox bold">Loyalty Number</span>
+                            <input type="text" disabled>
+                        </div>
+                        <div class="form-inline">
+                            <span class="checkbox bold">Loyalty Points </span>
+                            <input type="text" disabled>
+                        </div>
+                        <div class="form-inline">
+                            <span class="checkbox bold">Rebate Amount</span>
+                            <input type="text" ng-model="moreBoxData.RebateAmount" disabled>
+                        </div>
+                        <div class="form-inline">
+                            <span class="checkbox bold">Item Count</span>
+                            <input type="text" ng-model="moreBoxData.ItemCount" disabled>
+                        </div>
+                        <div class="form-inline">
+                            <span class="checkbox bold">Email Sender</span>
+                            <input type="text" ng-model="moreBoxData.EmailSender" disabled>
+                        </div>
+                        <div class="form-inline">
+                            <span class="checkbox bold">Reference Number</span>
+                            <input type="text" disabled>
+                        </div>
+                    </div>
+
+                    <div class="rows-wrapper small-inputs">
+                        <div class="form-inline">
+                            <span> NAICS </span>
+                            <input type="text" ng-model="moreBoxData.MerchantNaicsCode" disabled><br>
+                            <em>  North American Industry Classification System Code </em>
+                        </div>
+                        <div class="form-inline">
+                            <span> SIC </span>
+                            <input type="text" ng-model="moreBoxData.MerchantSicCode" disabled><br>
+                            <em> Standard Industrial Classification Code </em>
+                        </div>
+                        <div class="form-inline">
+                            <span> MCC </span>
+                            <input type="text" ng-model="moreBoxData.MerchantMccCode" disabled><br>
+                            <em> Merchant Classification Code </em>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-block-right">
+                    <div class="form-inline item-picture">
+                        <img class="img-merchant" ng-src="{{ moreBoxData.MerchantLogo }}" ng-show="moreBoxData.MerchantLogo">
+                    </div>
+
+                    <div class="rows-wrapper">
+                        <div class="form-inline">
+                            <span class="checkbox bold"><i class="app-icon icon-checkbox-sqr"></i> Merchant Name </span>
+                            <input type="text" ng-model="moreBoxData.MerchantName">
+                        </div>
+                        <div class="form-inline">
+                            <span class="checkbox bold"><i class="app-icon icon-checkbox-sqr"></i> Merchant Website </span>
+                            <input type="text">
+                        </div>
+                        <div class="form-inline">
+                            <span class="checkbox bold"><i class="app-icon icon-checkbox-sqr"></i> Merchant Offers </span>
+                            <input type="text">
+                        </div>
+                        <!--
+                        <div class="form-inline">
+                            <span class="checkbox bold"><i class="app-icon icon-checkbox-sqr"></i> Coupon </span>
+                            <br>
+                            <img class="img-coupon" src="images/coupon-placeholder.jpg">
+                        </div>
+                        -->
+                    
+                        <div class="form-inline rate">
+                            <span class="checkbox rate-lbl bold"><i class="app-icon icon-checkbox-sqr"></i> Rate </span>
+                            <i class="app-icon icon-rate-star"></i>
+                            <i class="app-icon icon-rate-star"></i>
+                            <i class="app-icon icon-rate-star"></i>
+                            <i class="app-icon icon-rate-star"></i>
+                            <i class="app-icon icon-rate-star-empty"></i>
+                        </div>
+                        <div class="form-inline">
+                            <span class="checkbox bold"><i class="app-icon icon-checkbox-sqr"></i> Review </span>
+                            <div class="align-right">
+                                <textarea placeholder="Enter your review" class="msg-review"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-inline">
+                            <span class="checkbox bold msg-friend-lbl"><i class="app-icon icon-checkbox-sqr"></i> Message for friends </span>
+                            <div class="align-right">
+                                <textarea class="msg-friend-text"></textarea>
+                            </div>
+                            <!--
+                            <div class="line-share">
+                                <span class="grey"> Share selected information with friends! </span><br>
+                                <i class="app-icon icon-share-f"></i>
+                                <i class="app-icon icon-share-t"></i>
+                                <i class="app-icon icon-share-p"></i>
+                                <i class="app-icon icon-share-g"></i>
+                            </div>
+                            -->
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="buttons-wrapper">
+                <button class="btn-alert" data-dismiss="modal" aria-hidden="true" ng-click="quickSaveShowMore(moreBoxData)">Save</button>
+                <button class="btn-alert" data-dismiss="modal" aria-hidden="true">OK</button>
+            </div>
+        </div>
+    </div>
+</div>

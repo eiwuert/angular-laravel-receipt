@@ -1,0 +1,252 @@
+[33mcommit d96e851d453bac6972bd76154bc9e9b23a0b78a7[m
+Merge: 8cd2549 d8eb347
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Wed Sep 10 14:24:59 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit 8cd2549fc2d830bc0f1b5756a1149c4cdb0d3da3[m
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Wed Sep 10 14:24:07 2014 +0700
+
+    merge code
+
+[33mcommit d8eb3479b0fa722e382785c6c1cd2cf6beca9ddb[m
+Merge: a625cb4 8d6d3c6
+Author: quypv-qsoftvn <quypv@qsoftvietnam.com>
+Date:   Wed Sep 10 14:16:50 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit a625cb4e49e41bea8de42b34b62f04f379e29242[m
+Author: quypv-qsoftvn <quypv@qsoftvietnam.com>
+Date:   Wed Sep 10 14:16:05 2014 +0700
+
+    OCR Push: Return new receipt object in message pushed to web
+
+[33mcommit 8d6d3c691baeeaeb9df6c1d0cc4dc108b3e5b5f4[m
+Merge: 9dff3da 667eb7a
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Wed Sep 10 10:54:13 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit 9dff3da6145442a62f9fa5de79fd5201c5ec1028[m
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Wed Sep 10 10:53:20 2014 +0700
+
+    http://113.160.54.50:808/dev/issues/37574 - Update apps description for landing page
+
+[33mcommit 667eb7a973f6d34cf64d5ad3e39f5bd7c87c172c[m
+Author: quypv-qsoftvn <quypv@qsoftvietnam.com>
+Date:   Tue Sep 9 17:55:45 2014 +0700
+
+    change version
+
+[33mcommit d62e0c10fcf9286e19aef90efe15bfdeef815842[m
+Merge: d0d38c0 1b9b723
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Tue Sep 9 17:44:09 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit d0d38c00b40bd13115aaa5dfe525046e55a9e898[m
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Tue Sep 9 17:43:46 2014 +0700
+
+    update Receipt details
+
+[33mcommit 1b9b7239655a5790182eaf502aa6a466b75eac87[m
+Author: quypv-qsoftvn <quypv@qsoftvietnam.com>
+Date:   Tue Sep 9 16:55:30 2014 +0700
+
+    Web - still get push notification when user logged out
+    http://113.160.54.50:808/dev/issues/37575
+
+[33mcommit fb385384c416a2b7babad6870d7c862629ef1c3c[m
+Author: quypv-qsoftvn <quypv@qsoftvietnam.com>
+Date:   Tue Sep 9 14:26:28 2014 +0700
+
+    Fix: After deleting all items in a trip, display negative number and total amount not change
+    http://113.160.54.50:808/dev/issues/37536
+
+[33mcommit 380d7d3b413629e3dfed516497864c5e4d69d60c[m
+Merge: ad9b3f7 089b914
+Author: quypv-qsoftvn <quypv@qsoftvietnam.com>
+Date:   Tue Sep 9 08:57:17 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit ad9b3f7d898f231d387d3e01077a8036ecabca6b[m
+Author: quypv-qsoftvn <quypv@qsoftvietnam.com>
+Date:   Mon Sep 8 18:20:20 2014 +0700
+
+    Fix bug wrong external link
+
+[33mcommit b389eddebd1da5415b85bb0c454e7c929f6481ed[m
+Author: quypv-qsoftvn <quypv@qsoftvietnam.com>
+Date:   Mon Sep 8 18:00:41 2014 +0700
+
+    change version
+
+[33mcommit 089b9143542dd300a80d7955e6f48916be35545b[m
+Merge: 26c00ca d667e00
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Mon Sep 8 17:59:46 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit 26c00ca3ee01c0ecdbf2f4e3d2b26d7f73afe8ca[m
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Mon Sep 8 17:57:59 2014 +0700
+
+    update RD- updte combine item
+
+[33mcommit d667e006d4a63e65b190082fad6d94bcb8bc9ef5[m
+Merge: 41631e0 7453929
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Mon Sep 8 17:51:50 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit 41631e099b2f813d869dcc5f202d5df73ab40def[m
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Mon Sep 8 17:51:10 2014 +0700
+
+    http://113.160.54.50:808/dev/issues/37412 - Update latest Landing page
+
+[33mcommit 7453929f545f3bba6206f3fda3433275d3478aeb[m
+Merge: 2f72461 9773629
+Author: quypv-qsoftvn <quypv@qsoftvietnam.com>
+Date:   Mon Sep 8 16:28:42 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit 2f724613e744277172c3f2337c20a72af0139ff2[m
+Author: quypv-qsoftvn <quypv@qsoftvietnam.com>
+Date:   Mon Sep 8 16:28:25 2014 +0700
+
+    - Enable PDF receipt upload in RB
+     http://113.160.54.50:808/dev/issues/37530
+    - Change wordings in Manual Receipt
+    http://113.160.54.50:808/dev/issues/37547
+    - Change favicon icon of RC website
+    http://113.160.54.50:808/dev/issues/37551
+
+[33mcommit 977362932bb954a89e7a52b69931f373e0c2962e[m
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Mon Sep 8 14:00:20 2014 +0700
+
+    update upload receipt for lage screen. Update get receipt: set time for receive to 10s
+
+[33mcommit 828685f4a5fcce565983fa0d28ae503b33b08bd3[m
+Author: Dean <thainq@qsoftvietnam.com>
+Date:   Mon Sep 8 01:32:16 2014 +0700
+
+    update receive receipts set time to 1m35
+
+[33mcommit 6ab8b61675b4feb8f7fda15902deb24ec6e8a9db[m
+Merge: 55bba3d af00610
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Fri Sep 5 17:59:47 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit 55bba3d1b09ad1294b83b06bbd72fe87be3b8ae5[m
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Fri Sep 5 17:59:30 2014 +0700
+
+    update RD
+
+[33mcommit af00610c734c7d51d0fbb4334187932faea8f4ac[m
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Fri Sep 5 11:32:41 2014 +0700
+
+    update logo icon
+
+[33mcommit df118d7626e668ca267666dd806cdf45f2d82ec7[m
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Fri Sep 5 09:23:39 2014 +0700
+
+    commit delete button position
+
+[33mcommit e09ade86bcc48fc4229e24fa2be97fb9d3e34614[m
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Fri Sep 5 09:11:18 2014 +0700
+
+    Update function icons for all the app
+
+[33mcommit 3381d69a2067c40d01683ef71678e3e902a8839c[m
+Merge: 70b7f3d a8634f2
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Thu Sep 4 17:57:33 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit 70b7f3d91b73e7351ddb9924ffe1ef9104408512[m
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Thu Sep 4 17:57:05 2014 +0700
+
+    commit icon
+
+[33mcommit a8634f205f7ec1516ca6e2fa23fba1287c3cb497[m
+Merge: 21899e4 50c9564
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Thu Sep 4 16:51:01 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit 21899e4df839b25b1b6b395ca526f075489b2122[m
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Thu Sep 4 16:50:34 2014 +0700
+
+    update design of manual receipt
+
+[33mcommit 50c95642959a812cdbc319c27f2b10374e26323e[m
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Thu Sep 4 15:35:48 2014 +0700
+
+    http://113.160.54.50:808/dev/issues/37508 - Menu is covered
+
+[33mcommit 708e6a53e5310b0ef09e9f01423b508f21e3306b[m
+Merge: b91ab00 9fc4c9c
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Thu Sep 4 15:26:09 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit b91ab0024a97df5919707c0c0806b93a3e4b8611[m
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Thu Sep 4 15:25:43 2014 +0700
+
+    http://113.160.54.50:808/dev/issues/37496 - \\192.168.1.111\pmo\Projects\RCI382\Latest\Design\GraphicDesign\3. ReceiptBox\Loading\
+
+[33mcommit 9fc4c9c19e8193ebd0ebb88062cc5118c003e50e[m
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Thu Sep 4 15:08:07 2014 +0700
+
+    update report, update receipt details.
+
+[33mcommit 83687fd2cf7c73111c745ac4596ddf8d0c9965b0[m
+Merge: e58fa36 21b5b0d
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Thu Sep 4 12:01:02 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit e58fa36442f4e8f85b59730cdf87ce1d49fed8c9[m
+Author: dean <thainq@qsoftvietnam.com>
+Date:   Thu Sep 4 12:00:36 2014 +0700
+
+    Update report to show in report list
+
+[33mcommit 21b5b0d4bb41e7cca158d24ca6a7327231877f0c[m
+Merge: 16c7c79 261fa76
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:   Thu Sep 4 10:38:25 2014 +0700
+
+    Merge branch 'master' of https://github.com/ReceiptClub/angularjs
+
+[33mcommit 16c7c7982761e75ba528af63f5271b17bd10f16f[m
+Author: sonvq-qsoftvn <sonvq@qsoftvietnam.com>
+Date:

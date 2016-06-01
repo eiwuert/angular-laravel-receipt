@@ -1,0 +1,13 @@
+<div id="home-header" ng-controller="HomeCtrl">
+    <ul id="home-head-menu" class="inline">
+        <li ng-if="!loggedInUser.UserID"><a target="_blank" href="https://receiptclub.zendesk.com/hc/en-us/articles/200377657">What is ReceiptClub ?</a></li>
+        <li ng-if="!loggedInUser.UserID"><a target="_blank" href="https://receiptclub.zendesk.com/hc/en-us/articles/200079817-How-does-ReceiptClub-work-">How ReceiptClub Works</a></li>
+        <li ng-if="!loggedInUser.UserID"><a href="http://support.receiptclub.com/hc/en-us/categories/200008063-General-Frequently-Asked-Questions-FAQ-">FAQs</a></li>
+        <li class="user_block_h logout_h" ng-if="loggedInUser.UserID"><a href="#!/logout">Log Out</a></li>
+        <li class="user_block_h" ng-if="loggedInUser.UserID"><a href="#!/settings" ng-class="{'active': activePath == '/settings'}">Settings</a></li>
+        <li class="user_block_h" ng-if="loggedInUser.UserID"><a href="#!/profile" ng-class="{'active': activePath == '/profile'}">Your Profile</a></li>
+        <li class="user_block_h name_user_h" ng-if="loggedInUser.UserID">
+            <a href="" ng-bind-template="{{loggedInUser.FirstName}} {{loggedInUser.LastName}}"></a></li>
+        <li class="user_block_h" ng-if="loggedInUser.UserID"><a href="#!/">Home</a></li>
+    </ul>
+</div>

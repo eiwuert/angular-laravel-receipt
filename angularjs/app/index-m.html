@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" ng-app="rciSpaApp">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="fragment" content="!"/>
+    <meta name="description" content="">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <script>
+          if (navigator.userAgent.match(/iPhone|iPod|iPad/i)) {
+              var iconFolderPath = 'http://receiptclub.com/receiptclub/images/';
+              // iPhone
+              document.write('<link href="' + iconFolderPath + 'apple-touch-icon-57x57.png" sizes="57x57" rel="apple-touch-icon">');
+              // iPhone (Retina)
+              document.write('<link href="' + iconFolderPath + 'apple-touch-icon-114x114.png" sizes="114x114" rel="apple-touch-icon">');
+              // iPhone 5
+              // iPad
+              document.write('<link href="' + iconFolderPath + 'apple-touch-icon-72x72.png" sizes="72x72" rel="apple-touch-icon">');
+              // iPad (Retina)
+              document.write('<link href="' + iconFolderPath + 'apple-touch-icon-144x14421.png" sizes="144x144" rel="apple-touch-icon">');
+          }
+      </script>
+    <link rel="stylesheet" href="styles/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="components/ios-add-to-homescreen/style/add2home.css">
+    <!-- build:css styles/mobile/main-m.css -->
+    <link rel="stylesheet" href="styles/mobile/main-m.css">
+    <link rel="stylesheet" href="styles/mobile/app-m.css">   
+    <!-- endbuild -->
+    <title>ReceiptClub</title>
+  </head>
+  <body ng-class="{'front': activePath == '/', 'profile': activePath == '/profile' || activePath == '/contact' || activePath == '/register-success' || activePath == '/settings'}">
+    <!--[if lt IE 7]>
+      <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+      <script src="components/es5-shim/es5-shim.js"></script>
+      <script src="components/json3/lib/json3.min.js"></script>
+		<![endif]-->
+
+    <div id="top-header" ng-include src="'views/mobile/header.html'"></div>
+    <div id="container" class="superman">
+        <div id="main-content">
+            <div id="ngview-wrapper" ng-view></div>
+            <div ng-if="loggedInUser.IsLogged == 1">
+                <div class="page-app hide" id="receiptbox-wrapper" ng-include="'views/mobile/receipt-list.html'"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="messageBox" class="modal modal-rc hide" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-header">
+            <i class="icon-logo pull-left"></i>
+            <button class="app-icon icon-box-close-window pull-right" data-dismiss="modal" aria-hidden="true"></button>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer"></div>
+    </div>
+
+    <div class="version-indicator">
+        <a href="">Private Beta 4 v4.61 20140708</a>
+    </div>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="styles/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="styles/bootstrap/js/bootstrap-modal-popover.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+	<script type="text/javascript" src="components/angular-bindonce/bindonce.js"></script>
+	<script type="text/javascript" src="components/angular-local-storage/angular-local-storage.js"></script>
+    <script type="text/javascript" src="components/uploadify/jquery.uploadify.min.js"></script>
+    <script type="text/javascript" src="components/jquery-form/jquery.form.js"></script>
+    <script type="text/javascript" src="components/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="components/angular-ui-date/src/date.js"></script>
+    <script type="text/javascript" src="components/loadingindicator.js"></script>
+    <script type="text/javascript" src="components/lodash/dist/lodash.min.js"></script>
+    <script type="text/javascript" src="components/restangular/src/restangular.js"></script>
+    <script type="text/javascript" src="components/nginfinitescroll/build/ng-infinite-scroll.min.js"></script>
+    <script type="text/javascript">
+        //Add2home js configuration
+        var addToHomeConfig = {
+            //expire:200,
+            touchIcon:true,
+            autostart:false
+        };
+    </script>
+    <!--add2home js must be loaded after its configuration-->
+    <script type='application/javascript' src='components/ios-add-to-homescreen/src/add2home.js'></script>
+
+	<!-- build:js scripts/mobile/scripts.js -->	
+	<script type="text/javascript" src="scripts/mobile/functions/common.js"></script>
+    <script src="scripts/mobile/app.js"></script>
+    <script src="scripts/mobile/controllers/main.js"></script>
+    <script src="scripts/mobile/controllers/receiptbox.js"></script>
+    <script src="scripts/mobile/directives/main.js"></script>
+    <script src="scripts/mobile/directives/rb.js"></script>
+    <script src="scripts/mobile/directives/uploadify.js"></script>
+    <script src="scripts/mobile/filters/utility.js"></script>
+    <script src="scripts/mobile/services/openexchange.js"></script>
+    <!-- endbuild -->
+
+    <script type="text/javascript">
+        jQuery(document).ready(function($){
+            var displayNotify = false;
+            if(typeof(Storage)!=="undefined") {
+                //Local storage supported
+                if (localStorage.bookmarkNotificationRead && localStorage.bookmarkNotificationRead!='') {
+                    displayNotify = false;
+                } else {
+                    displayNotify = true;
+                    //Disable only when close button of the balloon is clicked
+                    //lib function: addToHome.close()
+                }
+            } else {
+                //Use cookie instead
+                var bmCookie=getCookie("bookmarkNotificationRead");
+                if (bmCookie!=null && bmCookie!="") {
+                    displayNotify = false;
+                } else {
+                    displayNotify = true;
+                }
+            }
+
+            showBookmarkNotification(displayNotify);
+        });
+
+        function showBookmarkNotification (display) {
+            if (navigator.userAgent.match(/iPhone|iPod/i)) {
+                toggleiOSBalloon(display);
+            } else if (navigator.userAgent.match(/Android/i)) {
+                if (display) {
+                    showPopupDownload();
+                }
+            }
+        }
+        function toggleiOSBalloon(display) {
+            //This function can be disabled since add2home js can detect to toggle automatically
+            //by adding meta tag content-captable=yes in html head
+            if (display) {
+                addToHome.show();
+            }
+        }
+
+        function showPopupDownload() {
+            var boxMessage = "Do you want to install a shortcut <br> on your phone home screen?";
+            var boxType = 'confirm';
+            var filePath = 'http://receiptclub.com/data/ReceiptClub.apk';
+            $.showMessageBox({
+                content: boxMessage,
+                type: boxType,
+                labelNo: 'Cancel',
+                labelYes: 'Install',
+                onYesAction: function() {
+                    setTimeout("window.open('" + filePath + "','Download')",1000);
+                    //Disable popup for next visiting
+                    saveNotificationTimestamp();
+                }
+            });
+        }
+
+        function saveNotificationTimestamp () {
+            if(typeof(Storage)!=="undefined") {
+                localStorage.bookmarkNotificationRead = new Date();
+            } else {
+                setCookie("bookmarkNotificationRead", new Date(), 365);
+            }
+        }
+    </script>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.
+    <script>
+      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>
+	-->
+  </body>
+</html>

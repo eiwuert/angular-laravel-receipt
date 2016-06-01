@@ -1,0 +1,53 @@
+<div ng-include src="'views/_header.html'"></div>
+<div id="home-container" style="height: 230px;">
+    <div id="wrap-logo">
+        <div id="home-logo">
+            <a href="#!" show-page="home-page-wrapper" layout="landing"></a>
+        </div>
+        <!--<div id="goto-app" ng-class="{'enabled': user.uid > 0}">-->
+        <!--<a href="#/personal-expense"></a>-->
+        <!--</div>-->
+    </div>
+    <div class="box-blue" id="user-contact-form">
+        <h2 class="form-h2">Contact</h2>
+        <hr class="white-line">
+        <form name="contactForm" class="form-horizontal" ng-submit="sendMessage(sender)">
+            <div ng-show="contactForm.$valid && isSubmit" class="alert alert-success">
+                Your message has been sent successfully.
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputFullName">Full name: <span class="required">*</span></label>
+                <div class="controls">
+                    <input type="text" id="inputFullName" class="input-xlarge" ng-model="sender.fullname" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputEmail">Email: <span class="required">*</span></label>
+                <div class="controls">
+                    <input type="email" id="inputEmail" class="input-xlarge" ng-model="sender.email" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputPhone">Telephone:</label>
+                <div class="controls">
+                    <input type="text" id="inputPhone" ng-model="sender.phone" class="input-xlarge">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputMessage">Message: <span class="required">*</span></label>
+                <div class="controls">
+                    <textarea id="inputMessage" class="input-xlarge" ng-model="sender.message" required></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="icon-envelope icon-white"></i> Send
+                    </button>
+                </div>
+            </div>
+            <a href="#!/" class="app-icon icon-close-window"></a>
+        </form>
+    </div>
+</div>
+<div ng-include src="'views/_footer.html'"></div>

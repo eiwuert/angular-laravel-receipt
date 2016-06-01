@@ -1,0 +1,116 @@
+body {
+    background: #0773b3;
+}
+
+#login-box {
+    top: 50%;
+    left: 50%;
+    width: 880px;
+    position: absolute;
+    height: 250px;
+    margin-top: -125px;
+    margin-left: -440px;
+    color: #ebebeb;
+    font: 12px Arial, Helvetica, sans-serif;
+}
+
+#login-box form {
+    padding-bottom: 3px;
+}
+
+#login-box table {
+    position: relative;
+    width: 318px;
+    border: 0;
+    margin-top: 50px;
+    margin-left: -67px;
+}
+
+p.errors-notice {
+    color: yellow;
+    margin: 0;
+}
+
+#login-box table td.button-block {
+    padding-left: 5px;
+    vertical-align: bottom;
+    display: inline-block;
+    width: 57px;
+    position: absolute;
+    bottom: 0;
+}
+
+#login-box label {
+    display: block;
+    padding: 5px 0 5px 0;
+}
+
+#login-box img.login-logo {
+     width: 52px;
+     padding-top: 28px;
+     height: 52px;
+     padding-right: 20px;
+}
+
+#login-box img.login-help {
+    width: 26px;
+    height: 26px;
+    cursor: help;
+}
+
+#login-box img {
+    border:none;
+}
+
+#login-box input[type="text"], #login-box input[type="password"] {
+    text-indent: 10px;
+    width: 398px;
+    display: block;
+    line-height: 25px;
+    font-size: 13px;
+}
+
+#login-box h2 {
+    padding:0;
+    margin:0;
+    color: #ebebeb;
+    font: bold 44px "Calibri", Arial;
+}
+
+#login-box-name {
+    float: left;
+    display:inline;
+    width:80px;
+    text-align: right;
+    padding: 14px 10px 0 0;
+    margin:0 0 7px 0;
+}
+
+#login-box-field {
+    float: left;
+    display:inline;
+    width:230px;
+    margin:0;
+    margin:0 0 7px 0;
+}
+
+
+.form-login  {
+    width: 205px;
+    padding: 10px 4px 6px 3px;
+    border: 1px solid #0d2c52;
+    background-color:#1e4f8a;
+    font-size: 16px;
+    color: #ebebeb;
+}
+
+.login-box-options  {
+    clear:both;
+    padding-left:87px;
+    font-size: 11px;
+}
+
+.login-box-options a {
+    color: #ebebeb;
+    font-size: 11px;
+}

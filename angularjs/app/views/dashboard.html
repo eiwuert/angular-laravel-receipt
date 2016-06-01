@@ -1,0 +1,976 @@
+<div class="app-wrapper"  ng-controller="DBCtrl">
+    <div id="full-screen-opacity-dashboard" style="display: none;"></div>
+    <div id="loading-signup-dashboard" style="display: none;"></div>
+    <div class="app-box app-db">
+        <div class="app-headmenu">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span2 text-center">
+                        <h2 class="utmaltergothic">{{screenName}}</h2>
+                    </div>
+                    <!--<a href="" ng-click="backToApp()" class="back-to-app utmaltergothic hide" id="rb-back-to-app">
+                        <i class="app-icon icon-revert"></i>Back To App
+                    </a>-->
+                </div>
+            </div>
+            <div class="db-content" ng-show="screenNumber == 0">
+                <div class="db-content-scroll">
+                    <div class="db-menu">
+                        <ul app-resize-height>
+                            <li class="menu-item-has-child menu-item-db" id="db_profile"><i class="icon-profile">&nbsp;</i><a class="a-profile" href="">Profile</a>
+                                <ul class="sub-menu">
+                                    <li id="db_my_info"><a href="">Personal Information</a></li>
+                                    <li id=""><a href="#"></a></li>
+                                    <li id="db_company_info"><a href="">Business Information</a></li>
+                                    <li id="db_change_password"><a href="">Change Password</a></li>
+                                    <li id="db_delete_account"><a href="">Delete Account</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-child menu-item-db" id="db_profile"><i class="icon-setting">&nbsp;</i><a class="a-settings" href="">Settings</a>
+                                <ul class="sub-menu">
+                                    <li id="db_applications"><a href="">Applications</a></li>
+                                    <li id="db_additional_receipt_senders"><a href="">Secondary Emails</a></li>
+                                    <li id="db_export_format"><a href="">Export Format</a></li>
+                                    <li id="db_time_zone"><a href="">Time Zone</a></li>
+                                    <li id="db_home_currency"><a href="">Home Currency</a></li>
+                                </ul>
+                            </li>
+                            <li id="db_terms_condition" class="menu-item-db"><i class="icon-terms-condition">&nbsp;</i><a href="">Terms & Conditions</a></li>
+                            <li id="db_privacy_policy" class="menu-item-db"><i class="icon-privacy_policy">&nbsp;</i><a href="">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="db-boxs" id="db_company_info" ng-controller="ProfileCtrl" action="profile" db-content style="display: none;" app-resize-height>
+                        <h2 class="title-DB-box">Business Information</h2>
+                        <div class="setting-detail">
+                            <div class="alert alert-error fadein fadeout" ng-show="isError">{{responseMessage}}</div>
+                            <div id="profile-success" ng-show="isSubmit" class="alert alert-success" style="margin-bottom: 0!important;">
+                                Your profile has been updated successfully.
+                            </div>
+                            <div class="form-setting" app-resize-height >
+                                <form class="profileForm" name="profileForm" id="profileForm" ng-submit="updateProfile(userProfile)">
+                                    <div class="setting-comment">
+                                        If you have a business, our system can automatically fill out this information in your travel and business expense reports, or in your outbound invoices saving you data entry time.
+                                    </div>
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">Company Name<span style="color: red; margin-left: 0px;">*</span></div>
+                                        <input type="text" id="inputCompanyName" name="inputCompanyName" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.CompanyName" required>
+                                    </div>
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">Phone Number</div>
+                                        <input type="text" id="inputPhone" name="Phone" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.Phone">
+                                        <div class="setting-label-phoneext">Ext.</div>
+                                        <input type="text" id="inputPhoneExt" name="PhoneExt" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.PhoneExt">
+                                        
+                                    </div>
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">Address Line1<span style="color: red; margin-left: 0px;">*</span></div>
+                                        <input type="text" id="inputAddressFirstCompany" name="AddressFirstCompany" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.AddressFirstCompany" required>
+                                        <div class="label-description">Street address, P.O. box, company name, c/o</div>
+                                    </div>
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">Address Line2</div>
+                                        <input type="text" id="inputAddressSecondCompany" name="AddressSecondCompany" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.AddressSecondCompany">
+                                        <div class="label-description">Apartment, suite, unit, building, floor, etc.</div>
+                                    </div>
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">City<span style="color: red; margin-left: 0px;">*</span></div>
+                                        <input type="text" id="inputCityCompany" name="CityTownCompany" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.CityTownCompany" required>
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">State/ Province/ Region<span style="color: red; margin-left: 0px;">*</span></div>
+                                        <input type="text" id="inputStateProvinceCompany" name="StateProvinceCompany" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.StateProvinceCompany" required>
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">Zip/ Postal Code<span style="color: red; margin-left: 0px;">*</span></div>
+                                        <input type="text" id="inputZipCodeCompany" name="ZipCodeCompany" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.ZipCodeCompany" required>
+                                    </div>
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">Country<span style="color: red; margin-left: 0px;">*</span></div>
+                                        <select class="ng-pristine ng-valid" id="inputCountryCompany" ng-model="userProfile.CountryNameCompany" name="CountryNameCompany"
+                                                ng-options="c.code as c.name for c in countries" required>
+                                        </select>
+                                    </div>
+                                    <div class="controls">
+                                        <input id="profile-save" type="submit" value="Save" class="btn"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="db-boxs" id="db_applications" ng-controller="SettingsCtrl" style="display: none;">
+                        <h2 class="title-DB-box">Applications</h2>
+                        <div class="setting-detail">
+                            <div class="alert alert-error fadein fadeout" ng-show="isError">{{responseMessage}}</div>
+                            <div id="dash-board-success" ng-show="isSubmit" class="alert alert-success" style="margin-bottom: 0!important;">
+                                Your setting has been updated successfully.
+                            </div>
+                            <div class="form-setting db-application-form" app-resize-height>
+                                <form name="settingForm" id="settingForm"  ng-submit="saveSetting(loggedInUser)">
+                                    <div class="setting-comment app-bundle-cmt">
+                                        Select from convenient Application bundles or mix and match applications to build your own custom bundle; or select all<br>
+                                    </div>
+
+                                    <div class="select-bundle-container">
+                                        <p class="title-bundle">Select A Bundle</p>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="personal_bundle" ng-model="personal_bundle_value" />
+                                                
+                                                <label class="personal_bundle" for="personal_bundle">Personal</label>
+                                                <div class="personal-avatar app-icon"></div>
+                                                <p class="description">Applications</p>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="business_bundle" ng-model="business_bundle_value" />
+                                                
+                                                <label class="business_bundle" for="business_bundle">Business</label>
+                                                <div class="business-avatar app-icon"></div>
+                                                <p class="description">Applications</p>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="custom_bundle" ng-model="custom_bundle_value" />
+                                                
+                                                <label class="custom_bundle" for="custom_bundle">Custom</label>
+                                                <div class="custom-avatar app-icon"></div>
+                                                <p class="description">Applications</p>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="select_all_bundle" ng-model="select_all_bundle_value" />
+                                                
+                                                <label class="select_all_bundle" for="select_all_bundle">Select All</label>
+                                                <div class="select-all-avatar app-icon"></div>
+                                                <p class="description">Applications</p>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="left-arrow app-icon"></div>
+                                    <div class="arrow-container"></div>
+                                    <div class="review-changes-container">
+                                        <p class="title-bundle">Review and Make Changes</p>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="receipt_box" ng-model="receipt_box_value" />
+                                                <label class="receipt_box" for="receipt_box">ReceiptBox</label><i class="app-icon mandatory"></i>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="bank_accounts" ng-model="bank_accounts_value" />
+                                                <label for="bank_accounts">BankAccounts*</label>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="credit_cards" ng-model="credit_cards_value" />
+                                                <label for="credit_cards">CreditCards*</label>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="personal_expense" ng-model="personal_expense_value" />
+                                                <label for="personal_expense">PersonalExpense</label>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="personal_assets" ng-model="personal_assets_value" />
+                                                <label for="personal_assets">PersonalAssets</label>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="travel_expense" ng-model="travel_expense_value" />
+                                                <label for="travel_expense">TravelExpense</label>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="education_expense" ng-model="education_expense_value" />
+                                                <label for="education_expense">EducationExpense</label>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="group_expense" ng-model="group_expense_value" />
+                                                <label for="group_expense">GroupExpense*</label>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="business_expense" ng-model="business_expense_value" />
+                                                <label for="business_expense">BusinessExpense</label>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="business_assets" ng-model="business_assets_value" />
+                                                <label for="business_assets">BusinessAssets</label>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="invoice_expense" ng-model="invoice_expense_value" />
+                                                <label for="invoice_expense">InvoiceExpress*</label>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="quick_expense" ng-model="quick_expense_value" />
+                                                <label for="quick_expense">QuickExpense*</label>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p>
+                                                <input disabled="disabled" type="checkbox" id="inventory_spend" ng-model="inventory_spend_value" />
+                                                <label for="inventory_spend">InventorySpend*</label>
+                                            </p>
+                                        </div>
+                                        <div class="controls ctr-right">
+                                            <p class="comming-soon">* Coming Soon</p>
+                                        </div>
+                                    </div>
+                                    <div class="controls">
+                                        <input id="profile-save" type="submit" value="Save" class="btn"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="db-boxs" id="db_additional_receipt_senders" ng-controller="ProfileCtrl" style="display: none;">
+                        <h2 class="title-DB-box">Secondary Emails</h2>
+                        <div class="setting-detail">
+                            <div class="alert alert-error fadein fadeout" ng-show="isError">{{responseMessage}}</div>
+                            <div id="dash-board-success" ng-show="isSubmit" class="alert alert-success" style="margin-bottom: 0!important;">
+                                Your setting has been updated successfully.
+                            </div>
+                            <div class="form-setting" app-resize-height>
+                                <form class="profileForm" name="profileForm" id="profileForm" ng-submit="updateProfile(userProfile)">
+                                    <div class="setting-comment">
+                                        <p>You can nominate upto four secondary email addresses from which you or your nominee can send receipts or invoices to your ReceiptBox via <a class="link-mailto" href="mailto:receipts@mail.receiptclub.com">receipts@mail.receiptclub.com</a>.</p>
+                                        <p>You can even specify a default expense application for each email address.</p>
+                                    </div>
+                                    <div class="controls ctr-right tooltip-email">
+                                        <p>Default Expense App</p>
+                                        <a id="default-expense-app-tooltip" href="#" data-toggle="tooltip" data-placement="bottom"
+                                           title="" data-original-title="You can select a default expense app for receipts that are submitted from a given email address. For example, you may choose to have all receipts from your 'work' email address automatically classified in the 'BusinessExpense' App."><i class="fa fa-question-circle"></i></a>
+                                    </div>
+                                    <div class="controls ctr-right primary-email">
+                                        <div class="setting-label label-small-email">Primary email</div>
+                                        <div class="setting-content-right">{{userProfile.Email}} <i>(this cannot be changed)</i></div>
+                                       <select disabled class="application-email" name="primary-email-application" id="primary-email-application" ng-model="userProfile.PrimaryEmailApplication"
+                                                ng-options="application.name for application in applications">
+                                            <option value="">PersonalExpense</option>
+                                        </select>
+                                    </div>
+                                    <div class="controls ctr-right secondary-mail-container">
+                                        <input placeholder="Secondary Email 1" type="text" class="email-extra input-large ng-pristine ng-valid no-margin-bottom" name="email1" ng-model="userProfile.ExtraEmails[0].Email">
+                                        <select disabled class="relationship-email" name="email-relationship1" id="email-relationship1" ng-model="userProfile.EmailRelationship[0].Relationship"
+                                                ng-options="relationship.name for relationship in relationships">
+                                            <option value="">Choose Relationship</option>
+                                        </select>
+                                        <select disabled class="application-email" name="email-application1" id="email-application1" ng-model="userProfile.EmailApplication[0].Application"
+                                                ng-options="application.name for application in applications">
+                                            <option value="">PersonalExpense</option>
+                                        </select>
+                                    </div>
+                                    <div class="controls ctr-right secondary-mail-container">
+                                        <input placeholder="Secondary Email 2" type="text" class="email-extra input-large ng-pristine ng-valid" name="email2" ng-model="userProfile.ExtraEmails[1].Email">
+                                        <select disabled class="relationship-email" name="email-relationship2" id="email-relationship2" ng-model="userProfile.EmailRelationship[1].Relationship"
+                                                ng-options="relationship.name for relationship in relationships">
+                                            <option value="">Choose Relationship</option>
+                                        </select>
+                                        <select disabled class="application-email" name="email-application2" id="email-application2" ng-model="userProfile.EmailApplication[1].Application"
+                                                ng-options="application.name for application in applications">
+                                            <option value="">TravelExpense</option>
+                                        </select>
+                                    </div>
+                                    <div class="controls ctr-right secondary-mail-container">
+                                        <input placeholder="Secondary Email 3" type="text" class="email-extra input-large ng-pristine ng-valid" name="email3" ng-model="userProfile.ExtraEmails[2].Email">
+                                        <select disabled class="relationship-email" name="email-relationship3" id="email-relationship3" ng-model="userProfile.EmailRelationship[2].Relationship"
+                                                ng-options="relationship.name for relationship in relationships">
+                                            <option value="">Choose Relationship</option>
+                                        </select>
+                                        <select disabled class="application-email" name="email-application3" id="email-application3" ng-model="userProfile.EmailApplication[2].Application"
+                                                ng-options="application.name for application in applications">
+                                            <option value="">PersonalExpense</option>
+                                        </select>
+                                    </div>
+                                    <div class="controls ctr-right secondary-mail-container">
+                                        <input placeholder="Secondary Email 4" type="text" class="email-extra input-large ng-pristine ng-valid" name="email4" ng-model="userProfile.ExtraEmails[3].Email">
+                                        <select disabled class="relationship-email" name="email-relationship4" id="email-relationship4" ng-model="userProfile.EmailRelationship[3].Relationship"
+                                                ng-options="relationship.name for relationship in relationships">
+                                            <option value="">Choose Relationship</option>
+                                        </select>
+                                        <select disabled class="application-email" name="email-application4" id="email-application4" ng-model="userProfile.EmailApplication[3].Application"
+                                                ng-options="application.name for application in applications">
+                                            <option value="">TravelExpense</option>
+                                        </select>
+                                    </div>
+                                    <div class="controls save-container">
+                                        <input id="profile-save" type="submit" value="Save" class="btn"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="db-boxs" id="db_export_format" ng-controller="SettingsCtrl" style="display: none;">
+                        <h2 class="title-DB-box">Export Format</h2>
+                        <div class="setting-detail">
+                            <div class="alert alert-error fadein fadeout" ng-show="isError">{{responseMessage}}</div>
+                            <div id="dash-board-success" ng-show="isSubmit" class="alert alert-success" style="margin-bottom: 0!important;">
+                                Your setting has been updated successfully.
+                            </div>
+                            <div class="form-setting" app-resize-height>
+                                <form name="settingForm" id="settingForm"  ng-submit="saveSetting(loggedInUser)">
+                                    <div class="setting-comment export-format-cmt">
+                                        <p>Select the format in which you wish to export data from ReceiptClub.</p>
+                                        <p>There are 3 options:</p>
+                                        <p class="small-option">CSV (Comma separated values) (Currently supported)</p>
+                                        <p class="small-option">XLS (Excel)</p>
+                                        <p class="small-option">PDF (Portable Document Format)</p>
+                                    </div>
+                                    <div class="controls export-select">
+                                        <div class="setting-label label-big">Choose your file format</div>
+                                        <select disabled class="export-format" name="export_format" id="export_format" ng-model="export_format"
+                                                ng-options="exportformat.name for exportformat in exportformats">
+                                            <option value="">CSV</option>
+                                        </select>
+                                    </div>
+                                    <div class="controls export-select">
+                                        <div class="setting-label label-big">Choose your default template</div>
+                                        <p class="export-format-small-cmt">In the future we will add new templates, and also allow you to define your own layout.</p>
+                                        <select disabled class="default-template" name="default_template" id="default_template" ng-model="default_template"
+                                                ng-options="defaulttemplate.name for defaulttemplate in defaulttemplates">
+                                            <option value="">Standard Template</option>
+                                        </select>                                        
+                                    </div>
+                                    <div class="controls">
+                                        <input id="profile-save" type="submit" value="Save" class="btn"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="db-boxs" id="db_time_zone" ng-controller="SettingsCtrl" style="display: none;">
+                        <h2 class="title-DB-box">Time Zone</h2>
+                        <div class="setting-detail">
+                            <div class="alert alert-error fadein fadeout" ng-show="isError">{{responseMessage}}</div>
+                            <div id="dash-board-success" ng-show="isSubmit" class="alert alert-success" style="margin-bottom: 0!important;">
+                                Your setting has been updated successfully.
+                            </div>
+                            <div class="form-setting" app-resize-height>
+                                <form name="settingForm" id="settingForm"  ng-submit="saveSetting(loggedInUser)">
+                                    <div class="setting-comment">
+                                        Select your time zone. Please use the right city/state, as this will determine whether DST (Daylight Savings) is automatically be applied.
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label timezone-lavel">Current Time Zone</div>
+                                        <select name="Timezone" id="list-time-zone">
+                                            <option ng-selected="{{tz.Zone == loggedInUser.Timezone}}"
+                                                    ng-repeat="tz in timezones"
+                                                    value="{{tz.Zone}}">
+                                                {{tz.Label}}
+                                            </option>
+                                        </select>
+                                        <input type="button" id="timezone-detect" class="btn" value="Detect My Location" />                                        
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label timezone-lavel">Current Country</div>
+                                        <select id="edit-site-default-country" name="country"><option value="" selected="selected">- None -</option><option value="AF">Afghanistan</option><option value="AX">Aland Islands</option><option value="AL">Albania</option><option value="DZ">Algeria</option><option value="AS">American Samoa</option><option value="AD">Andorra</option><option value="AO">Angola</option><option value="AI">Anguilla</option><option value="AQ">Antarctica</option><option value="AG">Antigua and Barbuda</option><option value="AR">Argentina</option><option value="AM">Armenia</option><option value="AW">Aruba</option><option value="AU">Australia</option><option value="AT">Austria</option><option value="AZ">Azerbaijan</option><option value="BS">Bahamas</option><option value="BH">Bahrain</option><option value="BD">Bangladesh</option><option value="BB">Barbados</option><option value="BY">Belarus</option><option value="BE">Belgium</option><option value="BZ">Belize</option><option value="BJ">Benin</option><option value="BM">Bermuda</option><option value="BT">Bhutan</option><option value="BO">Bolivia</option><option value="BA">Bosnia and Herzegovina</option><option value="BW">Botswana</option><option value="BV">Bouvet Island</option><option value="BR">Brazil</option><option value="IO">British Indian Ocean Territory</option><option value="VG">British Virgin Islands</option><option value="BN">Brunei</option><option value="BG">Bulgaria</option><option value="BF">Burkina Faso</option><option value="BI">Burundi</option><option value="KH">Cambodia</option><option value="CM">Cameroon</option><option value="CA">Canada</option><option value="CV">Cape Verde</option><option value="KY">Cayman Islands</option><option value="CF">Central African Republic</option><option value="TD">Chad</option><option value="CL">Chile</option><option value="CN">China</option><option value="CX">Christmas Island</option><option value="CC">Cocos (Keeling) Islands</option><option value="CO">Colombia</option><option value="KM">Comoros</option><option value="CG">Congo (Brazzaville)</option><option value="CD">Congo (Kinshasa)</option><option value="CK">Cook Islands</option><option value="CR">Costa Rica</option><option value="HR">Croatia</option><option value="CU">Cuba</option><option value="CW">Curaçao</option><option value="CY">Cyprus</option><option value="CZ">Czech Republic</option><option value="DK">Denmark</option><option value="DJ">Djibouti</option><option value="DM">Dominica</option><option value="DO">Dominican Republic</option><option value="EC">Ecuador</option><option value="EG">Egypt</option><option value="SV">El Salvador</option><option value="GQ">Equatorial Guinea</option><option value="ER">Eritrea</option><option value="EE">Estonia</option><option value="ET">Ethiopia</option><option value="FK">Falkland Islands</option><option value="FO">Faroe Islands</option><option value="FJ">Fiji</option><option value="FI">Finland</option><option value="FR">France</option><option value="GF">French Guiana</option><option value="PF">French Polynesia</option><option value="TF">French Southern Territories</option><option value="GA">Gabon</option><option value="GM">Gambia</option><option value="GE">Georgia</option><option value="DE">Germany</option><option value="GH">Ghana</option><option value="GI">Gibraltar</option><option value="GR">Greece</option><option value="GL">Greenland</option><option value="GD">Grenada</option><option value="GP">Guadeloupe</option><option value="GU">Guam</option><option value="GT">Guatemala</option><option value="GG">Guernsey</option><option value="GN">Guinea</option><option value="GW">Guinea-Bissau</option><option value="GY">Guyana</option><option value="HT">Haiti</option><option value="HM">Heard Island and McDonald Islands</option><option value="HN">Honduras</option><option value="HK">Hong Kong S.A.R., China</option><option value="HU">Hungary</option><option value="IS">Iceland</option><option value="IN">India</option><option value="ID">Indonesia</option><option value="IR">Iran</option><option value="IQ">Iraq</option><option value="IE">Ireland</option><option value="IM">Isle of Man</option><option value="IL">Israel</option><option value="IT">Italy</option><option value="CI">Ivory Coast</option><option value="JM">Jamaica</option><option value="JP">Japan</option><option value="JE">Jersey</option><option value="JO">Jordan</option><option value="KZ">Kazakhstan</option><option value="KE">Kenya</option><option value="KI">Kiribati</option><option value="KW">Kuwait</option><option value="KG">Kyrgyzstan</option><option value="LA">Laos</option><option value="LV">Latvia</option><option value="LB">Lebanon</option><option value="LS">Lesotho</option><option value="LR">Liberia</option><option value="LY">Libya</option><option value="LI">Liechtenstein</option><option value="LT">Lithuania</option><option value="LU">Luxembourg</option><option value="MO">Macao S.A.R., China</option><option value="MK">Macedonia</option><option value="MG">Madagascar</option><option value="MW">Malawi</option><option value="MY">Malaysia</option><option value="MV">Maldives</option><option value="ML">Mali</option><option value="MT">Malta</option><option value="MH">Marshall Islands</option><option value="MQ">Martinique</option><option value="MR">Mauritania</option><option value="MU">Mauritius</option><option value="YT">Mayotte</option><option value="MX">Mexico</option><option value="FM">Micronesia</option><option value="MD">Moldova</option><option value="MC">Monaco</option><option value="MN">Mongolia</option><option value="ME">Montenegro</option><option value="MS">Montserrat</option><option value="MA">Morocco</option><option value="MZ">Mozambique</option><option value="MM">Myanmar</option><option value="NA">Namibia</option><option value="NR">Nauru</option><option value="NP">Nepal</option><option value="NL">Netherlands</option><option value="AN">Netherlands Antilles</option><option value="NC">New Caledonia</option><option value="NZ">New Zealand</option><option value="NI">Nicaragua</option><option value="NE">Niger</option><option value="NG">Nigeria</option><option value="NU">Niue</option><option value="NF">Norfolk Island</option><option value="MP">Northern Mariana Islands</option><option value="KP">North Korea</option><option value="NO">Norway</option><option value="OM">Oman</option><option value="PK">Pakistan</option><option value="PW">Palau</option><option value="PS">Palestinian Territory</option><option value="PA">Panama</option><option value="PG">Papua New Guinea</option><option value="PY">Paraguay</option><option value="PE">Peru</option><option value="PH">Philippines</option><option value="PN">Pitcairn</option><option value="PL">Poland</option><option value="PT">Portugal</option><option value="PR">Puerto Rico</option><option value="QA">Qatar</option><option value="RE">Reunion</option><option value="RO">Romania</option><option value="RU">Russia</option><option value="RW">Rwanda</option><option value="BL">Saint Barthélemy</option><option value="SH">Saint Helena</option><option value="KN">Saint Kitts and Nevis</option><option value="LC">Saint Lucia</option><option value="MF">Saint Martin (French part)</option><option value="PM">Saint Pierre and Miquelon</option><option value="VC">Saint Vincent and the Grenadines</option><option value="WS">Samoa</option><option value="SM">San Marino</option><option value="ST">Sao Tome and Principe</option><option value="SA">Saudi Arabia</option><option value="SN">Senegal</option><option value="RS">Serbia</option><option value="SC">Seychelles</option><option value="SL">Sierra Leone</option><option value="SG">Singapore</option><option value="SK">Slovakia</option><option value="SI">Slovenia</option><option value="SB">Solomon Islands</option><option value="SO">Somalia</option><option value="ZA">South Africa</option><option value="GS">South Georgia and the South Sandwich Islands</option><option value="KR">South Korea</option><option value="ES">Spain</option><option value="LK">Sri Lanka</option><option value="SD">Sudan</option><option value="SR">Suriname</option><option value="SJ">Svalbard and Jan Mayen</option><option value="SZ">Swaziland</option><option value="SE">Sweden</option><option value="CH">Switzerland</option><option value="SY">Syria</option><option value="TW">Taiwan</option><option value="TJ">Tajikistan</option><option value="TZ">Tanzania</option><option value="TH">Thailand</option><option value="TL">Timor-Leste</option><option value="TG">Togo</option><option value="TK">Tokelau</option><option value="TO">Tonga</option><option value="TT">Trinidad and Tobago</option><option value="TN">Tunisia</option><option value="TR">Turkey</option><option value="TM">Turkmenistan</option><option value="TC">Turks and Caicos Islands</option><option value="TV">Tuvalu</option><option value="VI">U.S. Virgin Islands</option><option value="UG">Uganda</option><option value="UA">Ukraine</option><option value="AE">United Arab Emirates</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="UM">United States Minor Outlying Islands</option><option value="UY">Uruguay</option><option value="UZ">Uzbekistan</option><option value="VU">Vanuatu</option><option value="VA">Vatican</option><option value="VE">Venezuela</option><option value="VN">Vietnam</option><option value="WF">Wallis and Futuna</option><option value="EH">Western Sahara</option><option value="YE">Yemen</option><option value="ZM">Zambia</option><option value="ZW">Zimbabwe</option></select>
+                                    </div>
+                                    <div id="timezone-picker" ng-include src="'views/map-640.html'"></div>
+          
+                                    <div class="controls">
+                                        <input id="setting-save" type="submit" value="Save" class="btn"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="db-boxs" id="db_home_currency" ng-controller="SettingsCtrl" style="display: none;">
+                        <h2 class="title-DB-box">Home Currency</h2>
+                        <div class="setting-detail">
+                            <div class="alert alert-error fadein fadeout" ng-show="isError">{{responseMessage}}</div>
+                            <div id="dash-board-success" ng-show="isSubmit" class="alert alert-success" style="margin-bottom: 0!important;">
+                                Your setting has been updated successfully.
+                            </div>
+                            <div class="form-setting" app-resize-height>
+                                <form name="settingForm" id="settingForm"  ng-submit="saveSetting(loggedInUser)">
+                                    <div class="setting-comment select-currency-comment">
+                                        This is the currency that you use in the country in which you live or the currency you use for reporting purposes. For example, if you live in United States, you would choose USD.  Once selected, this setting cannot be changed.
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label label-small">Home Currency<span style="color: red">*</span></div>
+                                        <input class="currency-input" type="text"  value="{{currencyName}}" disabled />
+                                        <!--
+                                        <select name="CurrencyCode" id="list-currencies" ng-model="loggedInUser.CurrencyCode"
+                                                ng-options="currencyCode as currencyName for (currencyCode, currencyName) in currencies">
+                                        </select>
+                                        <span><i>Once selected, this setting cannot be changed.</i></span>
+                                        -->
+                                    </div>
+                                    <div class="setting-comment comment-home-currency">
+                                        Converting Foreign Currency Receipts:<br><br>
+                                        For receipts or invoices in a foreign currency, you can use our powerful real-time Forex conversion tool on our Receipt Detail screen to instantaneously convert any of 165 global currencies to your home currency. You can even perform backdated conversions at their prevailing rates as far back as 1999.<br><br>
+                                        Remember all foreign currency amounts have to be converted to the home currency. It is therefore very important for you to check if the Home Currency you have selected is correct for your account.
+                                    </div>
+                                    <!--
+                                    <div class="controls">
+                                        <div class="setting-label">Time zone</div>
+                                        <select name="Timezone" id="list-time-zone" ng-model="loggedInUser.Timezone" ng-options="tz.Zone as tz.Label for tz in timezones"></select>
+                                    </div>
+                                    -->
+                                    <!--
+                                    <div class="controls">
+                                        <div class="setting-label">Auto Archive Receipt</div>
+                                        <select name="AutoArchive" class="select optional" id="auto-archive-category" ng-model="loggedInUser.AutoArchive"
+                                                ng-options="number as day for (number, day) in autoArchives">
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="controls">
+                                        <input id="setting-save" type="submit" value="Save" class="btn"/>
+                                    </div>
+                                    <hr>
+                                    -->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="db-boxs" id="db_delete_account" ng-controller="SettingsCtrl" style="display: none;">
+                        <h2 class="title-DB-box">Delete My Account</h2>
+                        <div class="setting-detail">
+                            <div class="alert alert-error fadein fadeout" ng-show="isError">{{responseMessage}}</div>
+                            <div id="dash-board-success" ng-show="isSubmit" class="alert alert-success" style="margin-bottom: 0!important;">
+                                Your setting has been updated successfully.
+                            </div>
+                            <div class="form-setting" app-resize-height>
+                                <form name="settingDeleteAccountForm" id="settingDeleteAccountForm"  ng-submit="deleteAccount(loggedInUser)">
+                                    <div class="setting-comment">
+                                        We’re sorry to see you go! Please help us improve our service by telling us why you’d like to delete your account. <br>Thanks and we hope to see you back soon.
+                                    </div>
+                                    <div class="controls">
+                                        <textarea placeholder="I’m deleting my account because..." id="inputFeedbackMessage" class="input-xlarge" name="feedbackmessage" ng-model="feedbackmessage" required></textarea><span style="color: red; vertical-align: top;">*</span>
+                                    </div>
+                                    <hr>
+                                    <div class="setting-comment delete-comment">
+                                        To delete your account, you must enter your password in the fields below, then complete the captcha and click on Delete My Account.  Once your account is deleted, you cannot get your data back.
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label label-small">Password<span style="color: red">*</span></div>
+                                        <input type="password" class="input-large ng-pristine ng-valid ng-valid-required" name="SettingPassWord" ng-model="loggedInUser.SettingPassWord" required>
+                                    </div>
+                                    <div class="controls retype-pass">
+                                        <div class="setting-label label-small">Retype Password<span style="color: red">*</span></div>
+                                        <input type="password" class="input-large ng-pristine ng-valid ng-valid-required" name="RetypeSettingPassWord" ng-model="loggedInUser.RetypeSettingPassWord" required>
+                                    </div>
+                                    <div class="controls">
+                                        <input id="setting-delete" type="submit" value="Delete My Account" class="btn"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="db-boxs" id="db_my_info" ng-controller="ProfileCtrl" action="profile" db-content style="display:none;">
+                        <h2 class="title-DB-box">Personal Information</h2>
+                        <div class="setting-detail">
+                            <div class="alert alert-error fadein fadeout" ng-show="isError">{{responseMessage}}</div>
+                            <div id="profile-success" ng-show="isSubmit" class="alert alert-success" style="margin-bottom: 0!important;">
+                                Your profile has been updated successfully.
+                            </div>
+                            <div class="form-setting" app-resize-height >
+                                <form class="profileForm" name="profileForm" id="profileForm" ng-submit="updateProfile(userProfile)">
+                                    <div class="controls">
+                                        <div class="setting-label">First Name<span style="color: red; margin-left: 0px;">*</span></div>
+                                        <input type="text" class="input-xlarge ng-pristine ng-valid ng-valid-required" name="FirstName" ng-model="userProfile.FirstName" required>
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">Last Name<span style="color: red; margin-left: 0px;">*</span></div>
+                                        <input type="text" class="input-xlarge ng-pristine ng-valid ng-valid-required" name="LastName" ng-model="userProfile.LastName" required>
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">Gender</div>
+                                        <select id="inputGender" name="inputGender" ng-model="userProfile.Gender" class="ng-pristine ng-valid">
+                                            <option value="0">Unspecified</option>
+                                            <option value="1">Male</option>
+                                            <option value="2">Female</option>
+                                        </select>
+                                        <a id="gender-tooltip" class="app-icon" href="#" data-toggle="tooltip" data-placement="right"
+                                           title="" data-original-title="We use this information to tailor our adverts, coupons, special deals and offers which are more likely to be relevant to you."></a>
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">Date of Birth</div>
+                                        <input type="text" id="inputDateBirth" name="BirthDate" rci-calendar class="app-icon input-xlarge ng-pristine ng-valid" ng-model="userProfile.Birthdate">
+                                        <a id="dateofbirth-tooltip" class="app-icon" href="#" data-toggle="tooltip" data-placement="right"
+                                            title="" data-original-title="<p>Your birthday is just as special to us as it is to you!  We’d like to send you our birthday wishes, deals and coupons to make your day a little more special.</p>
+                                            Knowing your age bracket also helps us send you offers on products & services which are more likely to be relevant to you. "></a>
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">Mobile Number</div>
+                                        <input type="text" id="inputMobilePhone" name="Mobile" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.Mobile">
+                                        <a id="mobilenumber-tooltip" class="app-icon" href="#" data-toggle="tooltip" data-placement="right"
+                                           title="" data-original-title="<p>Like most major web sites today, we will use your mobile phone number as an added layer of security.  Resetting your password with your mobile phone is secure, effective, simple and quick, especially if you think your email account has been compromised.</p>
+                                           <p>We take your privacy seriously and, specifically, we will neither sell your information to third parties nor will it be made publicly visible without your permission.</p>
+                                            See our <span style='color: #0096ff'>Privacy Policy</span> for more information on how we use your information."></a>
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">Address Line1</div>
+                                        <input type="text" id="inputAddressFirst" name="AddressFirst" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.AddressFirst">
+                                        <a id="addressfirst-tooltip" class="app-icon" href="#" data-toggle="tooltip" data-placement="right"
+                                            title="" data-original-title="<p>We use your address to help provide you better services.  For example, we’ll use your address to provide you special offers from local merchants, vendors and service providers.  We may also use your address to inform you of events, and new product launches, parties, or meet ups in areas near and relevant to you.</p>
+                                            <p>We will only send you information via your registered address if you specifically request us to.</p> 
+                                            <p>We will not share your information with third parties, nor will we make it publically available.</p>
+                                            See our <span style='color: #0096ff'>Privacy Policy</span>  for more information on how we keep your data safe and secure."></a>
+                                        <div class="label-description">Street address, P.O. box, company name, c/o</div>                                        
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">Address Line2</div>
+                                        <input type="text" id="inputAddressSecond" name="AddressSecond" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.AddressSecond">
+                                        <div class="label-description">Apartment, suite, unit, building, floor, etc.</div>
+                                    </div>
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">City<span style="color: red; margin-left: 0px;">*</span></div>
+                                        <input type="text" id="inputCity" name="CityTown" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.CityTown" required>
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">State/ Province/ Region<span style="color: red; margin-left: 0px;">*</span></div>
+                                        <input type="text" id="inputStateProvince" name="StateProvince" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.StateProvince" required>
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">Zip/ Postal Code<span style="color: red; margin-left: 0px;">*</span></div>
+                                        <input type="text" id="inputZipCode" name="ZipCode" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.ZipCode" required>
+                                    </div>
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">Country<span style="color: red; margin-left: 0px;">*</span></div>
+                                        <select class="ng-pristine ng-valid" id="inputCountry" ng-model="userProfile.CountryName" name="CountryName"
+                                                ng-options="c.code as c.name for c in countries" required>
+                                        </select>
+                                    </div>
+                                    <!--
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">Primary email</div>
+                                        <input type="text" class="input-xlarge ng-pristine ng-valid ng-valid-required" name="Email" ng-model="userProfile.Email" required>
+                                    </div>
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">Additional Sender Email 1</div>
+                                        <input type="text" class="input-xlarge ng-pristine ng-valid" name="email1" ng-model="userProfile.ExtraEmails[0].Email">
+                                    </div>
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">Additional Sender Email 2</div>
+                                        <input type="text" class="input-xlarge ng-pristine ng-valid" name="email2" ng-model="userProfile.ExtraEmails[1].Email">
+                                    </div>
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">Additional Sender Email 3</div>
+                                        <input type="text" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.ExtraEmails[2].Email">
+                                    </div>
+                                    <div class="controls ctr-right">
+                                        <div class="setting-label">Additional Sender Email 4</div>
+                                        <input type="text" class="input-xlarge ng-pristine ng-valid" ng-model="extraEmail.Email">
+                                    </div>
+                                    <hr>
+                                    -->
+                                    <div class="controls">
+                                        <input id="profile-save" type="submit" value="Save" class="btn"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="db-boxs" app-resize-height id="db_change_password" ng-controller="ProfileCtrl" action="profile" style="display:none;">
+                        <h2 class="title-DB-box">Change Password</h2>
+                        <div class="setting-detail">
+                            <div class="alert alert-error fadein fadeout" ng-show="isError">{{responseMessage}}</div>
+                            <div id="profile-success" ng-show="isSubmit" class="alert alert-success" style="margin-bottom: 0!important;">
+                                Your password has been updated successfully.
+                            </div>
+                            <div class="form-setting" app-resize-height >
+                                <form class="profileForm" name="profileForm" id="profileForm" ng-submit="updateProfile(userProfile)">
+                                    <div class="setting-comment">
+                                        <p>Enter a new password for <b>accountname</b>.</p>
+                                        <p>We highly recommend you create a unique password - one that you don’t use for other websites.</p>
+                                    </div>
+                                    <div class="input-fields-container">
+                                        <div class="controls">
+                                            <div class="setting-label">Old Password</div>
+                                            <input type="password" id="inputCurrentPassword" name="inputCurrentPassword" class="input-xlarge ng-pristine ng-valid" ng-model="userProfile.Password">
+                                        </div>
+                                        <div class="controls">
+                                            <div class="setting-label">New Password</div>
+                                            <input type="password" id="inputNewPassword" name="inputNewPassword" class="input-xlarge ng-pristine ng-valid ng-valid-required" ng-model="userProfile.NewPassword" ng-required="userProfile.IsResetPassword">
+                                        </div>
+                                        <div class="controls">
+                                            <div class="setting-label">Re-type New Password</div>
+                                            <input type="password" id="inputConfirmPassword" name="inputConfirmPassword" class="input-xlarge ng-pristine ng-valid ng-valid-required" ng-model="userProfile.NewPasswordConfirm" ng-required="userProfile.IsResetPassword">
+                                        </div>
+                                        <div class="controls changepass">
+                                            <i class="app-icon icon-changepass-tick"></i>
+                                            <input id="password-save" type="submit" value="Change Password"/>
+                                        </div>
+                                    </div>
+                                    <div class="hint-pass-container">
+                                        <div class="header-hint">
+                                            <div class="app-icon bulb"></div>
+                                            <p>Suggested Tips for creating a Strong Password</p>
+                                        </div>
+                                        <div class="body-hint">
+                                            <p>Use a unique password for each of your important accounts</p>
+                                            <p>Change your passwords frequently</p>
+                                            <p>Use a mix of symbols, numbers, and letters in your password</p>
+                                            <p>Don’t use personal information or common names (like your pet’s name)</p>
+                                            <p>Keep your passwords secure (don’t share them with anyone)</p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="db-boxs" app-resize-height id="db_terms_condition" ng-controller="ProfileCtrl" action="profile" style="display:none;">
+                        <h2 class="title-DB-box">Terms & Conditions</h2>
+                        <div class="setting-detail">
+                            <div class="form-setting" app-resize-height>
+                                <div class="dash-term-content" ng-include src="'views/terms.html'">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="db-boxs" app-resize-height id="db_privacy_policy" ng-controller="ProfileCtrl" action="profile" style="display:none;">
+                        <h2 class="title-DB-box">Privacy Policy</h2>
+                        <div class="setting-detail">
+                            <div class="form-setting" app-resize-height>
+                                <div class="privacy-content" ng-include src="'views/privacy.html'">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="db-content" ng-show="screenNumber == 1">
+                <div class="db-content-scroll">
+                    <div class="db-menu">
+                        <ul app-resize-height>
+                            <li id="db-about-us" class="active menu-item-db"><i class="exclamation-icon">&nbsp;</i><a href="">About Us</a></li>
+                            <li id="db-contact-us" class="menu-item-db"><i class="icon-contact-us">&nbsp;</i><a href="">Contact Us</a></li>
+                            <!--<li id="db-news" class="menu-item-db"><i class="fa fa-newspaper-o" style="font-size: 16px; padding-right: 8px;"></i><a href="">News</a></li>
+                            <li id="db-blog" class="menu-item-db"><i class="icon-blog">&nbsp;</i><a href="">Blog</a></li>-->
+                        </ul>
+                    </div>
+                    <div class="db-boxs" style="display: block;" id="db-about-us" app-resize-height>
+                        <h2 class="title-DB-box">About Us</h2>
+
+
+                    </div>
+                    <!--<div class="db-boxs" style="display: none;" id="db-news" app-resize-height>
+                        <h2 class="title-DB-box">News</h2>
+
+
+                    </div>
+                    <div class="db-boxs" style="display: none;" id="db-blog" app-resize-height>
+                        <h2 class="title-DB-box">Blog</h2>
+
+
+                    </div>
+                    -->
+                    <div class="db-boxs" style="display: none;" ng-controller="ContactCtrl" id="db-contact-us" app-resize-height>
+                        <h2 class="title-DB-box">Contact Us</h2>
+                        <div class="setting-detail">
+                            <div class="alert alert-error fadein fadeout" ng-show="isError">{{responseMessage}}</div>
+                            <div id="contact-success" ng-show="isSubmit" class="alert alert-success fadein fadeout" style="margin-bottom: 0!important;">
+                                Your message has been sent successfully
+                            </div>
+                            <div class="form-setting" app-resize-height>
+                                <form name="contactForm" class="" ng-submit="sendMessage(sender)">
+                                    <div class="controls">
+                                        <div class="setting-label">Full name<span style="color: red"> (*)</span></div>
+                                        <input type="text" id="inputContactFullName" class="input-xlarge" ng-model="sender.fullname" required>
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">Email<span style="color: red"> (*)</span></div>
+                                        <input type="email" id="inputContactEmail" class="input-xlarge" ng-model="sender.email" required>
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">Telephone</div>
+                                        <input type="tel" id="inputContactPhone" ng-model="sender.phone" class="input-xlarge">
+                                    </div>
+                                    <div class="controls">
+                                        <div class="setting-label">Message<span style="color: red"> (*)</span></div>
+                                        <textarea id="inputContactMessage" class="input-xlarge" ng-model="sender.message" required></textarea>
+                                    </div>
+                                    <div class="controls">
+                                        <input id="contact-save" type="submit" value="Send" class="btn"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="db-content" ng-show="screenNumber == 2">
+                <div class="db-content-scroll">
+                    <div class="db-menu">
+                        <ul app-resize-height>
+                            <li id="db-help_center" class="active menu-item-db"><i class="icon-help-center">&nbsp;</i><a href="">Help Center</a></li>
+                            <li id="db-faq" class="menu-item-db"><i class="fa fa-question-circle"></i><a href="">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div class="db-boxs" style="display: block;" id="db-help_center" app-resize-height>
+                        <h2 class="title-DB-box">Help Center</h2>
+
+
+                    </div>
+                    <div class="db-boxs" style="display: none;" id="db-faq" app-resize-height>
+                        <h2 class="title-DB-box">Answer and Question</h2>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="db-content" id="db-content-dashboard" ng-show="screenNumber == 3">
+                <div class="db-content-scroll">
+                    <div class="db-boxs" id="db-dashboard" app-resize-height>
+                        <div class="wrap-block-col">
+                            <div class="block-col-db float-left block-receipt-box">
+                                <h3 class="title-block-col">ReceiptBox</h3>
+                                <ul class="content-block-col">
+                                    <li class="block-li-dashboard" ng-repeat="ftype in filterTypeList" onclick="gotoBox('#menu-receiptbox')" ng-click="filterReciptFromDashboard(ftype)">
+                                        <p class="float-left" ng-bind="ftype.name"></p>
+                                        <p class="float-right" ng-bind="ftype.totalofRC"></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="block-col-db left block-personal-expense">
+                                <h3 class="title-block-col">PersonalExpense</h3>
+                                <ul class="content-block-col">
+                                    <li ng-click="openAppFromDashboard('persional-expense',dataPertype);" onclick="gotoBox('#menu-personal-expense')" class="block-li-dashboard" ng-repeat="dataPertype in databoxExpense[0]['personal_expense']">
+                                        <p class="float-left" ng-bind="dataPertype.name"></p>
+                                        <p class="float-right" ng-bind="dataPertype.param"></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="block-col-db left block-travel-expense">
+                                <h3 class="title-block-col">TravelExpense</h3>
+                                <ul class="content-block-col">
+                                    <li ng-click="openAppFromDashboard('reportList',ctravel);" onclick="gotoBox('#menu-travel-expense')" class="block-li-dashboard" ng-repeat="ctravel in countTravelexpense">
+                                        <p class="float-left" ng-bind="ctravel.name"></p>
+                                        <p class="float-right" ng-bind="ctravel.totalReport"></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--
+                            <div class="block-col-db left block-personal-expense">
+                                <h3 class="title-block-col">BusinessExpense</h3>
+                                <ul class="content-block-col">
+                                    <li ng-click="openAppFromDashboard('business-expense',dataPertype);" onclick="gotoBox('#menu-business-expense')" class="block-li-dashboard" ng-repeat="dataPertype in databoxExpense[1]['business_expense']">
+                                        <p class="float-left" ng-bind="dataPertype.name"></p>
+                                        <p class="float-right" ng-bind="dataPertype.param"></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+//    $(document).ready(function(){
+//        $(window).load( function () {
+//        });
+//    });
+    var leavePage = true;
+    var first_time = true;
+    function gotoBox(box){
+        $(box).click();
+    }
+
+    $(document).ready(function(){
+
+        $("#db_time_zone").click(function(){
+            if(first_time == true) {
+                setTimeout(function(){
+                    // Set up the picker to update target timezone and country select lists.
+                    $('#timezone-image').timezonePicker({
+                        target: '#list-time-zone',
+                        countryTarget: '#edit-site-default-country'
+                    });
+
+                    // Optionally an auto-detect button to trigger JavaScript geolocation.
+                    $('#timezone-detect').click(function() {
+                        $('#timezone-image').timezonePicker('detectLocation');
+                    });
+                },1000);
+            }
+            first_time = false;
+        });
+        
+        $("#gender-tooltip").tooltip({html: true});
+        $("#dateofbirth-tooltip").tooltip({html: true});
+        $("#mobilenumber-tooltip").tooltip({html: true});
+        $("#addressfirst-tooltip").tooltip({html: true});
+        $("#default-expense-app-tooltip").tooltip({html: true});
+            
+        $(".db-menu ul li a").each(function(){
+            $(this).hover(function(){
+                $(this).parent().find("div").addClass("isoscelesRight");
+            });
+            $(this).mouseleave(function(){
+                if(!$(this).parent().hasClass('active')) {
+                    $(this).parent().find("div").removeClass("isoscelesRight");
+                }
+            });
+        });
+        // tab profile scroll top
+        $('[class^="img-db"]').click(function(){
+            $('.form-setting').animate({
+                scrollTop: 0
+            });
+            return false;
+        });
+        //slide show in dashboard
+        var count = $('.slide-image').length;
+        for(x=0; x < count ;x++){
+            $('.slide-pager ul').prepend("<li class='slide-pager-slot'></li>");
+        }
+
+        $('.slide-pager-slot:first-child').addClass('focus');
+
+        var eindex=0;
+
+        $('.slide-pager-slot').click(function(){
+            eindex = $('.slide-pager-slot').index(this);
+            $('.slide-image').stop().animate({opacity:0});
+            $('.slide-image:eq(' + eindex + ')').stop().animate({opacity:1});
+            $('.slide-pager-slot').removeClass('focus');
+            $(this).addClass('focus');
+        });
+
+        function setimagefocus(){
+            $('.slide-pager-slot').removeClass('focus');
+            $('.slide-pager-slot:eq(' + eindex + ')').addClass('focus');
+            $('.slide-image').stop().animate({opacity:0}).hide();
+            $('.slide-image:eq(' + eindex + ')').stop().animate({opacity:1}).show();
+        }
+
+        function slideswap(){
+//            if(eindex==count-1){eindex=-1;}
+//            eindex++;
+//            setimagefocus();
+        }
+        start_slideswap();
+        function start_slideswap(){
+            timeinterval = 1200;
+            play = setInterval(slideswap,timeinterval);
+        }
+        $(".slide-container").hover(function() {
+            clearInterval(play);
+        }, function(){
+            start_slideswap();
+        });
+
+        $('.slide-control-prev').click(function(){
+            eindex--;
+            if(eindex==-1){eindex=count-1;}
+            setimagefocus();
+        });
+        $('.slide-control-next').click(function(){
+            eindex++;
+            if(eindex==count){eindex=0;}
+            setimagefocus();
+        });
+
+        //confirm before leaving form
+        var formValueProfile;
+        var formValueTmp;
+        var checkFlag
+        var frm;
+        var msg;
+        var itemId;
+        $('.a-profile').click(function(){
+            $('.sub-menu li#db_my_info').click();
+//            $('div.db-menu ul li.menu-item-db').removeClass('active');
+//            $('.sub-menu li').removeClass('active');
+//            .addClass('active');
+//            $('#db_profile').addClass('active');
+        });
+        $('.sub-menu li').click(function(e){
+            $('div.db-menu ul li.menu-item-db').removeClass('active');
+            $(this).parent().parent().addClass('active');
+            var submenuID =  $(this).attr('id');
+            $('.sub-menu li').removeClass('active');
+                $('.sub-menu li#'+submenuID).addClass('active');
+                $('.db-boxs').hide();
+                $('.db-boxs#'+submenuID).show();
+        });
+        $('div.db-menu ul li.menu-item-db').click(function(e){
+            var idDbLi = '#' + $(this).attr('id');
+            if(idDbLi != '#db_profile')
+            {
+                $(".db-boxs").hide();
+                $(".db-boxs"+idDbLi).show();
+                itemId = '#' + $(this).attr('page');
+                $('#profile-save, #setting-save').click(function(){
+                    formValueProfile = null;
+                });
+                if(checkFlag == 'profileLink' && $(this).hasClass('img-db-settings')){
+                    formValueTmp = $('form#profileForm').serialize();
+                    if(formValueProfile!=null && formValueProfile != formValueTmp){
+                        leavePage = false;
+                        var tmpProfile = formValueProfile;
+                        showMessageConfirm('profile', msg, tmpProfile, itemId);
+
+                    }
+                }
+                if(checkFlag == 'settingLink' && $(this).hasClass('img-db-user')){
+                    formValueTmp = $('form#settingForm').serialize();
+                    //frm = 'setting';
+                    if(formValueProfile!=null && formValueProfile != formValueTmp){
+                        leavePage = false;
+                        var tmpSetting = formValueProfile;
+                        showMessageConfirm('setting', msg, tmpSetting, itemId);
+                    }
+                }
+                if($(this).hasClass('img-db-user') || $(this).hasClass('img-db-settings')) {
+
+                    if($(this).hasClass('img-db-user')) {
+                        formValueProfile = $('form#profileForm').serialize();
+                        frm = 'profile';
+                        msg = 'Do you want to save your changes to your Profile?';
+                    }
+                    if($(this).hasClass('img-db-settings')) {
+                        formValueProfile = $('form#settingForm').serialize();
+                        frm = 'setting';
+                        msg = 'Do you want to save your changes to your Settings?';
+                    }
+                    checkFlag = $(this).attr('id');
+                }else{
+                    if(frm == 'profile')
+                        formValueTmp = $('form#profileForm').serialize();
+
+                    if(frm == 'setting')
+                        formValueTmp = $('form#settingForm').serialize();
+
+                    if(formValueProfile!=null && formValueProfile != formValueTmp){
+                        leavePage = false;
+                        showMessageConfirm(frm, msg, formValueProfile, itemId);
+                    }
+                }
+                $('div.db-menu ul li').removeClass("active");
+                $('div.db-menu ul li div').removeClass("isoscelesRight");
+                $(this).addClass("active");
+                $(this).find('div').addClass("isoscelesRight");
+            }
+
+        });
+        $('.safari .app-box').width($(window).width() - $('#container .sidebar-ad').outerWidth() - 20);
+    });
+</script>

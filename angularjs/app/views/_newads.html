@@ -1,0 +1,32 @@
+<div id="ads" style="">
+    <h2>ReceiptClub</h2>
+ </div>
+
+<script>
+     var adsFiles = [
+          "ad1.jpg",
+          "ad2.jpg",
+          "ad3.jpg",
+          "ad4.jpg",
+          "ad5.jpg",
+          "ad6.jpg",
+          "ad7.jpg",
+          "ad8.jpg",
+          "ad9.jpg",
+          "ad10.jpg",
+          "ad11.jpg",
+          "ad12.jpg",
+          "ad13.jpg",
+          "ad14.jpg",
+          "ad15.jpg",
+          "ad16.jpg",
+          "ad17.jpg"
+     ]
+
+     var imgEle;
+     for (var i = 0; i < adsFiles.length; i++) {
+          imgEle = '<img id="advert-' + (i + 1) + '" src="styles/img/ads/newads728x90/' + adsFiles[i] +'" class="hide">';
+         $("#ads").append(imgEle);
+     }
+     $("#ads").append('<h3>retrieving receipt, please wait...</h3>');
+</script>

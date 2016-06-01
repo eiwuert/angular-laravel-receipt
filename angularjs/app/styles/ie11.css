@@ -1,0 +1,10 @@
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none){
+	.modal-item .modal-body .mb-block-left{width:270px !important;margin-right:15px !important;}
+        .modal-receipt .modal-body .mb-block-left{width:270px !important;margin-right:15px !important;}
+	.icon-upload ,.icon-trash{margin-top: -2px;}
+	.btn-scroll .icon-scroll-top{transform: rotate(180deg);}
+	.modal#CategoriesBox{top:48% !important;}
+        .block-rage-active { width: 270px !important; position: relative; height: 88px;top:0;}
+        div.list-attachment li:first-child{padding-top:5px !important;}
+        .icon-arrow-left{background-position:-240px -99px !important;}
+}

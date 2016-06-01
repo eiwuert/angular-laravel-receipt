@@ -1,0 +1,634 @@
+/*Common*/
+.font-arial {font-family: "Arial";}
+.font-arial-narrow {font-family: "Arial Narrow";}
+.grey {color: #808080;}
+.red {color: red}
+.green {color: green}
+.orange {color: #fe9c28}
+.yellow {color: #ffc02b}
+.bluesky {color: #1c88d0 !important;}
+.white {color: #ffffff !important;}
+.uppercase {text-transform: uppercase}
+.underline {text-decoration: underline !important;}
+.bold {font-weight: bold}
+.align-center {text-align: center !important;}
+.align-left {text-align: left !important;}
+.align-right {text-align: right !important;}
+.fill-width {width: 100%; display: block;}
+.inline-block {display: inline-block;}
+.float-left {float: left}
+.float-right {float: right}
+.no-border-left { border-left: none !important; }
+.no-border-right { border-right: none !important; }
+.wrap-indent-left { padding-left: 6px; }
+.wrap-indent-right { padding-right: 12px; }
+
+.text-ellipsis { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+/*.text-ellipsis { text-overflow: ellipsis; white-space: nowrap; }*/
+
+/*Common object*/
+.icon-checkbox-sq, .icon-checkedbox-sq { width: 13px; height: 13px; vertical-align: middle; cursor: pointer; }
+.icon-checkbox-sq { background-position: -4px -36px; }
+.icon-checkedbox-sq { background-position: -22px -36px; }
+
+.icon-checkbox-sqr, .icon-checkedbox-sqr { width: 15px; height: 15px; vertical-align: middle; cursor: pointer; }
+.icon-checkbox-sqr { background-position: -40px -34px; }
+.icon-checkedbox-sqr { background-position: -59px -34px; }
+
+.icon-clip { width: 7px; height: 18px; vertical-align: middle; background-position: -266px -3px; }
+.icon-clip-small { width: 7px; height: 14px; vertical-align: middle; background-position: -244px -403px; }
+.icon-clip-num { width: 12px; height: 18px; vertical-align: middle; background-position: -280px -3px; }
+.icon-clip-num .num {color: white; vertical-align: middle; font-weight: lighter; font-size: 8px; margin: 2px auto}
+
+.icon-arrow-ud { width: 8px; height: 11px; vertical-align: middle; background-position: -318px -10px; }
+.icon-arrow-u { width: 8px; height: 5px; vertical-align: middle; background-position: -318px -10px; }
+.icon-arrow-d { width: 8px; height: 5px; vertical-align: middle; background-position: -318px -15px; }
+
+.icon-info { width: 14px; height: 14px; vertical-align: middle; background-position: -211px -7px; }
+.icon-info-grey { width: 14px; height: 14px; vertical-align: middle; background-position: -228px -7px; }
+
+.icon-deal { width: 44px; height: 15px; vertical-align: middle; background-position: -275px -65px; }
+
+.icon-share-small { width: 13px; height: 13px; vertical-align: middle; background-position: -246px -8px; }
+.icon-share-med { width: 19px; height: 19px; vertical-align: middle; background-position: -333px -101px; }
+.icon-circle-m { width: 16px; height: 16px; vertical-align: middle; background-position: -78px -33px; }
+.icon-circle-p { width: 16px; height: 16px; vertical-align: middle; background-position: -97px -33px; }
+.icon-folder { width: 15px; height: 12px; vertical-align: middle; background-position: -162px -37px; }
+
+.icon-mail-close { width: 16px; height: 11px; vertical-align: middle; background-position: -118px -38px; }
+.icon-mail-open { width: 16px; height: 18px; vertical-align: middle; background-position: -140px -31px; }
+
+.icon-explore-item { width: 15px; height: 12px; vertical-align: middle; background-position: -276px -86px; }
+.icon-explore-cat { width: 15px; height: 12px; vertical-align: middle; background-position: -162px -37px; }
+
+.icon-btn-list { width: 33px; height: 33px; vertical-align: middle; background-position: -320px -225px; }
+.icon-btn-plus { width: 33px; height: 33px; vertical-align: middle; background-position: -320px -191px; }
+
+.icon-arrow-dropdown { width: 16px; height: 11px; vertical-align: middle; background-position: -300px -86px; }
+.icon-memo { width: 18px; height: 13px; vertical-align: middle; background-position: -293px -200px; }
+.icon-memo-active { width: 18px; height: 13px; vertical-align: middle; background-position: -313px -259px; }
+
+.icon-trip-rmv { width: 90px; height: 20px; vertical-align: middle; background-position: -191px -243px; }
+.icon-trip-add { width: 70px; height: 20px; vertical-align: middle; background-position: -191px -214px; }
+
+.icon-rate-star { width: 16px; height: 15px; background-position: -159px -65px; }
+.icon-rate-star-empty { width: 16px; height: 15px; background-position: -177px -66px; }
+
+.icon-share-f { width: 9px; height: 19px; background-position: -255px -373px; }
+.icon-share-t { width: 17px; height: 14px; background-position: -274px -378px; }
+.icon-share-p { width: 14px; height: 18px; background-position: -300px -374px; }
+.icon-share-g { width: 18px; height: 16px; background-position: -323px -376px; }
+
+.icon-more { width: 22px; height: 10px; vertical-align: middle; background-position: -304px -279px; }
+.icon-more-grey { width: 22px; height: 10px; vertical-align: middle; background-position: -332px -279px; }
+
+.icon-lock-white { width: 16px; height: 20px; background-position: -279px -405px; }
+
+.icon-fax         { width: 66px; height: 66px; background-position: -102px -458px; }
+.icon-mobile-apps { width: 78px; height: 78px; background-position: -177px -446px; }
+.icon-credit      { width: 83px; height: 62px; background-position: -267px -462px; }
+.icon-wallet      { width: 61px; height: 54px; background-position: -6px -542px; }
+.icon-ring        { width: 77px; height: 48px; background-position: -6px -604px; }
+.icon-travel      { width: 92px; height: 56px; background-position: -74px -537px; }
+.icon-charts      { width: 60px; height: 55px; background-position: -177px -541px; }
+.icon-bank        { width: 78px; height: 60px; background-position: -241px -536px; }
+
+.icon-footer-logo { width: 88px; height: 88px; background-position: -5px -437px; }
+.icon-scroll-top  { width: 44px; height: 44px; background-position: -305px -402px; }
+
+.icon-doc-edit  { width: 13px; height: 13px; background-position: -260px -403px; }
+.icon-green-camera { width: 26px; height: 20px; background-position: -245px -422px; }
+.icon-btn-reset { width: 43px; height: 15px; background-position: -169px -378px; }
+
+.icon-btn-green {
+    width: 107px;
+    height: 26px;
+    background-position: -207px -666px;
+}
+
+.icon-warning {
+    background-position: -220px -62px;
+    width: 18px;
+    height: 19px;
+}
+.app-icon.icon-refresh {
+    background-position: -241px -62px;
+    width: 23px;
+    height: 19px;
+}
+.icon-collapse-darkgray {
+    background-position: -289px -130px;
+    width: 14px;
+    height: 14px;
+}
+.icon-expand-darkgray {
+    background-position: -289px -150px;
+    width: 14px;
+    height: 14px;
+}
+.icon-success {
+    background-position: -309px -150px;
+    width: 14px;
+    height: 15px;
+    margin-right: 5px;
+    float: left;
+}
+.app-icon.icon-btn-close {
+    background-position: -248px -625px;
+    width: 53px;
+    height: 20px;
+    display: block;
+}
+.app-icon.icon-convert {background-position: -107px -378px; width: 59px; height: 15px;border: none}
+.app-icon.icon-revert {background-position: -81px -379px; width: 19px; height: 14px;border: none}
+.app-icon.icon-treasure {
+    background-position: -331px -561px;
+    width: 26px;
+    height: 26px;
+    float:left;
+    margin-left: 0;
+}
+.lightning-deals {
+    float: right;
+    margin: -27px 12px 0 0;
+    width: 167px;
+}
+#analytic .lightning-deals {
+    margin: 0;
+}
+.lightning-deals-text {
+    line-height: 23px;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: Verdana;
+    margin-left: 11px;
+    color: #cc6600;
+}
+span.lightning-deals-text {
+    position: absolute;
+    right: 16px;
+    top: 0;
+    line-height: 24px;
+}
+
+/*Specified*/
+.app-wrapper {
+    padding-bottom: 10px;
+}
+.app-wrapper a {
+    text-decoration: none;
+    color: #333333;
+}
+.app-box {
+    /*width: 100%;*/
+    /*height: 510px;*/
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border: 1px solid #d6d6d6;
+    line-height: normal;
+    margin-bottom: 5px;
+    /*background: #fafafa;*/
+    background: #eeeeee url(img/box-top-gradient.jpg) top repeat-x;
+}
+.app-box h2 {
+    color: #34b4c6;
+    font-size: 27px;
+    text-align: center;
+    font-weight: normal;
+    line-height: 27px;
+    margin: 5px 0 0 0;
+    /*margin-bottom: 20px;*/
+}
+.app-box .toolbar {
+    width: 100%;
+}
+.app-box .block-left,
+.app-box .block-right {
+    vertical-align: bottom;
+}
+.app-box .block-right {
+    float: right;
+}
+.app-box .app-nav {
+    vertical-align: bottom;
+}
+.app-box .app-nav a {
+    color: black;
+    display: inline-block;
+    margin: 0 5px;
+    font-size: 10px;
+    font-weight: bolder;
+}
+.app-box .app-nav .nav div {
+    margin: 0 auto;
+    display: block;
+}
+.app-box .app-nav .app-icon {
+    height: 15px;
+    width: 15px;
+}
+
+.app-box .animated-receive {
+    background: url(img/animation-RCI.gif) no-repeat center center !important;
+    background-position: center !important;
+}
+.app-icon.analytic { background-position: -47px -6px; width: 15px; height: 15px;}
+.app-icon.report    { background-position: -68px -6px; width: 15px; height: 15px;}
+.app-icon.save    { background-position: -339px -259px; width: 15px; height: 15px;}
+.app-icon.export     { background-position: -91px -6px; width: 15px; height: 15px;}
+.app-icon.email       { background-position: -112px -6px; width: 15px; height: 15px;}
+.app-icon.print       { background-position: -133px -6px; width: 15px; height: 15px;}
+.app-icon.delete      { background-position: -153px -6px; width: 15px; height: 15px;}
+.app-icon.setting  { background-position: -172px -6px; width: 15px; height: 15px;}
+.app-icon.help        { background-position: -193px -6px; width: 15px; height: 15px;}
+.app-icon.receive     { background-position: -25px -6px; width: 15px; height: 15px;}
+.app-icon.icon-receive-big { background-position: -272px -342px; width: 25px; height: 25px;}
+.app-icon.archive     { background-position: -4px -6px; width: 15px; height: 15px;}
+.app-icon.submit     { background-position: -270px -222px; width: 15px; height: 15px;}
+.app-icon.approve     { background-position: -295px -222px; width: 15px; height: 15px;}
+.app-icon.reject    { background-position: -294px -249px; width: 15px; height: 15px;}
+.app-icon.icon-bar-chart    { background-position: -89px -613px; width: 31px; height: 32px; }
+.app-icon.icon-pie-chart    { background-position: -126px -613px; width: 32px; height: 32px;}
+.app-icon.icon-line-chart    { background-position: -162px -608px; width: 36px; height: 38px;}
+.app-icon.icon-line-chart.mini    { background-position: -200px -621px; width: 23px; height: 22px;}
+.app-icon.icon-line-chart.disabled    { background-position: -311px -608px; width: 36px; height: 38px;}
+.app-icon.icon-line-chart.mini.disabled    { background-position: -224px -621px; width: 22px; height: 22px;}
+.app-icon.icon-save-window {background-position: -84px -666px; width: 61px; height: 23px; border: none;}
+.app-icon.icon-save-green-window {background-position: -85px -692px; width: 60px; height: 23px; border: none;}
+.app-icon.icon-close-window {background-position: -145px -666px; width: 60px; height: 23px; border: none;}
+.app-icon.icon-box-close-window {background-position: -144px -692px; width: 61px; height: 23px; border: none;}
+.app-icon.icon-fx {background-position: -222px -375px; width: 21px; height: 21px; border: none;}
+
+.app-box .app-headmenu {
+    height: 80px;
+    width: 100%;
+    position: relative;
+}
+.app-box .app-headmenu h4 {
+    font-size: 20px;
+    color: #cf7014;
+    font-weight: normal;
+}
+.app-box .app-headmenu .app-nav-block a div {
+    display: block;
+}
+.app-box .app-headmenu .container-fluid{
+    width: 100%;
+    padding: 0;
+}
+.app-box .app-headmenu .block-top-left {
+    position: absolute;
+    left: 13px;
+    top: 6px;
+}
+.app-box .app-headmenu .block-top-right {
+    position: absolute;
+    right: 13px;
+    top: 6px;
+}
+.app-box .app-headmenu .block-bot-right {
+    position: absolute;
+    right: 13px;
+    bottom: -8px;
+}
+.app-box .app-headmenu .block-bot-left {
+    position: absolute;
+    left: 13px;
+    bottom: -8px;
+}
+.app-box .app-headmenu .block-bot-left li.trip-detail-title {
+    padding: 0 23px;
+}
+.app-box .app-headmenu .block-bot-left li.report-detail-title {
+    padding: 0 28px;
+}
+.app-box .app-headmenu .block-bot-left li h4 {
+    font-size: 23px;
+}
+.app-box .app-headmenu .add-items {
+    line-height: 23px;
+    font-weight: bold;
+    margin: 24px 0 0 8px;
+}
+.app-nav-block a {
+    font-size: 10px;
+    font-weight: bold;
+    display: block;
+}
+.app-box .app-headmenu .icon-treasure {
+    margin-top: -2px;
+    margin-right: 5px;
+}
+.app-box .app-headmenu .filter select.fix-align-v {
+    margin-top: -10px;
+    margin-bottom: 0;
+}
+select.tight {
+    height: 24px !important;
+    padding: 0 0 0 6px !important;
+    min-height: 24px !important;
+}
+select.tight-short {
+    height: 20px !important;
+    padding: 0 0 0 6px !important;
+    min-height: 20px !important;
+    margin-bottom: 0;
+}
+/* App Table - Common settings  */
+.app-table {
+    width: 100%;
+}
+.app-table th .th{
+    text-align: center;
+    height: 18px;
+    line-height: 18px;
+    vertical-align: middle;
+    /*width: 100%;*/
+    display: block;
+    font-weight: bold;
+}
+.app-table th {
+    padding: 0;
+    border-left:2px solid #ffffff;
+}
+.app-table th:first-child {
+    border-left: none;
+}
+.app-table th .two-line {
+    line-height: 13px;
+}
+.app-table th .firstth {
+    border-top-left-radius: 10px;
+}
+.app-table th .lastth {
+    border-top-right-radius: 10px;
+}
+.app-table th.col-non .lastth {
+    border-left: none !important;
+}
+.app-table .icon-arrow-ud,
+.app-table .icon-arrow-d,
+.app-table .icon-arrow-u {
+    float: right;
+    margin-right: 3px;
+}
+.app-table .icon-arrow-ud {
+    margin: 12px 8px 0 0;
+}
+.app-table .icon-arrow-u {
+    margin: 12px 8px 0 0;
+}
+.app-table .icon-arrow-d {
+    margin: 17px 8px 0 0;
+}
+.app-table-child,
+#analytic .app-table-child
+{
+    width: 100%;
+    background: url('img/bg-tr-two-lines.jpg?201310115') repeat;
+}
+.app-table .app-icon {
+    cursor: pointer;
+}
+.app-table-child .app-icon.icon-share-small {
+    margin-left: 2px;
+}
+.app-table-child td {
+    text-align: center;
+}
+.app-table-child tr:hover > td {
+    background-color: #e9f2ee;
+}
+.app-table-child tr {
+    line-height: 34px;
+}
+.app-box .custom-scrollbar {
+    width: 100%;
+}
+.app-table-child-wrapper {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 270px;
+    background: #fff;
+    margin-bottom: -3px;
+}
+
+/*---------------------------------------
+    Screen Media Queries
+----------------------------------------*/
+@media screen and (max-width: 639px) {
+    .app-table-child tr {
+        font-size: 1em;
+    }
+}
+@media screen and (min-width: 640px) {
+    .app-table-child tr {
+        font-size: 1.5em;
+    }
+}
+
+/*---------------------------------------
+    App RB
+----------------------------------------*/
+.app-box.app-rb {
+    box-shadow: 0 0 7px #2ecc7c;
+}
+.app-box.app-rb h2 {
+    color: #4dbe82;
+}
+.app-box.app-rb .app-headmenu .receipt-nav {
+    /*width: 200px;*/
+    /*margin-left: -27px;*/
+    /*margin-top: 13px;*/
+}
+.app-box.app-rb .block-left {
+    margin-right: 75px;
+}
+.app-box.app-rb .block-right {
+    margin: 21px 10px 0 0;
+}
+@media screen and (min-width: 1300px) {
+    .app-box.app-rb .toolbar { text-align: center; }
+    .app-box.app-rb .block-left { text-align: left; float: left }
+    .app-box.app-rb .receipt-nav { margin: 4px 0 0 0px; }
+}
+.app-box.app-rb .filterdate {
+    margin-right: 15px;
+}
+.app-box.app-rb .filterdate .date-wrapper>select {
+    width: 188px;
+}
+.app-box.app-rb .filterdate .filter-wrapper>select,
+.app-box.app-rb .filterdate .date-wrapper>select {
+    margin-bottom: 5px;
+}
+.app-box.app-rb .filterdate input[type="radio"]{
+    margin-top: -5px;
+}
+.app-box.app-rb .app-headmenu .receipt-nav {
+    text-align: center;
+}
+.app-box.app-rb .receipt-nav .nav {
+    text-align: center;
+    padding: 15px 5px 0;
+    display: inline-block;
+    cursor: pointer;
+}
+.app-box.app-rb .receipt-nav .nav p {
+    font-weight: bold;
+}
+.app-box.app-rb .receipt-nav .snap-rc .app-icon {
+    background: url("img/app-icons-m.png") no-repeat -1px -20px;
+    background-size: 288px 86px;
+    width: 30px;
+    height: 22px;
+    padding-bottom: 3px;
+    margin: 0 auto;
+}
+.app-box.app-rb .app-table th:first-child {
+    border-right:2px solid #ffffff;
+}
+.app-box.app-rb .app-table th .th{
+    background: #94f5c4;
+    height: 34px;
+    line-height: 34px;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-color: #258055;
+}
+.app-box.app-rb .app-table th .firstth {
+    border-left: 1px solid #258055;
+}
+.app-box.app-rb .app-table th .lastth {
+    border-right: 1px solid #258055;
+}
+.app-box.app-rb .app-table .col-rec .fix-nopadding {
+    padding-left: 31px;
+}
+/*.app-box.app-rb .col-rec { width: 300px}*/
+.app-box.app-rb .col-ocu { max-width: 2em }
+.app-box.app-rb td.col-rec .wrap .app-icon { margin: -3px 0 0 8px}
+.app-box.app-rb .level-item td.col-rec .wrap span {
+    padding-left: 42px;
+}
+
+
+/* Smartphones (portrait and landscape) ----------- */
+@media screen and (max-width: 319px) {
+    .app-box.app-rb .col-rec .text-ellipsis { width: 120px; }
+    .app-box.app-rb .col-amo { min-width: 80px }
+}
+@media screen and (min-width: 320px) and (max-width: 359px) {
+    .app-box.app-rb .col-rec .text-ellipsis { width: 160px; }
+    .app-box.app-rb .col-amo { min-width: 80px }
+}
+@media screen and (min-width: 360px) and (max-width: 479px) {
+    .app-box.app-rb .col-rec .text-ellipsis { width: 210px; }
+    .app-box.app-rb .col-amo { min-width: 80px }
+}
+@media screen and (min-width: 480px) and (max-width: 767px){
+    .app-box.app-rb .col-rec .text-ellipsis { width: 360px; }
+    .app-box.app-rb .col-amo { min-width: 140px }
+}
+@media screen and (min-width: 768px) and (max-width: 1023px){
+    .app-box.app-rb .col-rec .text-ellipsis { width: 500px; }
+    .app-box.app-rb .col-amo { width: 30%; min-width: 140px }
+}
+@media screen and (min-width: 1024px) {
+    .app-box.app-rb .col-rec .text-ellipsis { width: 740px; }
+    .app-box.app-rb .col-amo { width: 30%; min-width: 140px }
+}
+
+.app-box.app-rb .app-table-child td {
+    /*word-break: break-all;*/
+}
+.app-box.app-rb .app-table-child tr:hover td.col-rec {
+    color: #003b83;
+}
+.app-box.app-rb .app-table-child .col-dat {
+    padding-left: 4px;
+}
+.app-box.app-rb .app-table-child tr.level-cat,
+.app-box.app-rb .app-table-child tr.level-item {
+    cursor: pointer;
+}
+.app-box.app-rb .app-table-child tr.level-cat td.col-rec {
+
+}
+.app-box.app-rb .app-table-child tr.level-cat td.col-rec .wrap {
+    /*display: inline-block;*/
+    /*padding-left: 8px;*/
+}
+.app-box.app-rb .app-table-child tr.level-item td.col-rec .app-icon {
+    display: none;
+}
+.app-box.app-rb .app-table-child .app-icon.icon-mail-open {
+    margin-top: -5px;
+}
+.app-box.app-rb .app-table-child .app-icon.fix-nomargin {
+    margin-right: 5px;
+}
+.app-box.app-rb .app-table-child-wrapper {
+    min-height: 270px;
+}
+.app-box.app-rb .btn-group,
+#rd-container .btn-group {
+    width: 90%;
+    display: block;
+    margin: 0 auto;
+}
+.app-box.app-rb .btn-group .btn,
+#rd-container .btn-group .btn {
+    font-size: 11px;
+    padding: 0px 5px;
+    line-height: 18px;
+    overflow: hidden;
+}
+.app-box.app-rb .btn-group>.btn:first-child,
+#rd-container .btn-group>.btn:first-child {
+    width: 70%;
+}
+.app-box.app-rb .btn-group>.btn+.dropdown-toggle,
+#rd-container .btn-group>.btn+.dropdown-toggle {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+.btn-group>.dropdown-menu {
+    text-align: left;
+    font-size: 11px;
+}
+.dropdown-menu.limit-width {
+    min-width: inherit;
+}
+.dropdown-menu>li>a {
+    line-height: 15px;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+    min-width: 100%;
+    margin-left: 0;
+}
+.dropdown-submenu.no-submenu>a:after,
+.dropdown-submenu.no-submenu>.dropdown-menu {
+    display: none;
+}
+.dropdown-submenu.no-submenu>a:after {
+    margin-top: 2px;
+}
+.dropdown-menu .btn-expand-hidden {
+    display: block;
+    float: right;
+    margin-top: -26px;
+    width: 20px;
+    height: 26px;
+    background: red;
+}
+.app-box.app-rb .item-expend-period-wrapper {
+    height: 20px;
+    display: block;
+}
+.app-box.app-rb .home-currency-rb {
+    color: #8f8f8f;
+    /*float: right;*/
+    /*display: block;*/
+}

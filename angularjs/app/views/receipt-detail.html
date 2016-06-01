@@ -1,0 +1,991 @@
+<div ng-controller="ReceiptDetailCtrl" style="position: relative; height: 100%;">
+<div id="deleting-receipt-details" class="receipt-is-busy" ng-class="{'show': deletingReceipt}" ng-show="deletingReceipt || receiptInSaving">
+  <h4 class="txt-loading" ng-bind="txtLoading"></h4>
+</div>
+    <div id="rd-header" class="clearDiv">
+        <h2 id="rd-title" class="utmaltergothic" ng-bind="pageTitle" ng-class="{'invoice-receipt-title':receipt.ReceiptType == 6}"></h2>
+        <a id="rd-logo" class="logo-rd-details" href=""></a>
+        <div id="rd-actions" class="float-right">
+                <div class="pagination pagination-mini pull-left" style="display: block; margin: -8px 0 0 -57px;"
+                     ng-if="!isNewManualReceipt">
+                    <button ng-show="!receipt.IsReported" type="button" id="rd-start-tour" href="javascript:;"
+                            class="btn-ellipse btn-dwarf btn-tour">Take a Tour
+                    </button>
+                    <ul>
+                        <li ng-click="zoomOutImages()"><a href="" title="Go to previous receipt"
+                                                          ng-click="openRdById(prevItem, 'previous')"
+                                                          ng-class="{'not-active': prevItem == 0}"><i
+                                class="icon-backward"
+                                style="margin-top: 0;"></i></a></li>
+                        <li ng-click="zoomOutImages()"><a href="" title="Go to next receipt"
+                                                          ng-click="openRdById(nextItem, 'next')"
+                                                          ng-class="{'not-active': nextItem == 0}"><i class="icon-forward"
+                                                                                                    style="margin-top: 0;"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <input type="button" value="" id="rd-close" onclick="clickLink(event);" class="app-icon icon-close-window" ng-click="close();">
+        </div>
+        <a href="" id="close-with-tooltip" class="app-icon icon-chrome-backbtn pull-left" onclick="clickLink(event);" ng-class="{'ion-back-paper-receipt':receipt.ReceiptType == 6}"
+           ng-click="close()"><span></span></a>
+    </div>
+    <div id="the-canvas"></div>
+    <!--End Header -->
+    <!--Content details-->
+    <div id="rd-container" class="rd-container-details clearDiv" rd-resize-height>
+        <div id="rd-col-content" class="rd-col-content clearDiv">
+            <div ng-show="showPdfViewer" class="container-left box-pdf-container" ng-class="{'pdf-paper-details':receipt.ReceiptType == 6}">
+                <h3 class="title-box-pdf"><span ng-if="!isManualReceipt">Original</span>&nbsp;<span ng-bind="lblReceiptType"></span><i class="arrow-details">&nbsp;</i></h3>
+                <div class="content-box-pdf clearDiv">
+                    <div>
+                        <div class="wrap-pdfViewer">
+                            <div class="pdf-header-container clearfix">
+                                <i class="app-icon logo-pcd-pdf float-left"></i>
+                                <span id="scaleSelectContainer" class="icon-dropdowpdf dropdownpdfviewer" ng-class="{'scale-select-invoid':receipt.ReceiptType == 6}">
+                                    <select id="scaleSelect" title="Zoom">
+                                         <option id="pageFitOption" title="" selected="selected" value="page-fit">Fit Page</option>
+                                         <option id="50" title="" value="0.5">50%</option>
+                                         <option id="75" title="" value="0.75">75%</option>
+                                         <option id="100" title="" value="1">100%</option>
+                                         <option id="125" title="" value="1.25">125%</option>
+                                         <option id="150" title="" value="1.5">150%</option>
+                                         <option id="200" title="" value="2">200%</option>
+                                         <option id="300" title="" value="3">300%</option>
+                                         <option id="400" title="" value="4">400%</option>
+                                         <option id="5" title="" value="5">Custom zoom</option>
+                                    </select>
+                                </span>
+                                <span id="span-pdf-zoomin" ng-click="pdfZoomIn();" class="float-left"><i class="app-icon icon-zoomin-pdf"></i></span>
+                                <span id="span-pdf-zoomout" ng-click="pdfZoomOut();"class="float-left"><i class="app-icon icon-zoomout-pdf"></i></span>
+                                <span id="span-rotatepdf" ng-click="roatePdf();"class="float-left"><i class="app-icon icon-roate-pdf"></i></span>
+                                <!--<span class="float-left pdf-oca-text" ng-bind="pdfOcaText" ng-hide="isManualReceipt"></span>-->
+                                <span ng-click="showInfoPdf();" class="float-right span-pdf-tool span-info-pdf"><i class="app-icon icon-info-pdf"></i></span>
+                                <span ng-click="pdfViewDownload();" class="float-right span-pdf-tool"><i class="app-icon icon-download-pdf"></i></span>
+                                <!--<span class="float-right span-pdf-tool"><i class="app-icon icon-email-pdf"></i></span>-->
+                                <span ng-click="printPDF();" class="float-right span-pdf-tool"><i class="app-icon icon-print-pdf"></i></span>
+                                <span onclick="showDropdownMenu();" class="span-info-dropdown"><i class="app-icon icon-menu-dropdown"></i></span>
+                                <ul id="slicknav_nav">
+                                    <li><span ng-click="showInfoPdf();"><i class="app-icon icon-info-pdf-drop"></i></span></li>
+                                    <li><span ng-click="pdfViewDownload();"><i class="app-icon icon-download-pdf-drop"></i></span></li>
+                                    <!--<li><span><i class="app-icon icon-email-pdf-drop"></i></span></li>-->
+                                    <li><span ng-click="printPDF();"><i class="app-icon icon-print-pdf-drop"></i></span></li>
+                                </ul>
+                                <span ng-click="deleteReceiptImage();" class="float-right span-pdf-tool" ng-hide="!isManualReceipt || receiptInProcessing"><i class="app-icon icon-trash-white" title="Delete Image"></i></span>
+                                <span ng-click="chooseImage();" class="float-right span-pdf-tool" ng-hide="!isManualReceipt || receiptInProcessing"><i class="app-icon icon-reload-square" title="Replace Image"></i></span>
+                                <span ng-click="selectPdf();" selection-event-pdf ng-hide="isManualReceipt" class="span-select-text-pdf float-right">
+                                    <div class="btn-ocr" ng-class="{'btn-highlight-ocr':selectAllPdfLevel==1,'btn-text-ocr':selectAllPdfLevel==2}">
+                                        <span ng-bind="pdfOcaText" class="text-ocr-buttom"></span>
+                                        <span class="icon-circle-ocr"></span>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="tutocrpdf" ng-class="{'balon-hilighting':selectAllPdfLevel == 1,'balon-displaying':selectAllPdfLevel == 2}">
+                                <span ng-bind-html-unsafe="ballonTextPdf"></span>
+                                <i class="icon-pdf-tut-close app-icon"></i>
+                            </div>
+                            <div class="loading-pdf-receipt">
+                                <span ng-hide="isManualReceipt">Loading receipt ...</span>
+                                <span ng-show="isManualReceipt">Processing ...</span>
+                            </div>
+                            <div id="info-pdf" class="info-pdf hide">
+                                <div class="header-info-pdf">
+                                    <i class="app-icon logo-box-popup"></i>
+                                    RECEIPT INFO
+                                </div>
+                                <div class="content-info-pdf">
+                                    <p class="invisible-awsome"><span>Processed by: </span><b ng-bind="receipt.RocrBots"></b></p>
+                                    <p><span>Name of original image: </span> <b ng-bind="receipt.ReceiptImage.FileName"></b></p>
+                                    <p><span>Source: </span>
+                                        <b ng-if="receipt.ReceiptType == 2">Email</b>
+                                        <b ng-if="receipt.ReceiptType != 2 && receipt.ReceiptType <= 7">Upload</b>
+                                        <b ng-if="receipt.ReceiptType > 7">App</b>
+                                    </p>
+                                    <p ng-hide="!receipt.EmailSender"><span>Email: </span><b ng-bind="receipt.EmailSender"></b></p>
+                                    <p><span>Receipt type: </span><b ng-bind="receipt.ReceiptType | receiptTypeFilter"></b></p>
+                                    <button ng-click="showInfoPdf();" class="btn-popup">OK</button>
+                                </div>
+                            </div>
+                            <ng-pdf-rci  pdfpath="pdfUrl"></ng-pdf-rci>
+                            <!--<iframe ng-if="receipt.ReceiptType == 2" src="http://localhost/rci/angularjs/app/components/pdfJS/web/viewer.html?file=http://localhost/pdfjs/AMAZON%20receipt.pdf" width="100%" height="100%"></iframe>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="receipt.ReceiptType != 2" class="container-left box-pdf-container" ng-hide="showPdfViewer">
+                <h3 class="title-box-pdf">Manual Receipt<i class="arrow-details">&nbsp;</i></h3>
+                <div id="manual-receipt-panel" class="content-left-create-receipt" rd-resize-height>
+                    <div ng-if="receipt.ReceiptID >= 0">
+                      <div ng-hide="showPdfViewer">
+                        <div class="upload-receipt-area btn" ng-click="chooseImage()">Upload & Display Single Image</div>
+                        <input type="file" id="receipt-image" name="pic" accept="image/*" rd-upload-preview detect-change="userChangedContent" class="hide"/>
+                        <p class="tut-upload-manualRc">(for hand-written receipts or other documents*)
+                        </p>
+                      </div>
+                        <p ng-hide="showPdfViewer" class="muted wording-manualRc">
+                          *You can upload images of hand-written receipts or other images and they will be refined by our imaging system and displayed here.  However, images uploaded here will not go through Optical Character Recognition (OCR) processing like normal printed receipts do. <br>
+                          To upload images of printed receipts, please go to <span class="btn-receipt-fake">ReceiptBox</span><br>
+                          You can upload and display only one image here; if you have more images or documents to attach, you can upload them by clicking on paper-clip icons in the Digital Receipt panel.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="float-left content-box-main" ng-class="{'paper-invoid-details':receipt.ReceiptType == 6}">
+                <p class="p-receipt-reported errors-reported" ng-if="receipt.IsReported">This receipt is reported, you can not change or delete it</p>
+                <h4 class="header-content">Digital Receipt</h4>
+                <div class="rd-main-content">
+                    <div id="rd-merchant-wrapper" class="box-merchant-RD clearDiv">
+                        <div class="box-merchant float-left">
+                            <input type="text" class="form-text merchant-info store" name="merchant_name"
+                                   ng-model="receipt.MerchantName"
+                                   ui-blur="reloadMerchantLogo()"
+                                   tabindex="1" placeholder="Merchant Name" ui-merchant-autocomplete="true"
+                                   id="merchant-name-info-1"
+                                   ng-disabled="receipt.IsReported">
+
+                            <div class="merchant-logo">
+                                <img ng-src="{{ receipt.MerchantLogo }}" ng-show="receipt.MerchantLogo">
+
+                                <div class="upload-block" ng-show="!receipt.MerchantLogo">
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-info float-left">
+                            <div class="merchant-row">
+                                <input type="text" class="form-text long merchant-info address" name="merchant_address"
+                                       ng-model="receipt.MerchantAddress" tabindex="2" placeholder="Address"
+                                       ui-blur="reloadMerchantLogo()"
+                                       ng-disabled="receipt.IsReported">
+                            </div>
+                            <div class="merchant-row">
+                                <input type="text" class="form-text width-30 float-left"
+                                       ng-model="receipt.MerchantCity" tabindex="4"
+                                       placeholder="City" title="Enter merchant address to add City"
+                                       ng-disabled="receipt.IsReported">
+                            </div>
+                            <div class="merchant-row">
+                                <input type="text" class="form-text width-30 float-left"
+                                       ng-model="receipt.MerchantState" tabindex="5"
+                                       placeholder="State" title="Enter merchant address to add State"
+                                       ng-disabled="receipt.IsReported">
+                            </div>
+                            <div class="merchant-row">
+                                <input type="text" class="form-text width-30 float-right mg-r-0"
+                                       ng-model="receipt.MerchantCode" tabindex="7"
+                                       placeholder="Zip Code" title="Enter merchant address to add Zip Code"
+                                       ng-disabled="receipt.IsReported">
+                            </div>
+                            <div class="merchant-row">
+                                <select ng-click="enableSaveMerchantCountry()" placeholder="Country" class="form-text width-30 float-left" ng-disabled="receipt.IsReported" title="Enter merchant address to add Country" id="MerchantCountryCode" name="MerchantCountryCode" tabindex="6">
+                                    <option ng-repeat="country in countries" value="{{country.code}}">
+                                        {{country.name}}
+                                    </option>
+                                </select>
+                                <!--<input type="text" class="form-text width-30 float-left"
+                                       ng-model="receipt.MerchantCountry" tabindex="6"
+                                       placeholder="Country" title="Enter merchant address to add Country"
+                                       ng-disabled="receipt.IsReported">-->
+                            </div>
+                            <div class="merchant-row">
+                                <input type="text" class="form-text width-30 float-left" name="merchant_phone"
+                                       ng-model="receipt.MerchantPhone" tabindex="3"
+                                       placeholder="Telephone" title="Enter merchant address to add Telephone"
+                                       ng-disabled="receipt.IsReported">
+                            </div>
+                            <div class="merchant-row">
+                                <input type="text" class="form-text width-30 float-right mg-r-0" name="change-email"
+                                       ng-model="receipt.MerchantEmail" tabindex="3"
+                                       placeholder="Email" title="Enter merchant address to add Email"
+                                       ng-disabled="receipt.IsReported">
+                            </div>
+                            <p class="rd-todaydeals float-right">Today’s Deals</p>
+                        </div>
+                    </div>
+                    <div class="rc-list-upload hide" id="upload-attach-queue"></div>
+                    <div class="box-main-amount clearDiv">
+                        <div class="block-line float-left">
+                            <div class="amount-col-1"><b>Subtotal:</b></div>
+                            <div class="amount-col-2"><input id="receipt-subtotal" type="text"
+                                 class="form-text medium text-right change-to-digit text-input-length" name="subtotal"
+                                 ng-model="receipt.Subtotal" money min="0" maxlength="16"
+                                 ng-change="updateReceiptTotalAmount()"
+                                 ng-disabled="receipt.IsReported">
+                            </div>
+                            <div class="amount-col-3 float-left">
+                                <div class="message-error-boxamount">
+                                    <span ng-if="totalNotMatchSub">
+                                        <i class="app-icon icon-warning"></i>Total does not match with the sum of Subtotal, Tax...
+                                    </span>
+                                </div>
+                                <div class="wrap-atachment-more">
+                                    <a ng-class="{'disable-div' : receipt.IsReported}" class="app-icon icon-more" href="" placement="left" style="margin-left: 7px"
+                                       ng-click="zoomOutImages();openShowMoreModal('receipt')"></a>
+
+                                    <div id="receipt-attachment-block" class="pull-right">
+                                        <a id="receipt-attachment" attachment-popup class="attachment-popover app-icon icon-attachment" ng-class="{'no-file': !$parent.receipt.Attachments.length}"
+                                           ng-click="zoomOutImages()">
+                                            <span ng-show="$parent.receipt.Attachments.length"
+                                                ng-bind="$parent.receipt.Attachments.length">
+                                            </span>
+                                        </a>
+
+                                        <div class="list-attachment" id="receipt-attachment-popover">
+                                            <div class=""
+                                                 style="padding-top:15px;background: url('styles/img/receipt_detail/box-top.png') top left no-repeat;">
+                                                <ul class="unstyled" id="attachment-ul-wrap">
+                                                    <li ng-hide="receipt.Attachments.length" class="no-file">
+                                                        <div class="border-bottom">No file</div>
+                                                    </li>
+                                                    <li ng-repeat="file in receipt.Attachments"
+                                                        ng-class="{'first': $index == 0}">
+                                                        <div class="file-name">
+                                                            <a target="_blank" ng-href="{{ file.FilePath}}"
+                                                                title="Click to view or download this file"
+                                                                ng-bind="file.FileName">
+                                                            </a>
+                                                        </div>
+                                                        <a class="file-action icon-trash pull-right"
+                                                           title="Click to remove" href=""
+                                                           ng-click="removeAttachment(receipt, file, $index,$event)"></a>
+
+                                                        <div class="clearfix border-bottom"></div>
+                                                    </li>
+                                                    <li id="receipt-attachment-queue"></li>
+                                                </ul>
+                                                <div class="actachment-control" ng-if="receipt.ReceiptID >= 0">
+                                                    <a ng-class="{'disable-a' : $parent.receipt.IsReported}" class="pull-left" href="" class="btn-upload-attach" ng-click="chooseAttachment('receipt', $parent.receipt.ReceiptID)">
+                                                        <span>Upload</span>
+                                                        <i class="icon-upload pull-left" ng-if="!receipt.IsReported"></i>
+                                                    </a>
+                                                    <a class="pull-right" href=""
+                                                       ng-click="hideElement('#receipt-attachment-popover')">
+                                                        <i class="icon-remove-circle"></i>Close
+                                                    </a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-line float-left">
+                            <div class="amount-col-1"><b>Tax:</b></div>
+                            <div class="amount-col-2">
+                                <input type="text" class="form-text medium text-right text-input-length" name="tax" ng-model="receipt.Tax" money min="0"
+                                       ng-change="updateReceiptTotalAmount()" ng-disabled="receipt.IsReported" maxlength="16">
+                            </div>
+                            <div class="amount-col-3 float-left">
+                                <input id="txt-receipt-memo" ng-model="receipt.Memo" ng-disabled="receipt.IsReported" class="form-text" type="text" placeholder="Memo" />
+                            </div>
+                        </div>
+                        <div class="block-line float-left">
+                            <div class="amount-col-1">
+                                <div class="form-wrapper wrap-text" id="receipt-extend-block">
+                                    <div class="btn-group pull-left" style="width: 70px">
+                                        <button type="button" class="btn" data-toggle="dropdown" ng-disabled="receipt.IsReported"
+                                            ng-bind="receipt.ExtraField">
+                                        </button>
+                                        <button ng-click="zoomOutImages()" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                                                ng-disabled="receipt.IsReported">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul ng-click="zoomOutImages()" class="ddr-tip dropdown-menu wid" role="menu"
+                                            ng-init="extraFields = ['Tip', 'Tax2', 'VAT', 'Shipping', 'Discount', 'Other']">
+                                            <li ng-repeat="exField in extraFields">
+                                                <a href="" ng-click="receipt.ExtraField = exField; $parent.userChangedContent = true"
+                                                    ng-bind="exField"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="amount-col-2">
+                                <input type="text" class="form-text medium text-right text-input-length" name="extendFieldValue" ng-model="receipt.ExtraValue"
+                                       money min="-Infinity" ng-change="updateReceiptTotalAmount()" ng-disabled="receipt.IsReported" maxlength="16">
+                            </div>
+                            <div class="amount-col-3 float-left">
+                                <span class="float-left txt-label">Entry Date: <b style="width: 46%; float: right" ng-bind="receipt.CreatedTime | formatDate:'dd-MMM-yyyy'"></b></span>
+                                <span class="float-left txt-label2">Time: <b style="width: 63.5%; float: right;" ng-bind="receipt.CreatedTime | formatDate:'HH:mm:ss'"></b></span>
+                            </div>
+                        </div>
+                        <div class="block-line float-left">
+                            <div class="amount-col-1">
+                                <b>Total</b>
+                                <span class="" id="home-currency-block">
+                                    <span ng-bind="loggedInUser.CurrencyCode"></span>
+                                </span>
+                            </div>
+                            <div class="amount-col-2">
+                                <input id="receipt-total" type="text" class="form-text medium text-right text-input-length" name="digital_total"
+                                       ng-model="receipt.DigitalTotal" money min="0" ng-change="updateSubtotalWithTotal()"
+                                       ng-disabled="receipt.IsReported" maxlength="16">
+                            </div>
+                            <div class="amount-col-3 float-left">
+                                <span class="float-left txt-label">Purchase Date:
+                                    <div  class="fake-input pull-right" ng-class="{'disable-div' : $parent.receipt.IsReported}" id="purchase-display" rci-datetime purchase-time="receipt.PurchaseTime">
+                                        <span style="margin-left: 4px;" id="purchase-ymd" class="pull-left text-left" ng-bind="$parent.receipt.PurchaseTime | formatDate:'dd-MMM-yyyy'"></span>
+                                    </div>
+                                    <input type="text" id="purchase_date" ng-model="receipt.PurchaseTime" style="width: 1px; height: 1px; border: 0; padding: 0;" ng-disabled="receipt.IsReported">
+                                    <input type="hidden" id="tmp_purchase_date" value="" >
+                                    <input type="hidden" id="prev_purchase_date" value="{{receipt.PrevPurchaseTime}}">
+                                </span>
+                                <span class="float-left txt-label2">Invoice#:
+                                    <input id="receipt-invoice-number" type="text" class="form-text medium text-right" name="Memo"
+                                           ng-disabled="receipt.IsReported">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="block-line float-left">
+                            <span class="amount-col-1"><b id="curentcyLabel">Original Currency:</b></span>
+                            <span class="amount-col-2-2">
+                                <div class="btn-currency-dropdown btn-group pull-left">
+                                    <button type="button" class="btn" data-toggle="dropdown" ng-click="showRestCurrencies = false;
+                                        currencies = top7GlobalCurrencies" ng-disabled="receipt.IsReported || convertingMessage"
+                                        ng-bind="TmpCurrencyCode">
+                                    </button>
+                                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" ng-click="showRestCurrencies = false;
+                                                    currencies = top7GlobalCurrencies"
+                                            ng-disabled="receipt.IsReported || convertingMessage">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu wid" role="menu">
+                                        <li ng-repeat="(currencyCode, currencyName) in currencies | orderBy:currencyCode">
+                                            <a href="" ng-click="confirmConvertCurrency(currencyCode)"
+                                                ng-bind-template="{{currencyCode}} - {{currencyName}}">
+                                            </a>
+                                        </li>
+                                        <li ng-hide="showRestCurrencies" ng-click="$event.stopPropagation();
+                                                        currencies = globalCurrencies;
+                                                        showRestCurrencies = true">
+                                            <a href="" title="Show the rest of the currencies">(...)</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="wrap-convert-currency">
+                                    <div class="blue" ng-show="showConfirmConvertMessage">
+                                        <button id="btn-convert-curentcy" class="btn-flat-round btn-green btn-dwarf" ng-click="zoomOutImages();convertCurrency()">Convert</button>
+                                        <i class="app-icon icon-convert-currentcy"></i>
+                                        Convert all amounts to Home Currency <span ng-bind="loggedInUser.CurrencyCode"></span>
+                                    </div>
+                                    <span ng-class="convertingMessageHtmlClass" ng-show="convertingMessage"><i class="app-icon icon-convert-currentcy"></i>{{ convertingMessage}}</span>
+
+                                    <div title="{{TmpCurrencyCode}} converted to {{loggedInUser.CurrencyCode}} at exchange rate of {{ receipt.ExchangeRate | number:4 }} prevailing on {{ receipt.PurchaseTime | formatDate:'dd-MMM-yyyy' }}" ng-show="!showConfirmConvertMessage && !convertingMessage && receipt.ExchangeRate != null">
+                                        <div class="pd-10 blue pull-left text-ellipsis" ng-show="!isResetCurrency"><i class="app-icon icon-convert-currentcy"></i> {{TmpCurrencyCode}} converted to {{
+                                            loggedInUser.CurrencyCode}} at exchange rate of {{ receipt.ExchangeRate | number:4 }} prevailing on
+                                            {{ receipt.PurchaseTime | formatDate:'dd-MMM-yyyy' }}
+                                        </div>
+                                        <div class="pull-left">
+                                            <i class="app-icon icon-more" ng-click="zoomOutImages();showCurrencyConverterBox()"
+                                               ng-show="convertedCurrency && !hideAfterReset"></i>
+                                            <button id="resetToOriginalCurrency"
+                                                    class="btn-flat-round t btn-red btn-dwarf"
+                                                    data-toggle="tooltip" data-placement="bottom"
+                                                    title="Reset all amounts to last validated figures"
+                                                    ng-click="resetToOriginalCurrency();"
+                                                    ng-show="!hideAfterReset && !receipt.IsReported">Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="box-categozige clearDiv">
+                        <div class="box-content-categozige float-left">
+                            <div id="categorize-section">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>ITEM CATEGORIZATION OPTIONS</th>
+                                        <th class="app-col">app</th>
+                                        <th class="cat-col">category</th>
+                                        <th class="period-col">period</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="one_item_row">
+                                        <td>
+                                            <label>
+                                                <input id="RD_combindItem" type="radio" name="categoryReceiptAs" ng-click="categorizeReceipt('one_item')"
+                                                       value="one_item" ng-model="receipt.categorizeMethod" ng-disabled="receipt.IsReported">Categorize whole receipt as one "Combined Item"
+                                            </label>
+                                            <i class="app-icon icon-question-mark" id="tooltip-combine-items"></i>
+                                        </td>
+                                        <td class="app-col text-center">
+                                            <div class="btn-group" data-placement="top">
+                                                <button class="btn app-name-selector" ng-disabled="receipt.categorizeMethod != 'one_item' || receipt.IsReported">
+                                                    <span ng-bind="receipt.CategoryAppAbbr"></span>&nbsp;
+                                                </button>
+                                                <button class="btn dropdown-toggle"
+                                                        ng-disabled="receipt.categorizeMethod != 'one_item' || receipt.IsReported"
+                                                        data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu limit-width" role="menu" aria-labelledby="dropdownMenu">
+                                                    <li><a tabindex="-1" href="" ng-repeat="app in categories"
+                                                            ng-click="updateReceiptCategoryMenu(app.App, receipt);"
+                                                            ng-bind-template="{{app.App.AbbrName}} - {{app.App.Name}}">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td class="cat-col text-center">
+                                            <div class="btn-group" data-placement="right">
+                                                <button class="btn btn-label"
+                                                        ng-disabled="receipt.categorizeMethod != 'one_item' || receipt.IsReported">
+                                                    <span ng-bind="receipt.CategoryName"></span>&nbsp;
+                                                </button>
+                                                <button id="categorize-combine" class="btn dropdown-toggle" data-toggle="dropdown"
+                                                        ng-disabled="receipt.categorizeMethod != 'one_item' || receipt.IsReported"
+                                                        ng-click="idQickCategory = 'categorize-combine';triggerLoadCategory(receipt, 'one_item_row');">
+                                                    <span class="caret"></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="item-expend-period-wrapper"
+                                                 ng-if="(receipt.CategoryID > 0 || receipt.forceCategory) && receipt.categorizeMethod == 'one_item'"
+                                                 ng-class="{'position-inherit': receipt.CategoryApp == 'travel_expense'}">
+                                            <span ng-show="receipt.CategoryApp != 'travel_expense' && !report.IsReported">
+                                                {{ receipt.ExpensePeriod | formatDate:'MMM-yyyy' }}
+                                                <input type="text" class="item-expense-period"
+                                                       rci-calendar="{updateNgModelWhenChangeMonthYear: true, limitMonthYear: true}"
+                                                       ng-model="receipt.ExpensePeriod"
+                                                       ng-click="userChangedContent = true" ng-if="!receipt.IsReported">
+                                            </span>
+                                                <trip-dropdown ng-if="receipt.CategoryApp == 'travel_expense' && !receipt.IsReported"
+                                                               from="dateFrom" to="dateTo" ng-model="receipt" app="receipt.CategoryApp"
+                                                               screen="receipt-detail" data-toggle="tooltip"
+                                                               title="Please select a trip"></trip-dropdown>
+                                            <span ng-show="receipt.CategoryApp == 'travel_expense' && receipt.IsReported" ng-bind="receipt.Reference"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="all_item_row">
+                                        <td>
+                                            <label>
+                                                <input id="rf-categorize-all" type="radio" name="categoryReceiptAs" ng-click="categorizeReceipt('all_item')"
+                                                       value="all_item" ng-model="receipt.categorizeMethod" ng-disabled="receipt.IsReported">Categorize
+                                                all Items listed below as:
+                                            </label>
+                                        </td>
+                                        <td class="app-col text-center">
+                                            <div class="btn-group" data-placement="top">
+                                                <button class="btn app-name-selector"
+                                                        ng-disabled="receipt.categorizeMethod != 'all_item' || !itemIsCheckAll || receipt.IsReported">
+                                                    <span ng-bind="receipt.CategoryAppAbbr"></span>&nbsp;
+                                                </button>
+                                                <button class="btn dropdown-toggle"
+                                                        ng-disabled="receipt.categorizeMethod != 'all_item' || !itemIsCheckAll || receipt.IsReported"
+                                                        data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu limit-width" role="menu" aria-labelledby="dropdownMenu">
+                                                    <li><a tabindex="-1" href="" ng-repeat="app in categories"
+                                                            ng-click="updateReceiptCategoryMenu(app.App, receipt);"
+                                                            ng-bind-template="{{app.App.AbbrName}} - {{app.App.Name}}">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td class="cat-col text-center">
+                                            <div class="btn-group" data-placement="right">
+                                                <button class="btn btn-label"
+                                                        ng-disabled="receipt.categorizeMethod != 'all_item' || !itemIsCheckAll || receipt.IsReported">
+                                                    <span ng-bind="receipt.CategoryName"></span>&nbsp;
+                                                </button>
+                                                <button id="categorize-all-item" class="btn dropdown-toggle" data-toggle="dropdown"
+                                                        ng-disabled="receipt.categorizeMethod != 'all_item' || !itemIsCheckAll || receipt.IsReported"
+                                                        ng-click="idQickCategory = 'categorize-all-item';triggerLoadCategory(receipt, 'all_item_row');">
+                                                    <span class="caret"></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="item-expend-period-wrapper"
+                                                 ng-if="receipt.CategoryID > 0 && receipt.categorizeMethod == 'all_item'"
+                                                 ng-class="{'position-inherit': receipt.CategoryApp == 'travel_expense'}">
+                                                <span ng-show="receipt.CategoryApp != 'travel_expense'">
+                                                    {{ receipt.ExpensePeriod | formatDate:'MMM-yyyy' }}
+                                                    <input type="text" class="item-expense-period"
+                                                           rci-calendar="{updateNgModelWhenChangeMonthYear: true, limitMonthYear: true}"
+                                                           ng-model="receipt.ExpensePeriod"
+                                                           ng-click="UserChangedContent();" ng-if="!receipt.IsReported">
+                                                </span>
+                                                <trip-dropdown ng-if="receipt.CategoryApp == 'travel_expense' && !receipt.IsReported"
+                                                               from="dateFrom" to="dateTo" ng-model="receipt" app="receipt.CategoryApp"
+                                                               screen="receipt-detail" data-toggle="tooltip"
+                                                               title="Please select a trip"></trip-dropdown>
+                           <span ng-show="receipt.CategoryApp == 'travel_expense' && receipt.IsReported">
+                           </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="selected_item_row">
+                                        <td>
+                                            <label>
+                                                <input id="categorize-selected-item" type="radio" name="categoryReceiptAs" ng-click="categorizeReceipt('selected_item')"
+                                                       value="selected_item" ng-model="receipt.categorizeMethod" ng-disabled="receipt.IsReported">Categorize selected Items below as:
+                                            </label>
+                                        </td>
+                                        <td class="app-col text-center">
+                                            <div class="btn-group" data-placement="top">
+                                                <button class="btn app-name-selector" ng-disabled="receipt.categorizeMethod != 'selected_item' || noItemSelected">
+                                                    <span ng-bind="receipt.CategoryAppAbbr"></span>&nbsp;
+                                                </button>
+                                                <button class="btn dropdown-toggle"
+                                                        ng-disabled="receipt.categorizeMethod != 'selected_item' || noItemSelected"
+                                                        data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu limit-width" role="menu" aria-labelledby="dropdownMenu">
+                                                    <li><a tabindex="-1" href="" ng-repeat="app in categories"
+                                                            ng-click="updateReceiptCategoryMenu(app.App, receipt);"
+                                                            ng-bind-template="{{app.App.AbbrName}} - {{app.App.Name}}">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td class="cat-col text-center">
+                                            <div class="btn-group" data-placement="right">
+                                                <button class="btn btn-label"
+                                                        ng-disabled="receipt.categorizeMethod != 'selected_item' || noItemSelected">
+                                                    <span ng-bind="receipt.CategoryName"></span>&nbsp;
+                                                </button>
+                                                <button id="categorize-selected-item" class="btn dropdown-toggle" data-toggle="dropdown"
+                                                        ng-disabled="receipt.categorizeMethod != 'selected_item' || noItemSelected"
+                                                        ng-click="idQickCategory = 'categorize-selected-item';triggerLoadCategory(receipt, 'selected_item_row');">
+                                                    <span class="caret"></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="item-expend-period-wrapper"
+                                                 ng-if="receipt.CategoryID > 0 && receipt.categorizeMethod == 'selected_item'"
+                                                 ng-class="{'position-inherit': receipt.CategoryApp == 'travel_expense'}">
+                                                <span ng-show="receipt.CategoryApp != 'travel_expense'">
+                                                    {{ receipt.ExpensePeriod | formatDate:'MMM-yyyy' }}
+                                                    <input type="text" class="item-expense-period"
+                                                           rci-calendar="{updateNgModelWhenChangeMonthYear: true, limitMonthYear: true}"
+                                                           ng-model="receipt.ExpensePeriod"
+                                                           ng-click="userChangedContent = true">
+                                                </span>
+                                                <trip-dropdown ng-if="receipt.CategoryApp == 'travel_expense' && !receipt.IsReported"
+                                                               from="dateFrom" to="dateTo" ng-model="receipt" app="receipt.CategoryApp"
+                                                               screen="receipt-detail" data-toggle="tooltip"
+                                                               title="Please select a trip"></trip-dropdown>
+                                                <span ng-show="receipt.CategoryApp == 'travel_expense' && receipt.IsReported" ng-bind="receipt.Reference"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="footer-top">
+                                        <td colspan="4">
+                                            <div class="pos-relative">
+                                                <label>
+                                                    <input id="categorize-individual-item" type="radio" name="categoryReceiptAs" value="individual_item"
+                                                           checked = 'true'
+                                                           ng-model="receipt.categorizeMethod"
+                                                           ng-checked="!receipt.categorizeMethod || receipt.categorizeMethod == 'individual_item'"
+                                                           ng-click="categorizeReceipt('individual_item')" ng-disabled="receipt.IsReported">Categorize Items Individually
+                                                </label>
+                                                <!--<span class="club-points"></span>-->
+                                            </div>
+
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="box-content-validate-rd float-left">
+                            <div class="box-validate-header" ng-class="{rc_validated: receipt.VerifyStatus == '2',rc_awating:receipt.VerifyStatus == '1' }">
+                                RECEIPT STATUS
+                            </div>
+                            <div class="box-validate-main">
+                                <i ng-show="receipt.VerifyStatus == '1'" class="awaiting-icon">&nbsp;</i>
+                                <i ng-show="receipt.VerifyStatus == '2'" class="validated-icon">&nbsp;</i>
+                                <p class="msg-awaiting" ng-show="receipt.VerifyStatus == '1'">
+                                    <span>Awaiting</span>
+                                    <span>Validation</span>
+                                </p>
+                                <button id="btn-goto-rb" ng-show="receipt.VerifyStatus == 2" class="btn-flat-round btn-green">
+                                    Validated
+                                </button>
+                                <button id="btn-validate-receipt-detail" ng-if="receipt.VerifyStatus != 2 && !receipt.IsReported"
+                                        class="btn-flat-round btn-green btn-dwarf"
+                                        ng-click="zoomOutImages();setInstantReceiptStatus(receipt)">Validate
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="rd-items-table-wrapper" class="clearDiv">
+                    <table id="rd-items-table-head">
+                        <thead>
+                        <tr>
+                            <th class="item_name_head">
+                                <div>
+                                    <input type="checkbox" ng-click="checkAll()" class="check-all-items"
+                                           ng-checked="itemIsCheckAll" ng-disabled="receipt.IsReported">
+                                    Item Name</div>
+                            </th>
+                            <th class="amount_head">
+                                <div>Amount</div>
+                            </th>
+                            <th class="app_head">
+                                <div>App</div>
+                            </th>
+                            <th class="cat_head" width="">
+                                <div>Category</div>
+                            </th>
+                            <th class="period_head" width="">
+                                <div>Period</div>
+                            </th>
+                            <th class="item_status_head" width="">
+                                <div>Tag</div>
+                            </th>
+                            <th class="info_head" width="">
+                                <div>More</div>
+                            </th>
+                            <th class="attachment_head" width="">
+                                <div><i class="app-icon icon-attachment no-file" style="margin-top: -1px"></i></div>
+                            </th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="table-scroll" rd-resize-height>
+                        <table id="rd-items-table">
+                            <tbody>
+                            <tr ng-repeat="item in receipt.Items track by $index" ng-class="{'selected' : item.IsChecked}">
+                                <td class="item_name_col align_left">
+                                    <a name="item-{{item.ItemID}}"></a>
+                                    <input type="checkbox" class="form-checkbox" ng-model="item.IsChecked"
+                                           ng-disabled="item.IsJoined == 1 || receipt.IsReported"
+                                           ng-click="checkItemSelected(item)">
+                                    <input type="text" class="form-text long" name="ItemName" ng-model="item.Name"
+                                           ng-disabled="item.IsJoined == 1 || receipt.IsReported"
+                                           ng-change="$parent.userChangedContent = true"
+                                           drop-text-name-col>
+                                </td>
+                                <td class="amount_col">
+                                    <input id="amount-col-receipt-details" blur-amount-col
+                                           type="text"
+                                           ng-focus="hasFocus=true"
+                                           ng-click="setCurrentTotalAmount()"
+                                           class="form-text medium text-right"
+                                           ng-model="item.Amount"
+                                           money min="-Infinity"
+                                           blur-to-add-more-item="{isLast: $last, callback: addMoreItem}"
+                                           ng-change="$parent.userChangedContent = true; updateItemSubTotal();"
+                                           ng-disabled="item.IsJoined == 1 || receipt.IsReported"
+                                           ng-keypress="updateItemSubTotal( );"
+                                           ng-keyup="setWidthError(); updateItemSubTotal(); $parent.userChangedContent = true" maxlength="16">
+
+                                </td>
+                                <td class="app_col">
+                                    <div class="btn-group" title="Select an Application" style="position: inherit;">
+                                        <button class="btn app-name-selector" ng-disabled="item.IsJoined == 1 || receipt.IsReported"
+                                            ng-bind-template="{{item.CategoryAppAbbr}}&nbsp;">
+                                        </button>
+                                        <button class="btn dropdown-toggle" ng-disabled="item.IsJoined == 1 || receipt.IsReported" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="ddr-select-app dropdown-menu limit-width" role="menu" aria-labelledby="dropdownMenu">
+                                            <li><a tabindex="-1" href="" ng-repeat="app in categories"
+                                                    ng-click="updateCategoryMenu(app.App, item, $parent.$index)"
+                                                    ng-bind-template="{{app.App.AbbrName}} - {{app.App.Name}}">
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td class="cat_col">
+                                    <div class="btn-group" title="Select a Category" data-placement="right">
+                                        <button class="btn category-name" ng-disabled="item.IsJoined == 1 || receipt.IsReported"
+                                            ng-bind-template="{{item.CategoryName}}&nbsp;"></button>
+                                        <button class="btn dropdown-toggle" data-toggle="dropdown"
+                                                ng-disabled="item.IsJoined == 1 || receipt.IsReported"
+                                                ng-click="triggerLoadCategory(item, $index, 'item')">
+                                            <span class="caret"></span>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td class="period_col">
+                                    <div class="item-expend-period-wrapper" ng-if="item.CategoryID > 0 || receipt.forceCategory"
+                                         ng-class="{'position-inherit': item.CategoryApp == 'travel_expense'}">
+                                                    <span ng-show="item.CategoryApp != 'travel_expense'">
+                                                        {{ item.ExpensePeriod | formatDate:'MMM-yyyy' }}
+                                                        <input type="text" ng-if="!receipt.IsReported"
+                                                               class="item-expense-period"
+                                                               rci-calendar="{updateNgModelWhenChangeMonthYear: true, limitMonthYear: true}"
+                                                               ng-model="item.ExpensePeriod"
+                                                               ng-click="UserChangedContent();">
+                                                        <input type="hidden" value="" class="hidden-value-period">
+                                                    </span>
+
+                                        <div class="wrap-travelExpend-item">
+                                            <trip-dropdown ng-if="item.CategoryApp == 'travel_expense' && !receipt.IsReported"
+                                                from="dateFrom" to="dateTo" ng-model="item" app="item.CategoryApp"
+                                                screen="receipt-detail" data-toggle="tooltip"
+                                                title="Please select a trip"></trip-dropdown>
+                                            <span ng-show="item.CategoryApp == 'travel_expense' && receipt.IsReported"
+                                                ng-bind="item.Reference">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="item_status_col align-left">
+                                    <div ng-show="receipt.IsReported" ng-bind="item.Tags"></div>
+                                    <div ng-show="!receipt.IsReported">
+                                        <inline-edit addition-class="text-ellipsis" value="item.Tags"></inline-edit>
+                                    </div>
+                                <td class="info_col">
+                                    <a class="app-icon icon-more" data-toggle="tooltip" title="Feature coming soon"></a>
+                                </td>
+                                <td class="attachment_col">
+                                    <button ng-disabled="$parent.tmpCategoryType == 'one_item' && $parent.$index != '0'"
+                                            id="item-attachment-{{ $index}}"
+                                            class="attachment-popover app-icon icon-attachment ng-class:{'no-file': !$parent.item.Attachments.length}"
+                                            attachment-popup>
+                                        <span class="number-count-attach" ng-show="$parent.item.Attachments.length" ng-bind="$parent.item.Attachments.length"></span>
+                                    </button>
+                                    <div class="list-attachment" id="item-attachment-{{ $index}}-popover">
+                                        <div class=""
+                                             style="overflow: hidden;max-height: 130px;;padding-top:15px;background: url('styles/img/receipt_detail/box-top.png') top left no-repeat;">
+                                            <ul class="unstyled" id="attachment-ul-item-wrap">
+                                                <li ng-hide="item.Attachments.length" class="no-file">
+                                                    <div class="border-bottom">No file</div>
+                                                </li>
+                                                <li ng-repeat="file in item.Attachments" ng-class="{'first': $index == 0}">
+                                                    <div class="file-name">
+                                                        <a target="_blank" ng-href="{{ file.FilePath}}"
+                                                            title="Click to view or download this file" ng-bind="file.FileName">
+                                                        </a>
+                                                    </div>
+                                                    <a class="file-action icon-trash pull-right" title="Click to remove" href=""
+                                                       ng-click="removeAttachment(item, file, $index)"></a>
+                                                    <div class="clearfix border-bottom"></div>
+                                                </li>
+                                            </ul>
+                                            <div class="actachment-control" ng-if="receipt.ReceiptID >= 0">
+                                                <a ng-class="{'disable-a' : $parent.receipt.IsReported}" href="" class="btn-upload-attach pull-left" ng-click="chooseAttachment('item', item.ItemID, $index)">
+                                                     <span class="upload-text-item">Upload</span>
+                                                     <i class="icon-upload pull-left" style="margin-top: 0px;"></i>
+                                                 </a>
+
+                                                <div id="item-attachment-queue-{{ $index}}"></div>
+
+                                                <a class="pull-right" href=""
+                                                   ng-click="hideElement('#item-attachment-[index]-popover', $index)"><i
+                                                        class="icon-remove-circle"></i> <span class="close-text-item">Close</span></a>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="info-items">
+                      <div class="total-container">
+                        <div ng-if="!receipt.HasCombinedItem">
+                          <p>
+                            <i id="btn-delete-items" ng-click="showDeleteConfirmationBox()"
+                               ng-show="!receipt.IsReported" class="total-items">&nbsp;</i>
+                            Item(s): {{receipt.ItemCount}}
+                          </p>
+
+                          <p>{{ itemTotal | number:2 }}</p>
+
+                          <p>
+                            Item Total:
+                          </p>
+                        </div>
+                      </div>
+                        <p>
+                            <span ng-if="showMessageWarning" ng-show="receipt.categorizeMethod == 'one_item' && !messageWarning && receipt.ItemCount != 0">
+                                <i class="app-icon icon-success"></i>Combined Item Total matches Subtotal
+                            </span>
+                            <span ng-if="showMessageWarning" class="text-error text-ellipsis" title="Combine Item Total does not equal Subtotal" ng-show="receipt.categorizeMethod == 'one_item' && messageWarning && receipt.ItemCount != 0">
+                                <i class="app-icon icon-warning"></i>Combine Item Total does not equal Subtotal
+                            </span>
+                            <span ng-show="itemTotal == receipt.Subtotal && receipt.categorizeMethod != 'one_item' && receipt.Subtotal != 0">
+                                <i class="app-icon icon-success"></i>Item Total matches Subtotal
+                            </span>
+                            <span class="text-error text-ellipsis" title="Item Total is lower than Subtotal by {{ loggedInUser.CurrencyCode}} {{ receipt.Subtotal - itemTotal | number:2 }}"
+                                  ng-show="itemTotal - receipt.Subtotal < 0 && !ignoreWarning && receipt.categorizeMethod != 'one_item'">
+                                <i class="app-icon icon-warning"></i>Item Total is lower than Subtotal by {{ loggedInUser.CurrencyCode}} {{ receipt.Subtotal - itemTotal | number:2 }}
+                            </span>
+                            <span class="text-error text-ellipsis" title="Item Total is higher than Subtotal by {{ loggedInUser.CurrencyCode}} {{ itemTotal - receipt.Subtotal | number:2 }}"
+                                  ng-show="itemTotal - receipt.Subtotal > 0 && !ignoreWarning && receipt.categorizeMethod != 'one_item'">
+                                <i class="app-icon icon-warning"></i>Item Total is higher than Subtotal by {{ loggedInUser.CurrencyCode}} {{ itemTotal - receipt.Subtotal | number:2 }}
+                            </span>
+                        </p>
+                        <div class="replace-or-ignore pull-right"
+                             ng-if="itemTotal != receipt.Subtotal && !ignoreWarning && !receipt.IsReported && receipt.ItemCount != 0 && receipt.categorizeMethod != 'one_item'">
+                            <a href="" class="btn btn-igron-error" ng-click="
+                                                updateSubtotal();
+                                                userChangedContent = true;">
+                                <i class="app-icon icon-igron-error"></i>Ignore
+                            </a>
+                        </div>
+                        <div class="replace-or-ignore pull-right"
+                             ng-if="receipt.categorizeMethod == 'one_item' && messageWarning && receipt.ItemCount != 0 && showMessageWarning">
+                            <a href="" class="btn btn-igron-error" ng-click="ignoreMessageCombineItem();">
+                                <i class="app-icon icon-igron-error"></i>Ignore
+                            </a>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="box-control-receipt clearDiv">
+
+                        <a href="" class="nav" title="Delete this receipt" ng-click="zoomOutImages();deleteReceipt(receipt)"
+                           ng-show="!receipt.IsReported">
+                            <i class="app-icon delete-red"></i>Delete Receipt
+                        </a>
+
+                        <button id="close-with-tooltip" class="btn btn-back-torb float-right" ng-click="goToReceiptBox(receipt)">
+                            ReceiptBox
+                            <i class="float-right app-icon btn-back-to-rb"></i>
+                           </button>
+                        <button id="rd-save" class="float-right btn"
+                                ng-disabled="!userChangedContent"
+                                ng-class="{'active-save-btn': userChangedContent, 'disable-save-btn': !userChangedContent, 'manual-save': !receipt.ReceiptID}"
+                                ng-click="save(receipt)">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="receipt.ReceiptType != 6" class="clearDiv box-ad-rd-right" id="rd-ad-block"></div>
+        </div>
+    </div>
+    <!--End Content details-->
+    <div id="currencyConverterBox" class="modal modal-rc currency-converter-box hide" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-header">
+            <i class="icon-logo pull-left"></i>
+
+            <h3>foreign currency converter</h3>
+            <button class="app-icon pop-up-close-window" data-dismiss="modal" aria-hidden="true"></button>
+        </div>
+        <div class="modal-body" style="margin-bottom: 10px;">
+            <form class="form-horizontal">
+                <div class="row">
+                    <div class="col1 pull-left">
+                        Foreign Currency: <strong>{{ TmpCurrencyCode}}</strong><i class="app-icon icon-fx pull-right"
+                                                                                  style="margin-right: 6px;"></i>
+                    </div>
+                    <div class="col2 pull-left">
+                        Rate: <strong class="blue">{{ receipt.ExchangeRate | number:4 }}</strong>
+                    </div>
+                    <div class="col3 pull-left">
+                        Home Currency:<strong class="pull-right" style="margin-left: 7px;">{{
+                        loggedInUser.CurrencyCode}}</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col1">
+                        <label>Subtotal:</label>
+                        <input type="text" value="{{ receipt.Subtotal / receipt.ExchangeRate | number:2 }}">
+                    </div>
+                    <div class="col2"></div>
+                    <div class="col3">
+                        <input type="text" value="{{ receipt.Subtotal | number:2 }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col1">
+                        <label>Tax:</label>
+                        <input type="text" value="{{ receipt.Tax / receipt.ExchangeRate | number:2 }}">
+                    </div>
+                    <div class="col2"></div>
+                    <div class="col3">
+                        <input type="text" value="{{ receipt.Tax | number:2 }}">
+                    </div>
+                </div>
+                <div class="row" ng-show="receipt.ExtraField">
+                    <div class="col1">
+                        <label>{{ receipt.ExtraField}}:</label>
+                        <input type="text" value="{{ receipt.ExtraValue / receipt.ExchangeRate | number:2 }}">
+                    </div>
+                    <div class="col2"></div>
+                    <div class="col3">
+                        <input type="text" value="{{ receipt.ExtraValue | number:2 }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col1">
+                        <label>Total:</label>
+                        <input type="text" value="{{ receipt.DigitalTotal / receipt.ExchangeRate | number:2 }}">
+                    </div>
+                    <div class="col2"></div>
+                    <div class="col3">
+                        <input type="text" value="{{ receipt.DigitalTotal | number:2 }}">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--</div>-->
+        <div ng-include src="'views/popup-categories.html'"></div>
+    </div>
+
+    <form id="attachUploadForm">
+        <input type="file" id="input-attachment" class="hide" multiple="multiple" accept="image/*" />
+    </form>
+</div>
+
+<script>
+    function showDropdownMenu () {
+        var display = $('#slicknav_nav').css("display");
+        if (display == "block") {
+            $('#slicknav_nav').css("display", "none");
+        } else {
+            $('#slicknav_nav').css("display", "block");
+        }
+    }
+
+    $(document).ready(function () {
+        $('.text-input-length').unbind('keyup change input paste').bind('keyup change input paste',function(e){
+            var $this = $(this);
+            var val = $this.val();
+            var valLength = val.length;
+            var maxCount = 13;
+
+            if($(this).val().indexOf('.')!=-1){
+                return;
+            } else if ($(this).val().indexOf('.')==-1){
+                if(valLength>maxCount){
+                    $this.val($this.val().substring(0,maxCount));
+                }
+            }
+        });
+
+        $(document).on('click', function(e){
+           if(e.target == ($(".text-ocr-buttom"))[0]){
+                return;
+           }
+           if(e.target == ($(".btn-ocr"))[0]){
+                return;
+           }
+
+            $( ".tutocrpdf").animate({opacity: 0},1000);
+        });
+        $("#tooltip-combine-items").tooltip("destroy");$("#tooltip-combine-items").tooltip({placement: "bottom",title: "Generate “Combined Item”",animation: true});
+
+        //Include amazon ads
+//        $.getScript("components/aws-wget/widget.js",function(){
+//            var script = document.createElement('script');
+//            script.type = 'text/javascript';
+//            script.src = "http://ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Frecei05-20%2F8010%2F685c5ac4-2283-4422-9236-ff21bad6cd02&Operation=GetScriptTemplate";
+//            $('#rd-ad-block').append(script);
+//        });
+//      var smallAd = '\<iframe src="https://rcm-na.amazon-adsystem.com/e/cm?t=recei05-20&o=1&p=29&l=ur1&category=gold&banner=1ZH2FARVZ9GEJCWZ26R2&f=ifr&linkID=MEIYABRI2EO7TU2X" width="120" height="600" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>';
+//      postscribe('#rd-ad-block', smallAd);
+    });
+</script>

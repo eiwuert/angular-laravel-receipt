@@ -1,0 +1,34 @@
+<div id="section1" ng-controller="HomeCtrl">
+    <div class="wrapper-default">
+        <div id="home-logo"><a href="#!/"></a></div>
+        <a href="" show-page="receiptbox-wrapper" layout="default" id="enter_head_home" ng-show="$parent.loggedInUser.UserID"></a>
+        <div class="form-wrapper">
+            <form class="form-horizontal" id="user-login-modal" ng-submit="authenticate()" ng-hide="$parent.loggedInUser.UserID">
+                <div class="control-group">
+                    <div class="alert alert-error hide"></div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputLoginEmail">E-mail: <span class="required">*</span></label>
+                    <div class="controls">
+                        <input type="email" id="inputLoginEmail" ng-model="auth.Email" required>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputLoginPassword">Password: <span class="required">*</span></label>
+                    <div class="controls">
+                        <input type="password" id="inputLoginPassword" ng-model="auth.Password" required>
+                    </div>
+                </div>
+                <div class="control-group submit-wrapper">
+                    <div class="controls">
+                        <button type="submit">Login</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+//    setBackgroundCover();
+</script>

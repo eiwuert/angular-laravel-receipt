@@ -1,0 +1,22 @@
+@media screen and (-webkit-min-device-pixel-ratio:0){
+    .ui-datepicker-title select{line-height: 18px;}
+    /*.app-box.app-pe .filterdate .date-to {top: 48px;left: 0px;}      */
+    #analytic .tab-content {display: inline;}
+    #analytic .tab-content h2 {display: inline-block;}
+    #rd-dig input{ line-height: 15px;}  
+}
+.safari.windows .box-validate-main {
+	text-align: center;
+}
+.safari.windows #btn-validate-receipt-detail {
+    display: inline-block;
+	margin-top: 5px;
+}
+.safari.windows #rd-merchant-wrapper input[type='text'] {
+	padding-top:3px;
+	line-height:14px;
+    -webkit-box-sizing:border-box;
+}
+.safari.windows input.merchant-info.address {
+	width: 100% !important;
+}

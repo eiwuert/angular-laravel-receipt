@@ -1,0 +1,258 @@
+<div ng-controller="ReportDetailCtrl">
+<div class="alert alert-error absolute-wrapper" ng-show="responseMessage">
+    <a class="close" href="" ng-click="responseMessage = []">&times;</a>
+    <ul>
+        <li ng-repeat="message in responseMessage | limitTo: 1" ng-bind="message"></li>
+    </ul>
+</div>
+<div class="app-wrapper">
+    <div class="app-box app-te rd" id="app-te">
+        <div class="app-headmenu">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span5">
+                        <ul class="unstyled inline app-nav-block block-bot-left">
+                            <li class="report-detail-title">
+                                <h4 class="utmaltergothic text-ellipsis" id="report-long-title"></h4>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="span2 text-center relative-pos" ng-switch="report.Status">
+                        <h2 class="utmaltergothic">TravelExpense</h2>
+                        <h4 class="utmaltergothic subtitle">Report Details</h4>
+                        <div class="title-status grey" ng-switch-when="Draft">{{report.Status | forSubmitter}}</div>
+                        <div class="title-status yellow" ng-switch-when="Submitted">{{report.Status | forSubmitter}}</div>
+                        <div class="title-status green" ng-switch-when="Approved">{{report.Status | forSubmitter}}</div>
+                        <div class="title-status red" ng-switch-when="Rejected">{{report.Status | forSubmitter}}</div>
+                        <a class="btn add-items submit" ng-hide=" (report.IsSubmitted && report.IsApproved<2) || !report.IsSubmitter" href="" ng-click="submit()">Submit Report</a>
+                        <a class="btn add-items print" href="" ng-click="printReport()">Print Report</a>
+                        <a class="btn add-items delete" href="" ng-click="deleteReport()" ng-show="['Draft', 'Archived'].indexOf(report.Status)>-1">Delete Report</a>
+                    </div>
+                    <a href="" class="btn add-items back-to-app back-to-reportlist utmaltergothic show" show-page="report-list-wrapper" active-class="aqua" selected-item="#menu-travel-expense">
+                        <i class="app-icon icon-back-arrow"></i>Back To Report List
+                    </a>
+                    <div class="span5 text-right">
+                        <ul class="start-tour">
+                            <li class="bt-start-tour">
+                                <button href="javascript:;" class="home-start-tour add-items">
+                                    Take a Tour
+                                </button>
+                            </li>
+                            <!--
+                            <li>
+                                <h3 class="lightning-deals-text block-top-right"><span><i class="app-icon icon-treasure" style="float: none"></i>Today's Deals</span></h3>
+                            </li>
+                            -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--TABLE - REPORT-->
+        <table class="app-table tb-rl" id="report-detail-table">
+            <tr>
+                <th class="col-name"><div class="th firstth" style="padding: 0;">TRAVEL REPORT</div></th>
+                <th class="col-amo"><div class="th">AMOUNT</div></th>
+                <th class="col-dat"><div class="th">DATE</div></th>
+                <th class="col-sub"><div class="th">SUBMITTER</div></th>
+                <th class="col-apr"><div class="th">APPROVER</div></th>
+                <th class="col-stt"><div class="th">STATUS</div></th>
+                <th class="col-ref"><div class="th">REPORT#</div></th>
+                <th class="col-clm">
+                    <div class="th pos-relative">
+                        CLAIMED
+                        <input type="checkbox" ng-show="report.IsSubmitter" ng-model="report.IsClaimed" ng-change="setClaimedForReport(report)" ng-disabled="! report.IsSubmitter || (report.IsSubmitter && report.IsSubmitted && report.IsApproved < 2)">
+                    </div>
+                </th>
+                <th class="col-apv">
+                    <div class="th pos-relative">
+                        APPROVED
+                        <input type="checkbox" ng-show="!report.IsSubmitter" ng-model="report.IsAllApproved" ng-change="setApprovedForReport(report)" ng-disabled="report.IsApproved || report.IsSubmitter">
+                    </div>
+                </th>
+                <th class="col-non"><div class="th lastth">&nbsp;</div></th>
+            </tr>
+            <tbody class="app-table-child" fluid-table-child>
+                <tr>
+                    <td class="col-name bold align-left" id="report-title">
+                        <inline-edit addition-class="text-ellipsis" value="report.Title" placeholder="Enter report name" quick-save edit-status="report.editStatus" oid="report.ReportID" field="Title" maxlength="128" ng-if="report.IsSubmitter && (!report.IsSubmitted || report.IsApproved == 2)"></inline-edit>
+                        <a class="text-ellipsis" ng-if="!report.IsSubmitter || (report.IsSubmitted && report.IsApproved < 2)" ng-bind="report.Title"></a>
+                    </td>
+                    <td class="align-right col-amo"><span class="bold wrap-indent-right" ng-bind="report.Amount | number:2"></span></td>
+                    <td class="col-dat">
+                        <div class="item-expend-period-wrapper">
+                            <span ng-bind="report.Date | formatDate:'dd-MMM-yyyy'"></span>
+                            <input type="text" class="item-expend-period" rci-calendar ng-model="report.Date" oid="report.ReportID" field="Date" ng-if="report.IsSubmitter && (!report.IsSubmitted || report.IsApproved == 2)">
+                        </div>
+                    </td>
+                    <td class="col-sub align-left">
+                        <span class="text-ellipsis" tooltip="{{report.SubmitterEmail ? report.SubmitterEmail : loggedInUser.Email}}"
+                            ng-bind-template="{{report.SubmitterEmail ? report.SubmitterEmail : loggedInUser.Email}}">
+                        </span>
+                    </td>
+                    <td class="col-apr align-left">
+                        <inline-edit addition-class="text-ellipsis" value="report.ApproverEmail"
+                            quick-save edit-status="report.editStatus" oid="report.ReportID" field="ApproverEmail"
+                            ng-if="report.IsSubmitter && (!report.IsSubmitted || report.IsApproved == 2)"
+                            max-width="{{inlineEditMaxWidth}}">
+                        </inline-edit>
+                        <span class="text-ellipsis" ng-if="!report.IsSubmitter || (report.IsSubmitted && report.IsApproved < 2)" ng-bind="report.ApproverEmail"></span>
+                    </td>
+                    <td class="col-stt" ng-bind="report.Status | forSubmitter"></td>
+                    <td class="col-ref align-left">
+                        <inline-edit value="report.Reference" maxlength="10" quick-save edit-status="report.editStatus" oid="report.ReportID" field="Reference" ng-if="report.IsSubmitter && (!report.IsSubmitted || report.IsApproved == 2)"></inline-edit>
+                        <span ng-show="!report.IsSubmitter || (report.IsSubmitted && report.IsApproved < 2)" ng-bind="report.Reference"></span>
+                    </td>
+                    <td class="col-clm align-right red">
+                        <span ng-bind="report.Claimed | number:2"></span>
+                    </td>
+                    <td class="col-apv align-right green">
+                        <span ng-bind="report.Approved | number:2"></span>
+                    </td>
+                    <td class="col-non">&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="trip-buttons">
+            <a class="app-icon icon-trip-rmv" href="" ng-show="report.IsSubmitter && report.Trips.length && (!report.IsSubmitted || (report.IsSubmitted && report.IsApproved == 2))" ng-click="removeTrip()"></a>
+            <a class="app-icon icon-trip-add" href="" ng-show="report.IsSubmitter && (!report.IsSubmitted || (report.IsSubmitted && report.IsApproved == 2))" ng-click="openAddTripForm()"></a>
+            <div class="cleafix"></div>
+        </div>
+
+        <!--TABLES - TRIPS AND CATEGORIES-->
+        <div class="trips-wrapper" app-resize-height>
+            <div class="trip-block" bindonce ng-repeat="trip in report.Trips">
+                <div class="tb-tl-wrapper">
+                    <table class="pull-right app-table tb-tl table-striped table-hover">
+                        <tr>
+                            <th class="col-invi">
+                                <i class="pull-left app-icon icon-checkbox-sqr" ng-click="trip.IsChecked = !trip.IsChecked"
+                                   ng-class="{'icon-checkedbox-sqr' : trip.IsChecked}"></i>
+                            </th>
+                            <th class="col-name"><div class="th firstth"><span ng-bind-template="TRIP {{$index + 1}}"></span><i class="app-icon icon-doc-edit"></i></div></th>
+                            <th class="col-stt"><div class="th"><trip-reduced-header value="T" description="Tooltip : T =Trip State; Values can be U (Upcoming), C (Current), P (Past)"></trip-reduced-header></div></th>
+                            <th class="col-amo"><div class="th">AMOUNT</div></th>
+                            <th class="col-from"><div class="th">FROM</div></th>
+                            <th class="col-to"><div class="th">TO</div></th>
+                            <th class="col-sdat"><div class="th">START DATE</div></th>
+                            <th class="col-edat"><div class="th">END DATE</div></th>
+                            <th class="col-ref"><div class="th">TRIP#</div></th>
+                            <th class="col-rep"><div class="th">REPORT#</div></th>
+                            <th class="col-clm"><div class="th pos-relative">
+                                CLAIMED
+                                <input type="checkbox" ng-model="trip.IsClaimed" ng-show="report.IsSubmitter" ng-change="setClaimedForTrip(trip, report, true)" ng-disabled="! report.IsSubmitter || (report.IsSubmitter && report.IsSubmitted && report.IsApproved < 2)">
+                                </div>
+                            </th>
+                            <th class="col-apv"><div class="th lastth pos-relative">
+                                APPROVED
+                                <input type="checkbox" ng-model="trip.IsApproved" ng-show="!report.IsSubmitter" ng-change="setApprovedForTrip(trip, report, true)" ng-disabled="report.IsSubmitter || report.IsApproved">
+                                </div>
+                            </th>
+                        </tr>
+                        <tbody class="app-table-child">
+                            <tr>
+                                <td class="col-invi">&nbsp;</td>
+                                <td class="col-name align-left"><div class="trip-name bold text-ellipsis" bo-text="trip.Name" tooltip="{{trip.Name}}"></div></td>
+                                <td class="col-stt"><trip-state value="trip.State"></trip-state></td>
+                                <td class="align-right col-amo bold"><div class="wrap-indent-right" bo-text="trip.Amount | number:2"></div></td>
+                                <td class="col-from align-left"><span class="text-ellipsis" tooltip="{{trip.Departure}}" bo-text="trip.Departure"></span></td>
+                                <td class="col-to align-left"><span class="text-ellipsis" tooltip="{{trip.Arrival}}" bo-text="trip.Arrival"></span></td>
+                                <td class="col-sdat" bo-text="trip.StartDate | formatDate:'dd-MMM-yyyy'"></td>
+                                <td class="col-edat" bo-text="trip.EndDate | formatDate:'dd-MMM-yyyy'"></td>
+                                <td class="col-ref align-left" bo-text="trip.Reference"></td>
+                                <td class="col-rep orange align-left" ng-bind="report.Reference"></td>
+                                <td class="col-clm align-right red"><span ng-bind="trip.Claimed | number:2"></span></td>
+                                <td class="col-apv align-right green"><span ng-bind="trip.Approved | number:2"></span></td>
+                            </tr>
+                        </tbody>
+                        <tbody class="tb-cat" ng-show="trip.Items.length > 0">
+                            <tr>
+                                <th class="col-invi">&nbsp;</th>
+                                <th colspan="2" class="col-cat"><div class="th firstth"><i class="app-icon" ng-class="{'icon-circle-m':!trip.peCatCollapseStatus, 'icon-circle-p':trip.peCatCollapseStatus}" ng-click="collapsePECategories(trip)"></i><span>CATEGORY</span></div></th>
+                                <th class="col-amo"><div class="th">AMOUNT</div></th>
+                                <th colspan="2" class="col-itm"><div class="th">ITEM</div></th>
+                                <th colspan="2" class="col-mrc"><div class="th">MERCHANT</div></th>
+                                <th class="col-dat"><div class="th">DATE</div></th>
+                                <th class="col-mem"><div class="th">MEMO</div></th>
+                                <th class="col-clm"><div class="th">CLAIMED</div></th>
+                                <th class="col-apv"><div class="th lastth">APPROVED</div></th>
+                            </tr>
+                            <tr bindonce ng-repeat="cat in trip.Items" ng-hide="cat.collapse">
+                                <td class="col-invi">&nbsp;</td>
+                                <td colspan="2" class="col-cat uppercase align-left cat-name"><span class="text-ellipsis" tooltip="{{cat.CategoryName}}" bo-text="cat.CategoryName"></span></td>
+                                <td class="align-right col-amo"><div class="wrap-indent-right" bo-text="cat.Amount | number:2"></div></td>
+                                <td colspan="2" class="align-left col-itm">
+                                    <a href="" ng-show="report.IsSubmitter" class="wrap-indent-left text-ellipsis" tooltip="{{cat.Name}}" bo-text="cat.Name"></a>
+                                    <div ng-show="! report.IsSubmitter" class="wrap-indent-left text-ellipsis" tooltip="{{cat.Name}}" bo-text="cat.Name"></div>
+                                </td>
+                                <td colspan="2" class="align-left col-mrc"><div ng-init="triggerTruncateTable('cat')" class="wrap-indent-left text-ellipsis" tooltip="{{cat.MerchantName}}" bo-text="cat.MerchantName"></div></td>
+                                <td class="col-dat align-center" bo-text="cat.PurchaseTime | formatDate:'dd-MMM-yyyy'"></td>
+                                <td class="col-mem">
+                                    <popover-memo index="{{trip.TripID}}-{{$index}}" curr-item="cat" curr-report="report" editable="{{memoEditable}}"></popover-memo>
+                                </td>
+                                <td class="col-clm align-right red">
+                                    <inline-edit class="inline-block no-status-mask text-input-length" type="Claim" quick-save value="cat.Claimed"
+                                        disabled="! report.IsSubmitter || (report.IsSubmitter && report.IsSubmitted && report.IsApproved < 2)"
+                                        format="number:2" maxlength="16">
+                                    </inline-edit>
+                                    <input type="checkbox" ng-model="cat.IsClaimed" ng-change="setClaimedForItem(cat, trip, report, true, true)" ng-disabled="! report.IsSubmitter || (report.IsSubmitter && report.IsSubmitted && report.IsApproved < 2)">
+                                </td>
+                                <td class="col-apv align-right green">
+                                    <inline-edit class="inline-block no-status-mask text-input-length" value="cat.Approved" quick-save
+                                        disabled="report.IsSubmitter || report.IsApproved  || !cat.IsClaimed" type="Approve"
+                                        format="number:2" maxlength="16">
+                                    </inline-edit>
+                                    <input type="checkbox" ng-model="cat.IsApproved" ng-change="setApprovedForItem(cat, trip, report, true, true)" ng-disabled="report.IsSubmitter || report.IsApproved || !cat.IsClaimed">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-include src="'views/add-trip.html'"></div>
+    <div class="print-report-wrap">
+        <div class="print-report clearfix">
+                <span class="title-box-alert">
+                    <i class="icon-logo"></i>
+                    <b class="title-box-download">Print report</b>
+                    <button class="app-icon pop-up-close-window" data-dismiss="modal" aria-hidden="true"></button>
+                </span>
+            <div class="box-select-reporttype">
+                <h3>Select Report Type:</h3>
+                <p class="box-select-p">
+                    <label class="radio">
+                        <input type="radio" checked="true" class="report-details-all" id="all" ng-click="selectActionReport('all');" name="printAction" value="all">Print report with all items
+                    </label>
+                </p>
+                <p>
+                    <label class="radio">
+                        <input type="radio" id="claimed" ng-click="selectActionReport('claimed');" name="printAction" value="claimed">Print report with claimed items only
+                    </label>
+                </p>
+                <p>
+                    <label class="radio">
+                        <input type="radio" id="approved" name="printAction" ng-click="selectActionReport('approved');" value="approved">Print report with approved items only
+                    </label>
+                </p>
+                <p ng-if="isGeneratingReport"><input type="button" class="btn" ng-click="exportPDF();" id="print-report-btn" value="Download"/><input type="button" onclick="hideReportWrap();" class="btn cancel-report-btn" value="Cancel"/></p>
+                <p class="lbl_loadingtext" ng-if="!isGeneratingReport">Generating PDF report... </p>
+                <div class="downloading-report print-download">&nbsp;</div>
+                <p class="downloadint print-download">Downloading...</p>
+            </div>
+            <div class="box-pdf-viewer">
+                <div class="loadding-pdf">&nbsp;</div>
+                <iframe src="{{urlReport}}" width="100%" height="100%"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function hideReportWrap() {
+        $('.print-report-wrap').hide();
+    }
+</script>
