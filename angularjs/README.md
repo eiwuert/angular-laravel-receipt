@@ -1,4 +1,4 @@
 angularjs
 =========
 
-RCI AngularJS repository 
+AngularJS repository 
